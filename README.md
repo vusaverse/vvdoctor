@@ -1,2 +1,8 @@
+
 # vvdoctor
-R package to automate statistical testing
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of vvdoctor is to ...
+
