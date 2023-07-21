@@ -16,13 +16,19 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/app_ui.html</loc>
+    <loc>/reference/app_server.html</loc>
   </url>
   <url>
     <loc>/reference/choose_statistical_test.html</loc>
   </url>
   <url>
+    <loc>/reference/display_data_table.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_variable_class_info.html</loc>
+  </url>
+  <url>
+    <loc>/reference/handle_file_upload.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
