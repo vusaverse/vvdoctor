@@ -39,6 +39,26 @@ app_server <- function(input, output, session) {
     var_class_info
   })
 
+  output$recommended_test <- renderText({
+    recommended_test <- choose_statistical_test(input$independent_var, input$dependent_var)
+    paste("Recommended Statistical Test:", recommended_test)
+  })
+
+  # Plot histogram for continuous and normally distributed variable
+  output$distPlot <- renderPlot({
+    req(input$independent_var, data())
+
+    if (is.numeric(data()[[input$independent_var]]) &&
+        var_class_info()[1] == "Independent Variable Class: Continuous (Normally Distributed)") {
+      hist(data()[[input$independent_var]],
+           main = "Histogram of Independent Variable",
+           xlab = "Independent Variable",
+           col = "darkgray")
+    } else {
+      NULL
+    }
+  })
+
   output$dataTable <- DT::renderDataTable({
     req(data())
 

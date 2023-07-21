@@ -38,3 +38,26 @@ get_variable_class_info <- function(variable) {
     return(var_class_info)
   }
 }
+
+#' Choose Statistical Test
+#'
+#' This function chooses the appropriate statistical test based on the provided table.
+#'
+#' @param independent_var The independent variable.
+#' @param dependent_var The dependent variable.
+#' @return The recommended statistical test.
+choose_statistical_test <- function(independent_var, dependent_var) {
+  if (independent_var == "continuous" && dependent_var == 1) {
+    return("One sample t-test")
+  } else if (independent_var == "continuous" && dependent_var == 2) {
+    return("Paired t-test")
+  } else if (independent_var == "continuous" && dependent_var > 2) {
+    return("Unpaired t-test")
+  } else if (independent_var == "categorical" && dependent_var == 2) {
+    return("Chi-square test for goodness of fit and binomial test")
+  } else if (independent_var == "categorical" && dependent_var > 2) {
+    return("Chi-square test for goodness of fit and multinomial test")
+  } else {
+    return("No recommended test found")
+  }
+}
