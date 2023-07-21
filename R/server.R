@@ -88,11 +88,24 @@ app_server <- function(input, output, session) {
     DT::datatable(data())
   })
 
-  # # Display the column names of the uploaded dataframe
-  # output$dataView <- renderPrint({
-  #   req(data())
-  #
-  #   # Return the column names of the uploaded dataframe
-  #   colnames(data())
-  # })
+  # Display information about the dependent variable
+  output$dependent_var_info <- renderText({
+    req(input$dependent_var, data())
+
+    dependent_var <- data()[[input$dependent_var]]
+
+    if (is.numeric(dependent_var)) {
+      # Check for normality of continuous dependent variable
+      var_class_info <- get_variable_class_info(dependent_var)
+      return(var_class_info)
+    } else {
+      # Check if the categorical variable is binary or nominal
+      unique_values <- unique(dependent_var)
+      if (length(unique_values) == 2) {
+        return("Dependent Variable: Categorical (Binary)")
+      } else {
+        return("Dependent Variable: Categorical (Nominal)")
+      }
+    }
+  })
 }

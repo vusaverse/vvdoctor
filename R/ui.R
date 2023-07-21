@@ -28,7 +28,9 @@ app_ui <- function() {
                               min = -999, max = 999)
         ),
         # Display the recommended statistical test right below the dropdowns
-        shiny::textOutput("recommended_test")
+        shiny::textOutput("recommended_test"),
+        # Display info about the dependent variable based on class and distribution
+        shiny::textOutput("dependent_var_info")
       ),
 
       # Show a plot of the uploaded data (Histogram for continuous variables)
