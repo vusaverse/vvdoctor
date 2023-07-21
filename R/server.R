@@ -5,7 +5,9 @@
 #' @importFrom DT datatable
 #' @export
 app_server <- function(input, output, session) {
-  data <- reactive({
+  data <- reactiveVal(NULL)
+
+  observeEvent(input$file, {
     req(input$file)
 
     # Get the full path of the uploaded file
@@ -15,26 +17,26 @@ app_server <- function(input, output, session) {
     print(full_path)
 
     # Read the uploaded file
-    read.csv(full_path)
-  })
+    data(read.csv(full_path))
 
-  # Get the column names of the dataframe and ensure they are unique
-  column_names <- reactive({
-    req(data())
-    colnames(data())
-  })
-
-  # Remove the selected column from the second dropdown
-  observe({
-    req(input$col_select_1)
-    updateSelectInput(session, "col_select_2", choices = setdiff(column_names(), input$col_select_1))
+    # Populate the first dropdown with column names
+    updateSelectInput(session, "independent_var", choices = colnames(data()))
+    updateSelectInput(session, "dependent_var", choices = colnames(data()))
   })
 
   # Display an input field when the second dropdown has a "NULL" option
   output$mean_input <- renderUI({
-    if (is.null(input$col_select_2)) {
+    req(input$dependent_var)
+    if (is.null(input$independent_var)) {
       shiny::numericInput("mean_val", "Enter Mean:", value = 0, step = 0.1)
     }
+  })
+
+  # Display the variable class info using a separate function
+  output$variable_class_info <- renderText({
+    req(input$independent_var)
+    var_class_info <- get_variable_class_info(data()[[input$independent_var]])
+    var_class_info
   })
 
   output$dataTable <- DT::renderDataTable({
