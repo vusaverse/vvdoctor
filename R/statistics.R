@@ -47,17 +47,53 @@ get_variable_class_info <- function(variable) {
 #' @param dependent_var The dependent variable.
 #' @return The recommended statistical test.
 choose_statistical_test <- function(independent_var, dependent_var) {
-  if (independent_var == "continuous" && dependent_var == 1) {
-    return("One sample t-test")
-  } else if (independent_var == "continuous" && dependent_var == 2) {
-    return("Paired t-test")
-  } else if (independent_var == "continuous" && dependent_var > 2) {
-    return("Unpaired t-test")
-  } else if (independent_var == "categorical" && dependent_var == 2) {
-    return("Chi-square test for goodness of fit and binomial test")
-  } else if (independent_var == "categorical" && dependent_var > 2) {
-    return("Chi-square test for goodness of fit and multinomial test")
+  if (independent_var == "1 groep" && dependent_var == "continu") {
+    return("One sample t-toets")
+  } else if (independent_var == "1 groep" && dependent_var == "niet normaal") {
+    return("Tekentoets I")
+  } else if (independent_var == "2 groepen" && dependent_var == "gepaard") {
+    return("Gepaarde t-toets")
+  } else if (independent_var == "2 groepen" && dependent_var == "ongepaard") {
+    return("Ongepaarde t-toets")
+  } else if (independent_var == ">2 groepen" && dependent_var == "gepaard") {
+    return("Repeated measures ANOVA")
+  } else if (independent_var == ">2 groepen" && dependent_var == "ongepaard") {
+    return("One-way ANOVA")
+  } else if (independent_var == "categorisch" && dependent_var == "binair") {
+    return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "nominaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "ordinaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
+  } else if (independent_var == "2 groepen" && dependent_var == "continu") {
+    return("Independent samples t-test")
+  } else if (independent_var == "2 groepen" && dependent_var == "categorisch") {
+    return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets")
+  } else if (independent_var == ">2 groepen" && dependent_var == "continu") {
+    return("One-way ANOVA")
+  } else if (independent_var == ">2 groepen" && dependent_var == "categorisch") {
+    return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets")
+  } else if (independent_var == "categorisch" && dependent_var == "binair") {
+    return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "nominaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "ordinaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
+  } else if (independent_var == "2 groepen" && dependent_var == "continu") {
+    return("Independent samples t-test")
+  } else if (independent_var == "2 groepen" && dependent_var == "categorisch") {
+    return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets")
+  } else if (independent_var == ">2 groepen" && dependent_var == "continu") {
+    return("One-way ANOVA")
+  } else if (independent_var == ">2 groepen" && dependent_var == "categorisch") {
+    return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets")
+  } else if (independent_var == "categorisch" && dependent_var == "binair") {
+    return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "nominaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
+  } else if (independent_var == "categorisch" && dependent_var == "ordinaal") {
+    return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
   } else {
-    return("No recommended test found")
+    return("No test found for the given variables.")
   }
 }
