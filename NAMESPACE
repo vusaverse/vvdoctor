@@ -3,4 +3,5 @@
 export("%>%")
 export(app_server)
 export(app_ui)
+importFrom(DT,datatable)
 importFrom(magrittr,"%>%")
