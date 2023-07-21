@@ -1,19 +1,21 @@
-#' Shiny App Server
-#'
-#' This file contains the server logic for the Shiny app.
-#'
-#' @importFrom DT datatable
-#' @export
+# Shiny App Server
+#
+# This file contains the server logic for the Shiny app.
+#
+# @importFrom DT datatable
+# @export
 app_server <- function(input, output, session) {
+  # Reactive value to store the uploaded data
   data <- reactiveVal(NULL)
 
+  # Observer for handling file upload
   observeEvent(input$file, {
     req(input$file)
 
     # Get the full path of the uploaded file
     full_path <- normalizePath(input$file$datapath)
 
-    # Print the file path
+    # Print the file path (optional, for debugging)
     print(full_path)
 
     # Read the uploaded file
@@ -39,6 +41,7 @@ app_server <- function(input, output, session) {
     var_class_info
   })
 
+  # Display the recommended statistical test based on the chosen variables
   output$recommended_test <- renderText({
     recommended_test <- choose_statistical_test(input$independent_var, input$dependent_var)
     paste("Recommended Statistical Test:", recommended_test)
@@ -48,8 +51,11 @@ app_server <- function(input, output, session) {
   output$distPlot <- renderPlot({
     req(input$independent_var, data())
 
+    # Get the variable class info
+    var_class_info <- get_variable_class_info(data()[[input$independent_var]])
+
     if (is.numeric(data()[[input$independent_var]]) &&
-        var_class_info()[1] == "Independent Variable Class: Continuous (Normally Distributed)") {
+        grepl("Continuous (Normally Distributed)", var_class_info[1])) {
       hist(data()[[input$independent_var]],
            main = "Histogram of Independent Variable",
            xlab = "Independent Variable",
@@ -59,6 +65,22 @@ app_server <- function(input, output, session) {
     }
   })
 
+  # Generate histogram for continuous dependent variable
+  output$histPlot <- renderPlot({
+    req(input$independent_var, input$dependent_var, data())
+
+    if (input$dependent_var == "1" && input$independent_var == "continuous" &&
+        is.numeric(data()[[input$independent_var]])) {
+      hist(data()[[input$independent_var]],
+           main = "Histogram of Continuous Dependent Variable",
+           xlab = "Dependent Variable",
+           col = "darkgray")
+    } else {
+      NULL
+    }
+  })
+
+  # Display the uploaded data as a data table
   output$dataTable <- DT::renderDataTable({
     req(data())
 
@@ -66,10 +88,11 @@ app_server <- function(input, output, session) {
     DT::datatable(data())
   })
 
-  output$dataView <- renderPrint({
-    req(data())
-
-    # Return the column names of the uploaded dataframe
-    colnames(data())
-  })
+  # # Display the column names of the uploaded dataframe
+  # output$dataView <- renderPrint({
+  #   req(data())
+  #
+  #   # Return the column names of the uploaded dataframe
+  #   colnames(data())
+  # })
 }
