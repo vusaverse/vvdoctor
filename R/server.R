@@ -1,35 +1,22 @@
-# Shiny App Server
-#
-# This file contains the server logic for the Shiny app.
-#
-# @importFrom DT datatable
-# @export
+#' Title
+#'
+#'
+#' @export
+#'
 app_server <- function(input, output, session) {
-  # Reactive value to store the uploaded data
-  data <- reactiveVal(NULL)
+  data <- handle_file_upload(input, output, session)
 
-  # Observer for handling file upload
-  observeEvent(input$file, {
-    req(input$file)
-
-    # Get the full path of the uploaded file
-    full_path <- normalizePath(input$file$datapath)
-
-    # Print the file path (optional, for debugging)
-    print(full_path)
-
-    # Read the uploaded file
-    data(read.csv(full_path))
-
-    # Populate the first dropdown with column names
-    updateSelectInput(session, "independent_var", choices = colnames(data()))
-    updateSelectInput(session, "dependent_var", choices = colnames(data()))
+  # Reactive value to track whether a file has been uploaded
+  observe({
+    req(data())
+    # Set fileUploaded to TRUE to show the dependent and independent variable dropdowns
+    updateNumericInput(session, "fileUploaded", value = 1)
   })
 
   # Display an input field when the second dropdown has a "NULL" option
   output$mean_input <- renderUI({
     req(input$dependent_var)
-    if (is.null(input$independent_var)) {
+    if (is.null(input$independent_var) || input$independent_var == "") {
       shiny::numericInput("mean_val", "Enter Mean:", value = 0, step = 0.1)
     }
   })
@@ -81,11 +68,11 @@ app_server <- function(input, output, session) {
   })
 
   # Display the uploaded data as a data table
-  output$dataTable <- DT::renderDataTable({
+  output$dataTable <- renderDataTable({
     req(data())
 
-    # Display the dataframe
-    DT::datatable(data())
+    # Display the dataframe using the helper function
+    display_data_table(data())
   })
 
   # Display information about the dependent variable
@@ -109,3 +96,6 @@ app_server <- function(input, output, session) {
     }
   })
 }
+
+
+
