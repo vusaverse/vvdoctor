@@ -1,13 +1,21 @@
 Package: vvdoctor
-Title: What the Package Does (One Line, Title Case)
+Title: Statistical Test App with R Shiny
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Tomer", "Iwan", , "t.iwan@vu.nl", role = c("aut", "cre", "cph"))
+Description: Provides a user-friendly R Shiny app for performing various statistical tests on datasets. 
+  It allows users to upload data in CSV or Excel format and perform statistical analyses. 
+  The app dynamically adapts its options based on the selected columns and supports both single and multiple column comparisons.
+  The app's user interface (UI) is designed to streamline the process of selecting datasets, columns, and test options, 
+  making it easy for users to explore and interpret their data. The underlying functions for statistical tests are well-organized and can be used independently within other R scripts.
+URL: https://github.com/vusaverse/vvdoctor,
+    https://vusaverse.github.io/vvdoctor/
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
-    magrittr
+    DT,
+    magrittr,
+    shiny,
+    shinyjs
