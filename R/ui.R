@@ -1,3 +1,7 @@
+#' Title
+#'
+#' @export
+#'
 app_ui <- function() {
   shiny::fluidPage(
     # Application title
@@ -21,7 +25,8 @@ app_ui <- function() {
         shiny::textInput("input_mean", "Input mean:", value = ""),
 
         # Text below the dropdowns
-        shiny::textOutput("dependent_var_text")
+        shiny::textOutput("dependent_var_text"),
+        shiny::textOutput("independent_var_text")  # New output element for the independent variable text
       ),
 
       # Show the datatable and histogram after submitting a file

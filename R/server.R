@@ -1,3 +1,8 @@
+
+#' Title
+#'
+#' @export
+#'
 app_server <- function(input, output, session) {
   data <- handle_file_upload(input, output, session)
 
@@ -22,34 +27,84 @@ app_server <- function(input, output, session) {
   # Text below the dropdowns
   output$dependent_var_text <- renderText({
     req(input$dependent_var)
+    determine_dependent_variable(data()[, input$dependent_var])
+  })
 
-    # Check if the selected dependent variable is numeric/float
-    if (is.numeric(data()[, input$dependent_var])) {
-      "The selected dependent variable is numeric/float."
-    } else if (is.character(data()[, input$dependent_var])) {
-      # If the selected dependent variable is character, return the number of unique values
-      paste0("The selected dependent variable is character. Number of unique values: ", length(unique(data()[, input$dependent_var])))
-    } else {
-      "The selected dependent variable is not numeric or character."
-    }
+  # Additional text for independent variable
+  output$independent_var_text <- renderText({
+    req(input$independent_var)
+    determine_independent_variable(data()[, input$independent_var])
   })
 
   # Histogram of the dependent variable
   output$dependent_var_histogram <- renderPlot({
     req(data(), input$dependent_var)
-
-    # Check if the selected dependent variable is numeric/float
-    if (is.numeric(data()[, input$dependent_var])) {
-      # Create the histogram plot
-      hist(data()[, input$dependent_var], main = "Histogram", xlab = "Values")
-    }
+    create_dependent_variable_histogram(data()[, input$dependent_var])
   })
 
   # Perform statistical test when dependent and independent variables are selected
   observeEvent(input$dependent_var, {
     req(input$dependent_var, input$independent_var)
-
-    # Perform the statistical test using the selected variables
-    # ...
+    perform_statistical_test(data(), input$dependent_var, input$independent_var)
   })
+
+  # Determine the type of dependent variable
+  determine_dependent_variable <- function(dependent_var) {
+    # Check if the selected dependent variable is numeric/float
+    if (is.numeric(dependent_var)) {
+      # Perform Shapiro-Wilk test on the dependent variable
+      shapiro_test <- shapiro.test(dependent_var)
+
+      # Check if the p-value is less than 0.05
+      if (shapiro_test$p.value < 0.05) {
+        "The selected dependent variable is not normally distributed."
+      } else {
+        "The selected dependent variable is normally distributed."
+      }
+    } else if (is.character(dependent_var)) {
+      # Check if the selected dependent variable has 2 unique values (binary) or more than 2 (nominal/ordinal)
+      unique_values <- length(unique(dependent_var))
+      if (unique_values == 2) {
+        "The selected dependent variable is binary."
+      } else if (unique_values > 2) {
+        "The selected dependent variable is nominal/ordinal."
+      } else {
+        "The selected dependent variable has invalid data."
+      }
+    } else {
+      "The selected dependent variable is not numeric or character."
+    }
+  }
+
+  # Determine the type of independent variable
+  determine_independent_variable <- function(independent_var) {
+    # Check if the selected independent variable is numeric/float
+    if (is.numeric(independent_var)) {
+      "The selected independent variable is numeric."
+    } else if (is.character(independent_var)) {
+      # Check if the selected independent variable has 2 unique values or more than 2
+      unique_values <- length(unique(independent_var))
+      if (unique_values == 2) {
+        "The selected independent variable has 2 unique values."
+      } else if (unique_values > 2) {
+        "The selected independent variable has more than 2 unique values."
+      } else {
+        "The selected independent variable has invalid data."
+      }
+    } else {
+      "The selected independent variable is not numeric or character."
+    }
+  }
+
+  # Create the histogram plot for the dependent variable
+  create_dependent_variable_histogram <- function(dependent_var) {
+    if (is.numeric(dependent_var)) {
+      hist(dependent_var, main = "Histogram of Dependent Variable", xlab = "Values")
+    }
+  }
+
+  # Perform the statistical test using the selected variables
+  perform_statistical_test <- function(data, dependent_var, independent_var) {
+    # ...
+  }
 }
