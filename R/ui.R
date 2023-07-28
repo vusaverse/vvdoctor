@@ -29,7 +29,10 @@ app_ui <- function() {
 
         # Text below the dropdowns
         shiny::textOutput("dependent_var_text"),
-        shiny::textOutput("independent_var_text")  # New output element for the independent variable text
+        shiny::textOutput("independent_var_text"),  # New output element for the independent variable text
+
+        # New dropdown for selecting statistical test
+        shiny::uiOutput("statistical_test_dropdown")
       ),
 
       # Show the datatable and histogram after submitting a file

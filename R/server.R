@@ -36,6 +36,14 @@ app_server <- function(input, output, session) {
     determine_independent_variable(data()[, input$independent_var])
   })
 
+  # New dropdown for selecting statistical test
+  output$statistical_test_dropdown <- renderUI({
+    req(input$dependent_var, input$independent_var)
+    test <- choose_statistical_test(data()[, input$dependent_var], data()[, input$independent_var], paired = input$paired_unpaired == "Paired")
+    test_options <- c("None", test)
+    shiny::selectInput("statistical_test", "Choose statistical test", choices = test_options)
+  })
+
   # Histogram of the dependent variable
   output$dependent_var_histogram <- renderPlot({
     req(data(), input$dependent_var)

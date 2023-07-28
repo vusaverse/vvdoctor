@@ -3,6 +3,7 @@
 export("%>%")
 export(app_server)
 export(app_ui)
+export(choose_statistical_test)
 export(display_data_table)
 export(get_variable_class_info)
 export(handle_file_upload)
