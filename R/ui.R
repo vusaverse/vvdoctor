@@ -32,7 +32,10 @@ app_ui <- function() {
         shiny::textOutput("independent_var_text"),  # New output element for the independent variable text
 
         # New dropdown for selecting statistical test
-        shiny::uiOutput("statistical_test_dropdown")
+        shiny::uiOutput("statistical_test_dropdown"),
+
+        # Area to display the test report
+        shiny::verbatimTextOutput("test_report")
       ),
 
       # Show the datatable and histogram after submitting a file

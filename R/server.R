@@ -112,6 +112,24 @@ app_server <- function(input, output, session) {
   }
 
   # Perform the statistical test using the selected variables
+  # Inside the app_server function
+  observeEvent(input$statistical_test_dropdown, {
+    print(input$statistical_test_dropdown)
+    req(input$dependent_var, input$independent_var, data())
+
+    if (input$statistical_test_dropdown == "Friedman's ANOVA II") {
+      # Perform the Friedman's ANOVA II test
+      result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
+
+      print(result)
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
+    }
+
+
+  })
   perform_statistical_test <- function(data, dependent_var, independent_var) {
     # ...
   }
