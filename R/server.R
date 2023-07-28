@@ -23,7 +23,7 @@ app_server <- function(input, output, session) {
   # Dropdown for choosing the independent variable
   output$independent_var_dropdown <- renderUI({
     req(data())
-    shiny::selectInput("independent_var", "Choose independent variable", choices = c("None", colnames(data())))
+    shiny::selectInput("independent_var", "Choose independent variable", choices = c(NA, colnames(data())), selectize = FALSE)
   })
 
   # Text below the dropdowns
@@ -37,6 +37,31 @@ app_server <- function(input, output, session) {
     req(input$independent_var)
     determine_independent_variable(data()[, input$independent_var])
   })
+
+
+  # Observe the 'mean' input field for changes; overwrite independent
+  observeEvent(input$input_mean, {
+    if (!is.null(input$input_mean) && input$input_mean != "") {
+      # If 'mean' input field is filled, update the independent variable value
+      updateSelectInput(session, "independent_var", selected = input$input_mean)
+    }
+  })
+
+  ## FAILED TEST: Hide when independent variable is chosen
+  # observe({
+  #   req(input$independent_var)
+  #   print(input$independent_var)
+  #   if (is.na(input$independent_var)) {
+  #     output$input_mean <- renderUI({
+  #       shiny::textInput("input_mean", "Input mean:", value = "")
+  #     })
+  #   } else {
+  #     output$input_mean <- renderUI({
+  #       shiny::tags$div()
+  #     })
+  #   }
+  # })
+
 
   # New dropdown for selecting statistical test
   output$statistical_test_dropdown <- renderUI({
@@ -52,11 +77,6 @@ app_server <- function(input, output, session) {
     create_dependent_variable_histogram(data()[, input$dependent_var])
   })
 
-  # # Perform statistical test when dependent and independent variables are selected
-  # observeEvent(input$dependent_var, {
-  #   req(input$dependent_var, input$independent_var)
-  #   perform_statistical_test(data(), input$dependent_var, input$independent_var)
-  # })
 
   # Determine the type of dependent variable
   determine_dependent_variable <- function(dependent_var) {
@@ -116,14 +136,12 @@ app_server <- function(input, output, session) {
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   observeEvent(input$statistical_test, {
-    print(input$statistical_test)
     req(input$dependent_var, input$independent_var, data())
 
     if (input$statistical_test == "Tekentoets I") {
       # Perform the Tekentoets I test
-      library(DescTools)
 
-      result <- SignTest(x = input$dependent_var, mu = input$independent_var, alternative = "two.sided")
+      result <- DescTools::SignTest(x = input$dependent_var, mu = input$independent_var, alternative = "two.sided")
 
       # Display the test report
       output$test_report <- renderPrint({
@@ -172,8 +190,7 @@ app_server <- function(input, output, session) {
     } else if (input$statistical_test == "Repeated measures ANOVA") {
       # Perform the Repeated measures ANOVA
       ## hardcoded
-      library(ez)
-      ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
+      ez::ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
               within = input$independent_var)
       # ...
     } else if (input$statistical_test == "One-way ANOVA") {
