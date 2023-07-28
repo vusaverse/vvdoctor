@@ -1,6 +1,8 @@
-# Helper function to display the data table
-#' Title
+#' Display Data Table
 #'
+#' Helper function to display a data table in a Shiny app.
+#'
+#' @param data The data frame to display.
 #'
 #' @export
 #'
@@ -8,9 +10,15 @@ display_data_table <- function(data) {
   DT::datatable(data)
 }
 
-# Helper function for handling file upload and updating dropdowns
-#' Title
+#' Handle File Upload and Update Dropdowns
 #'
+#' Helper function for handling file upload and updating dropdowns in a Shiny app.
+#'
+#' @param input The input object from the Shiny app.
+#' @param output The output object from the Shiny app.
+#' @param session The session object from the Shiny app.
+#'
+#' @return A reactive value containing the uploaded data.
 #'
 #' @export
 #'

@@ -1,6 +1,15 @@
-#' Title
+#' Choose Statistical Test
+#'
+#' Determines the appropriate statistical test based on the characteristics of the dependent and independent variables.
+#'
+#' @param dependent_var The dependent variable.
+#' @param independent_var The independent variable.
+#' @param paired Logical indicating whether the independent variable is paired or unpaired. Default is NULL.
+#'
+#' @return The name of the chosen statistical test.
 #'
 #' @export
+#'
 choose_statistical_test <- function(dependent_var, independent_var, paired = NULL) {
   # Determine the characteristics of the dependent variable
   if (is.numeric(dependent_var)) {
@@ -46,9 +55,9 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = NUL
     if (dependent_var_characteristics == "not normally distributed") {
       if (independent_var_characteristics == "1 group") {
         return("Tekentoets I")
-      } else if (independent_var_characteristics == "2 groups & paired" || independent_var_characteristics == "2+ groups & paired") {
+      } else if (independent_var_characteristics == "2 groups & paired" || independent_var_characteristics == "2 groups & unpaired") {
         return("Wilcoxon signed rank toets I / Tekentoets II")
-      } else if (independent_var_characteristics == "2 groups & unpaired" || independent_var_characteristics == "2+ groups & unpaired") {
+      } else if (independent_var_characteristics == "2+ groups & paired" || independent_var_characteristics == "2+ groups & unpaired") {
         return("Mann-Whitney U toets I / Mood's mediaan toets")
       }
     } else if (dependent_var_characteristics == "normally distributed") {

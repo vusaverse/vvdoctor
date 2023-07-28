@@ -2,10 +2,20 @@
 % Please edit documentation in R/statchooser.R
 \name{choose_statistical_test}
 \alias{choose_statistical_test}
-\title{Title}
+\title{Choose Statistical Test}
 \usage{
 choose_statistical_test(dependent_var, independent_var, paired = NULL)
 }
+\arguments{
+\item{dependent_var}{The dependent variable.}
+
+\item{independent_var}{The independent variable.}
+
+\item{paired}{Logical indicating whether the independent variable is paired or unpaired. Default is NULL.}
+}
+\value{
+The name of the chosen statistical test.
+}
 \description{
-Title
+Determines the appropriate statistical test based on the characteristics of the dependent and independent variables.
 }

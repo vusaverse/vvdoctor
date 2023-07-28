@@ -1,8 +1,10 @@
-
-#' Title
+#' App Server
+#'
+#' @param input The input object from the Shiny app.
+#' @param output The output object from the Shiny app.
+#' @param session The session object from the Shiny app.
 #'
 #' @export
-#'
 app_server <- function(input, output, session) {
   data <- handle_file_upload(input, output, session)
 
@@ -50,11 +52,11 @@ app_server <- function(input, output, session) {
     create_dependent_variable_histogram(data()[, input$dependent_var])
   })
 
-  # Perform statistical test when dependent and independent variables are selected
-  observeEvent(input$dependent_var, {
-    req(input$dependent_var, input$independent_var)
-    perform_statistical_test(data(), input$dependent_var, input$independent_var)
-  })
+  # # Perform statistical test when dependent and independent variables are selected
+  # observeEvent(input$dependent_var, {
+  #   req(input$dependent_var, input$independent_var)
+  #   perform_statistical_test(data(), input$dependent_var, input$independent_var)
+  # })
 
   # Determine the type of dependent variable
   determine_dependent_variable <- function(dependent_var) {
@@ -113,11 +115,11 @@ app_server <- function(input, output, session) {
 
   # Perform the statistical test using the selected variables
   # Inside the app_server function
-  observeEvent(input$statistical_test_dropdown, {
-    print(input$statistical_test_dropdown)
+  observeEvent(input$statistical_test, {
+    print(input$statistical_test)
     req(input$dependent_var, input$independent_var, data())
 
-    if (input$statistical_test_dropdown == "Friedman's ANOVA II") {
+    if (input$statistical_test == "Friedman's ANOVA II") {
       # Perform the Friedman's ANOVA II test
       result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
 
@@ -126,11 +128,46 @@ app_server <- function(input, output, session) {
       output$test_report <- renderPrint({
         result
       })
+    } else if (input$statistical_test == "Paired t-test") {
+      result <- t.test(input$dependent_var ~ input$independent_var, data(),
+                       paired = TRUE,
+                       alternative = "two.sided")
+
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
+    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
+      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
+                  paired = TRUE,
+                  alternative = "two.sided")
+
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
+    } else if (input$statistical_test == "One-way ANOVA") {
+      res.aov <- aov(input$dependent_var ~ input$independent_var, data())
+      result <- summary(res.aov)
+
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
+    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
+
+      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
+                            paired = TRUE,
+                            alternative = "two.sided")
+
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
     }
 
 
+
   })
-  perform_statistical_test <- function(data, dependent_var, independent_var) {
-    # ...
-  }
+
 }

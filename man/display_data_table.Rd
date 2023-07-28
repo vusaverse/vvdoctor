@@ -2,10 +2,13 @@
 % Please edit documentation in R/helperfunctions.R
 \name{display_data_table}
 \alias{display_data_table}
-\title{Title}
+\title{Display Data Table}
 \usage{
 display_data_table(data)
 }
+\arguments{
+\item{data}{The data frame to display.}
+}
 \description{
-Title
+Helper function to display a data table in a Shiny app.
 }

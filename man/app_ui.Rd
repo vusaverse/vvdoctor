@@ -2,10 +2,10 @@
 % Please edit documentation in R/ui.R
 \name{app_ui}
 \alias{app_ui}
-\title{Title}
+\title{App UI}
 \usage{
 app_ui()
 }
 \description{
-Title
+App UI
 }

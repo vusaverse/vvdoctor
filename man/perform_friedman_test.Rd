@@ -2,10 +2,20 @@
 % Please edit documentation in R/perform_friedman_test.R
 \name{perform_friedman_test}
 \alias{perform_friedman_test}
-\title{Title}
+\title{Perform Friedman's ANOVA II Test}
 \usage{
 perform_friedman_test(dependent_var, independent_var, data)
 }
+\arguments{
+\item{dependent_var}{The name of the dependent variable.}
+
+\item{independent_var}{The name of the independent variable.}
+
+\item{data}{The data frame containing the variables.}
+}
+\value{
+The result of the Friedman's ANOVA II test.
+}
 \description{
-Title
+Performs the Friedman's ANOVA II test to compare multiple related groups.
 }

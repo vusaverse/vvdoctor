@@ -2,10 +2,17 @@
 % Please edit documentation in R/server.R
 \name{app_server}
 \alias{app_server}
-\title{Title}
+\title{App Server}
 \usage{
 app_server(input, output, session)
 }
+\arguments{
+\item{input}{The input object from the Shiny app.}
+
+\item{output}{The output object from the Shiny app.}
+
+\item{session}{The session object from the Shiny app.}
+}
 \description{
-Title
+App Server
 }
