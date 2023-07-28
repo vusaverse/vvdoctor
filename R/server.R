@@ -119,16 +119,35 @@ app_server <- function(input, output, session) {
     print(input$statistical_test)
     req(input$dependent_var, input$independent_var, data())
 
-    if (input$statistical_test == "Friedman's ANOVA II") {
-      # Perform the Friedman's ANOVA II test
-      result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
+    if (input$statistical_test == "Tekentoets I") {
+      # Perform the Tekentoets I test
+      library(DescTools)
 
-      print(result)
+      result <- SignTest(x = input$dependent_var, mu = input$independent_var, alternative = "two.sided")
+
       # Display the test report
       output$test_report <- renderPrint({
         result
       })
+      # ...
+    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
+      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
+                  paired = TRUE,
+                  alternative = "two.sided")
+      # Perform the Wilcoxon signed rank toets I / Tekentoets II test
+      # ...
+      # Display the test report
+      output$test_report <- renderPrint({
+        result
+      })
+    } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets") {
+      # Perform the Mann-Whitney U toets I / Mood's mediaan toets
+      # ...
+    } else if (input$statistical_test == "One sample t-test") {
+      # Perform the One sample t-test
+      # ...
     } else if (input$statistical_test == "Paired t-test") {
+      # Perform the Paired t-test
       result <- t.test(input$dependent_var ~ input$independent_var, data(),
                        paired = TRUE,
                        alternative = "two.sided")
@@ -137,34 +156,86 @@ app_server <- function(input, output, session) {
       output$test_report <- renderPrint({
         result
       })
-    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
-      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
-                  paired = TRUE,
-                  alternative = "two.sided")
+    } else if (input$statistical_test == "Independent samples t-test") {
+      # Perform the Independent samples t-test
+      # Perform the Paired t-test
+      result <- t.test(input$dependent_var ~ input$independent_var, data(),
+                       paired = FALSE,
+                       alternative = "two.sided",
+                       var.equal = FALSE)
 
       # Display the test report
       output$test_report <- renderPrint({
         result
       })
+      # ...
+    } else if (input$statistical_test == "Repeated measures ANOVA") {
+      # Perform the Repeated measures ANOVA
+      ## hardcoded
+      library(ez)
+      ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
+              within = input$independent_var)
+      # ...
     } else if (input$statistical_test == "One-way ANOVA") {
-      res.aov <- aov(input$dependent_var ~ input$independent_var, data())
+      res.aov <- aov(input$dependent_var ~ input$independent_var, data = input$data)
       result <- summary(res.aov)
-
+      # Perform the One-way ANOVA
+      # ...
       # Display the test report
       output$test_report <- renderPrint({
         result
       })
-    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
+    } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
+      # Perform the Chi-kwadraat toets voor goodness of fit en binomiaaltoets
+      # ...
+    } else if (input$statistical_test == "McNemar toets") {
+      # Perform the McNemar toets
+      # ...
+    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets") {
+      # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
+      # ...
+    } else if (input$statistical_test == "Cochran's Q toets") {
+      # Perform the Cochran's Q toets
+      ## hardcoded
+      result <- CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
+                   data = data())
+      # ...
+      output$test_report <- renderPrint({
+        result
+      })
 
-      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
-                            paired = TRUE,
-                            alternative = "two.sided")
+    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I") {
+      # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I
+      # ...
+    } else if (input$statistical_test == "Chi-square goodness-of-fit test en multinomiaaltoets") {
+      # Perform the Chi-square goodness-of-fit test en multinomiaaltoets
+      # ...
+    } else if (input$statistical_test == "Bhapkar toets") {
+      # Perform the Bhapkar toets
+      # ...
+    } else if (input$statistical_test == "Wilcoxon signed rank toets II") {
+      # Perform the Wilcoxon signed rank toets II
+      # ...
+    } else if (input$statistical_test == "Mann-Whitney U toets II") {
+      # Perform the Mann-Whitney U toets II
+      # ...
+    } else if (input$statistical_test == "Multilevel multinomiale logistische regressie") {
+      # Perform the Multilevel multinomiale logistische regressie
+      # ...
+    } else if (input$statistical_test == "Friedman's ANOVA II") {
+      # Perform the Friedman's ANOVA II test
+      result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
 
+      print(result)
       # Display the test report
       output$test_report <- renderPrint({
         result
       })
+    } else if (input$statistical_test == "Kruskal Wallis toets II") {
+      # Perform the Kruskal Wallis toets II
+      # ...
     }
+
 
 
 

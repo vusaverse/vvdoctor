@@ -98,21 +98,6 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = NUL
       }
     }
 
-    # # Additional options for nominal variables
-    # if (dependent_var_characteristics == "nominal") {
-    #   if (independent_var_characteristics == "1 group") {
-    #     return("Chi-kwadraat toets voor goodness of fit en multinomiaaltoets")
-    #   } else if (independent_var_characteristics == "2 groups & paired") {
-    #     return("Wilcoxon signed rank toets II")
-    #   } else if (independent_var_characteristics == "2 groups & unpaired") {
-    #     return("Mann-Whitney U toets II")
-    #   } else if (independent_var_characteristics == "2+ groups & paired") {
-    #     return("Friedman's ANOVA II")
-    #   } else if (independent_var_characteristics == "2+ groups & unpaired") {
-    #     return("Kruskal Wallis toets II")
-    #   }
-    # }
-
     # No appropriate statistical test found
     return("No appropriate statistical test found for the given combination of dependent and independent variables.")
 }
