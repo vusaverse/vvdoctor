@@ -55,10 +55,14 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = NUL
     if (dependent_var_characteristics == "not normally distributed") {
       if (independent_var_characteristics == "1 group") {
         return("Tekentoets I")
-      } else if (independent_var_characteristics == "2 groups & paired" || independent_var_characteristics == "2 groups & unpaired") {
+      } else if (independent_var_characteristics == "2 groups & paired") {
         return("Wilcoxon signed rank toets I / Tekentoets II")
-      } else if (independent_var_characteristics == "2+ groups & paired" || independent_var_characteristics == "2+ groups & unpaired") {
+      } else if (independent_var_characteristics == "2+ groups & paired") {
+        return("Friedman's ANOVA I")
+      } else if (independent_var_characteristics == "2 groups & unpaired") {
         return("Mann-Whitney U toets I / Mood's mediaan toets")
+      } else if (independent_var_characteristics == "2+ groups & unpaired") {
+        return("Kruskal Wallis toets I")
       }
     } else if (dependent_var_characteristics == "normally distributed") {
       if (independent_var_characteristics == "1 group") {
