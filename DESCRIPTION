@@ -20,4 +20,5 @@ Imports:
     ez,
     magrittr,
     shiny,
-    shinyjs
+    shinyjs,
+    shinyWidgets
