@@ -10,7 +10,7 @@
 #'
 #' @export
 #'
-choose_statistical_test <- function(dependent_var, independent_var, paired = NULL) {
+choose_statistical_test <- function(dependent_var, independent_var, paired = FALSE) {
   # Determine the characteristics of the dependent variable
   if (is.numeric(dependent_var)) {
     shapiro_test <- shapiro.test(dependent_var)
