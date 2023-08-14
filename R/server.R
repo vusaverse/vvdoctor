@@ -10,46 +10,76 @@ app_server <- function(input, output, session) {
 
   # Display the uploaded data as a datatable
   output$dataTable <- DT::renderDataTable({
-    req(data())
+    shiny::req(data())
     DT::datatable(data())
   })
 
   # Dropdown for choosing the dependent variable
   output$dependent_var_dropdown <- renderUI({
-    req(data())
-    shiny::selectInput("dependent_var", "Choose dependent variable", choices = colnames(data()))
+    shiny::req(data())
+    shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(data()))
   })
 
   # Dropdown for choosing the independent variable
   output$independent_var_dropdown <- renderUI({
-    req(data())
-    shiny::selectInput("independent_var", "Choose independent variable", choices = c(NA, colnames(data())), selectize = FALSE)
+    shiny::req(data())
+    choices <- c("reference value", colnames(data()))
+    shinyWidgets::pickerInput(
+      "independent_var",
+      "Choose independent variable or reference value",
+      choices = choices
+    )
+  })
+
+  output$input_mean <- renderUI({
+    shiny::req(data())
+    shiny::req(input$independent_var)
+
+    ## Only show input field if reference value is selected
+    if (input$independent_var == "reference value") {
+      shiny::numericInput("input_mean", "Set reference value", value = mean(data()[, input$dependent_var], na.rm = TRUE))
+    }
   })
 
   # Text below the dropdowns
   output$dependent_var_text <- renderText({
-    req(input$dependent_var)
+    shiny::req(input$dependent_var)
     determine_dependent_variable(data()[, input$dependent_var])
+
   })
 
   # Additional text for independent variable
   output$independent_var_text <- renderText({
-    req(input$independent_var)
-    determine_independent_variable(data()[, input$independent_var])
+    shiny::req(input$independent_var)
+
+    if (input$independent_var %in% colnames(data())) {
+      determine_independent_variable(data()[, input$independent_var])
+    }
   })
 
 
   # Observe the 'mean' input field for changes; overwrite independent
-  observeEvent(input$input_mean, {
-    if (!is.null(input$input_mean) && input$input_mean != "") {
-      # If 'mean' input field is filled, update the independent variable value
-      updateSelectInput(session, "independent_var", selected = input$input_mean)
-    }
-  })
+  # observeEvent(input$input_mean, {
+  #   if (!is.null(input$input_mean) && input$input_mean != "") {
+  #     browser()
+  #     # If 'mean' input field is filled, update the independent variable value
+  #     updateSelectInput(session, "independent_var", selected = "input_mean")
+  #   }
+  # })
+  #
+  #
+  # # Observe the 'mean' input field for changes; overwrite independent
+  # observeEvent(input$input_mean, {
+  #   if (!is.null(input$input_mean) && input$input_mean != "") {
+  #     browser()
+  #     # If 'mean' input field is filled, update the independent variable value
+  #     updateSelectInput(session, "independent_var", selected = "input_mean")
+  #   }
+  # })
 
   ## FAILED TEST: Hide when independent variable is chosen
   # observe({
-  #   req(input$independent_var)
+  #   shiny::req(input$independent_var)
   #   print(input$independent_var)
   #   if (is.na(input$independent_var)) {
   #     output$input_mean <- renderUI({
@@ -65,21 +95,29 @@ app_server <- function(input, output, session) {
 
   # New dropdown for selecting statistical test
   output$statistical_test_dropdown <- renderUI({
-    req(input$dependent_var, input$independent_var)
-    test <- choose_statistical_test(data()[, input$dependent_var], data()[, input$independent_var], paired = input$paired_unpaired == "Paired")
-    test_options <- c("None", test)
-    shiny::selectInput("statistical_test", "Choose statistical test", choices = test_options)
+
+    shiny::req(input$dependent_var, input$independent_var)
+
+    if (input$independent_var == "reference value") {
+      independent_var <- "reference value"
+    } else {
+      independent_var <- data()[, input$independent_var]
+    }
+    test <- choose_statistical_test(data()[, input$dependent_var], independent_var, paired = input$paired_unpaired == "Paired")
+    test_options <- c(test)
+    shinyWidgets::pickerInput("statistical_test", "Choose statistical test", choices = test_options)
   })
 
   # Histogram of the dependent variable
   output$dependent_var_histogram <- renderPlot({
-    req(data(), input$dependent_var)
+    shiny::req(data(), input$dependent_var)
     create_dependent_variable_histogram(data()[, input$dependent_var])
   })
 
 
   # Determine the type of dependent variable
   determine_dependent_variable <- function(dependent_var) {
+
     # Check if the selected dependent variable is numeric/float
     if (is.numeric(dependent_var)) {
       # Perform Shapiro-Wilk test on the dependent variable
@@ -136,12 +174,16 @@ app_server <- function(input, output, session) {
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   observeEvent(input$statistical_test, {
-    req(input$dependent_var, input$independent_var, data())
+    shiny::req(input$dependent_var, input$independent_var, data())
+
+    if (input$independent_var == "reference value") {
+      mu <- input$input_mean
+    }
 
     if (input$statistical_test == "Tekentoets I") {
       # Perform the Tekentoets I test
 
-      result <- DescTools::SignTest(x = input$dependent_var, mu = input$independent_var, alternative = "two.sided")
+      result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
 
       # Display the test report
       output$test_report <- renderPrint({
