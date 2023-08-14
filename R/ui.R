@@ -18,18 +18,19 @@ app_ui <- function() {
         # Dropdown for choosing the dependent variable
         shiny::uiOutput("dependent_var_dropdown"),
 
+        # Text below the dropdowns
+        shiny::textOutput("dependent_var_text"),
+
         # Radio button for choosing paired or unpaired
         shiny::radioButtons("paired_unpaired", "Choose paired or unpaired:", choices = c("Paired", "Unpaired")),
 
         # Dropdown for choosing the independent variable
         shiny::uiOutput("independent_var_dropdown"),
 
-        # Input field for mean (hidden initially)
-        shiny::textInput("input_mean", "Input mean:", value = ""),
-
-        # Text below the dropdowns
-        shiny::textOutput("dependent_var_text"),
         shiny::textOutput("independent_var_text"),  # New output element for the independent variable text
+
+        # Input field for mean (hidden initially)
+        shiny::uiOutput("input_mean"),
 
         # New dropdown for selecting statistical test
         shiny::uiOutput("statistical_test_dropdown"),
