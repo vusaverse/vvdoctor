@@ -274,8 +274,23 @@ app_server <- function(input, output, session) {
         result
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
+      ## Retrieve the data from input
+      data <- data()
+
+      ## Retrieve the input value for dependent_var
+      dependent_var <- input$dependent_var
+
+      ## Create a table with the counts of students with and without hbo vooropleiding
+      table_var <- table(data[[dependent_var]])
+
+      ## Calculate the expected frequencies
+      ## hardcoded mu is mean(data()), but not for this case
+      result <- stats::chisq.test(table_var, p = c(0.1113, 1 - 0.1113))
+      #
       # Perform the Chi-kwadraat toets voor goodness of fit en binomiaaltoets
-      # ...
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     } else if (input$statistical_test == "McNemar toets") {
       # Perform the McNemar toets
       ## Retrieve the data from input
