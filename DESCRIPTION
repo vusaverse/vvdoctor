@@ -17,7 +17,9 @@ RoxygenNote: 7.2.3
 Imports: 
     DescTools,
     DT,
+    exact2x2,
     ez,
+    irr,
     magrittr,
     shiny,
     shinyjs,

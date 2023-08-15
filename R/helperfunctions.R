@@ -27,7 +27,7 @@ handle_file_upload <- function(input, output, session) {
   data <- shiny::reactiveVal(NULL)
 
   # Observer for handling file upload
-  observeEvent(input$file, {
+  shiny::observeEvent(input$file, {
     shiny::req(input$file)
 
     # Get the full path of the uploaded file

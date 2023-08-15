@@ -4,14 +4,14 @@
 \alias{choose_statistical_test}
 \title{Choose Statistical Test}
 \usage{
-choose_statistical_test(dependent_var, independent_var, paired = NULL)
+choose_statistical_test(dependent_var, independent_var, paired = FALSE)
 }
 \arguments{
 \item{dependent_var}{The dependent variable.}
 
 \item{independent_var}{The independent variable.}
 
-\item{paired}{Logical indicating whether the independent variable is paired or unpaired. Default is NULL.}
+\item{paired}{Logical indicating whether the independent variable is paired or unpaired. Default is FALSE.}
 }
 \value{
 The name of the chosen statistical test.

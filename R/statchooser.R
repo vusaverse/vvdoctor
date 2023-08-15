@@ -4,7 +4,7 @@
 #'
 #' @param dependent_var The dependent variable.
 #' @param independent_var The independent variable.
-#' @param paired Logical indicating whether the independent variable is paired or unpaired. Default is NULL.
+#' @param paired Logical indicating whether the independent variable is paired or unpaired. Default is FALSE.
 #'
 #' @return The name of the chosen statistical test.
 #'
@@ -13,7 +13,7 @@
 choose_statistical_test <- function(dependent_var, independent_var, paired = FALSE) {
   # Determine the characteristics of the dependent variable
   if (is.numeric(dependent_var)) {
-    shapiro_test <- shapiro.test(dependent_var)
+    shapiro_test <- stats::shapiro.test(dependent_var)
     if (shapiro_test$p.value < 0.05) {
       dependent_var_characteristics <- "not normally distributed"
     } else {

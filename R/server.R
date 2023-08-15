@@ -15,13 +15,13 @@ app_server <- function(input, output, session) {
   })
 
   # Dropdown for choosing the dependent variable
-  output$dependent_var_dropdown <- renderUI({
+  output$dependent_var_dropdown <- shiny::renderUI({
     shiny::req(data())
     shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(data()))
   })
 
   # Dropdown for choosing the independent variable
-  output$independent_var_dropdown <- renderUI({
+  output$independent_var_dropdown <- shiny::renderUI({
     shiny::req(data())
     choices <- c("reference value", colnames(data()))
     shinyWidgets::pickerInput(
@@ -31,7 +31,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$input_mean <- renderUI({
+  output$input_mean <- shiny::renderUI({
     shiny::req(data())
     shiny::req(input$independent_var)
 
@@ -42,14 +42,14 @@ app_server <- function(input, output, session) {
   })
 
   # Text below the dropdowns
-  output$dependent_var_text <- renderText({
+  output$dependent_var_text <- shiny::renderText({
     shiny::req(input$dependent_var)
     determine_dependent_variable(data()[, input$dependent_var])
 
   })
 
   # Additional text for independent variable
-  output$independent_var_text <- renderText({
+  output$independent_var_text <- shiny::renderText({
     shiny::req(input$independent_var)
 
     if (input$independent_var %in% colnames(data())) {
@@ -94,7 +94,7 @@ app_server <- function(input, output, session) {
 
 
   # New dropdown for selecting statistical test
-  output$statistical_test_dropdown <- renderUI({
+  output$statistical_test_dropdown <- shiny::renderUI({
 
     shiny::req(input$dependent_var, input$independent_var)
 
@@ -109,7 +109,7 @@ app_server <- function(input, output, session) {
   })
 
   # Histogram of the dependent variable
-  output$dependent_var_histogram <- renderPlot({
+  output$dependent_var_histogram <- shiny::renderPlot({
     shiny::req(data(), input$dependent_var)
     create_dependent_variable_histogram(data()[, input$dependent_var])
   })
@@ -121,7 +121,7 @@ app_server <- function(input, output, session) {
     # Check if the selected dependent variable is numeric/float
     if (is.numeric(dependent_var)) {
       # Perform Shapiro-Wilk test on the dependent variable
-      shapiro_test <- shapiro.test(dependent_var)
+      shapiro_test <- stats::shapiro.test(dependent_var)
 
       # Check if the p-value is less than 0.05
       if (shapiro_test$p.value < 0.05) {
@@ -167,13 +167,13 @@ app_server <- function(input, output, session) {
   # Create the histogram plot for the dependent variable
   create_dependent_variable_histogram <- function(dependent_var) {
     if (is.numeric(dependent_var)) {
-      hist(dependent_var, main = "Histogram of Dependent Variable", xlab = "Values")
+      graphics::hist(dependent_var, main = "Histogram of Dependent Variable", xlab = "Values")
     }
   }
 
   # Perform the statistical test using the selected variables
   # Inside the app_server function
-  observeEvent(input$statistical_test, {
+  shiny::observeEvent(input$statistical_test, {
     shiny::req(input$dependent_var, input$independent_var, data())
 
     if (input$independent_var == "reference value") {
@@ -186,18 +186,17 @@ app_server <- function(input, output, session) {
       result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
 
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
-      # ...
     } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
-      result <- wilcox.test(input$dependent_var ~ input$independent_var, data(),
+      # Perform the Wilcoxon signed rank toets I / Tekentoets II test
+      result <- stats::wilcox.test(input$dependent_var ~ input$independent_var, data(),
                   paired = TRUE,
                   alternative = "two.sided")
-      # Perform the Wilcoxon signed rank toets I / Tekentoets II test
-      # ...
+
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
     } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets") {
@@ -205,43 +204,50 @@ app_server <- function(input, output, session) {
       # ...
     } else if (input$statistical_test == "One sample t-test") {
       # Perform the One sample t-test
-      # ...
+      result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
+
+      # Display the test report
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     } else if (input$statistical_test == "Paired t-test") {
       # Perform the Paired t-test
-      result <- t.test(input$dependent_var ~ input$independent_var, data(),
+      result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
                        paired = TRUE,
                        alternative = "two.sided")
 
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
     } else if (input$statistical_test == "Independent samples t-test") {
       # Perform the Independent samples t-test
       # Perform the Paired t-test
-      result <- t.test(input$dependent_var ~ input$independent_var, data(),
+      result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
                        paired = FALSE,
                        alternative = "two.sided",
                        var.equal = FALSE)
 
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
-      # ...
     } else if (input$statistical_test == "Repeated measures ANOVA") {
       # Perform the Repeated measures ANOVA
-      ## hardcoded
-      ez::ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
+      ## hardcoded wid
+      result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
               within = input$independent_var)
       # ...
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     } else if (input$statistical_test == "One-way ANOVA") {
-      res.aov <- aov(input$dependent_var ~ input$independent_var, data = input$data)
+      res.aov <- stats::aov(input$dependent_var ~ input$independent_var, data = input$data)
       result <- summary(res.aov)
       # Perform the One-way ANOVA
       # ...
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
@@ -249,19 +255,45 @@ app_server <- function(input, output, session) {
       # ...
     } else if (input$statistical_test == "McNemar toets") {
       # Perform the McNemar toets
-      # ...
+      ## Retrieve the data from input
+      data <- data()
+
+      ## Retrieve the input values for dependent_var and independent_var
+      dependent_var <- input$dependent_var
+      independent_var <- input$independent_var
+
+      ## Get the unique values of independent_var
+      unique_values <- unique(data[[independent_var]])
+
+      ## Create objects for the first and second groups
+      group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+      group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+
+      ## Create a frequency matrix
+      group_matrix <- table(group1, group2)
+
+      # Perform McNemar's test
+      result <- exact2x2::exact2x2(group_matrix,
+                         paired = TRUE,
+                         midp = TRUE)
+
+      # Voer McNemar toets uit
+
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets") {
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
       # ...
     } else if (input$statistical_test == "Cochran's Q toets") {
       # Perform the Cochran's Q toets
-      ## hardcoded
-      result <- CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
-                   data = data())
-      # ...
-      output$test_report <- renderPrint({
-        result
-      })
+      # ## hardcoded
+      # result <- car::CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
+      #              data = data())
+      # # ...
+      # output$test_report <- shiny::renderPrint({
+      #   result
+      # })
 
     } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I") {
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I
@@ -270,8 +302,28 @@ app_server <- function(input, output, session) {
       # Perform the Chi-square goodness-of-fit test en multinomiaaltoets
       # ...
     } else if (input$statistical_test == "Bhapkar toets") {
+      ## Retrieve the data from input
+      data <- data()
+
+      ## Retrieve the input values for dependent_var and independent_var
+      dependent_var <- input$dependent_var
+      independent_var <- input$independent_var
+
+      ## Get the unique values of independent_var
+      unique_values <- unique(data[[independent_var]])
+
+      ## Create objects for the first and second groups
+      group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+      group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+
+      ## Perform Bhapkar's test
+      result <- irr::bhapkar(cbind(group1, group2))
       # Perform the Bhapkar toets
-      # ...
+
+      output$test_report <- shiny::renderPrint({
+        result
+      })
+
     } else if (input$statistical_test == "Wilcoxon signed rank toets II") {
       # Perform the Wilcoxon signed rank toets II
       # ...
@@ -285,9 +337,8 @@ app_server <- function(input, output, session) {
       # Perform the Friedman's ANOVA II test
       result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
 
-      print(result)
       # Display the test report
-      output$test_report <- renderPrint({
+      output$test_report <- shiny::renderPrint({
         result
       })
     } else if (input$statistical_test == "Kruskal Wallis toets II") {
