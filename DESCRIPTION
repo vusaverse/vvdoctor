@@ -2,7 +2,20 @@ Package: vvdoctor
 Title: Statistical Test App with R Shiny
 Version: 0.0.0.9000
 Authors@R: 
-    person("Tomer", "Iwan", , "t.iwan@vu.nl", role = c("aut", "cre", "cph"))
+  c(person(given = "Tomer", 
+           family = "Iwan", 
+           role = c("aut", "cre"), 
+           email = "t.iwan@vu.nl"
+           ),
+    person(given = "Corneel",
+           family = "Den Hartogh",
+           role = "ctb",
+           email = "c.f.den.hartogh@vu.nl",
+           comment = c(ORCID = "0000-0001-8347-7944")
+           ),
+    person(given = "VU Analytics",
+           role = "cph"
+           ))
 Description: Provides a user-friendly R Shiny app for performing various statistical tests on datasets. 
   It allows users to upload data in CSV or Excel format and perform statistical analyses. 
   The app dynamically adapts its options based on the selected columns and supports both single and multiple column comparisons.
