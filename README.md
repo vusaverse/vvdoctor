@@ -1,4 +1,4 @@
-# vvdoctor
+# vvdoctor <a href='https://github.com/vusaverse/vvdoctor'><img src="man/figures/hex-vvdoctor.png" style="float:right; height:200px;" height="200" align="right"/></a>
 
 <!-- badges: start -->
 
