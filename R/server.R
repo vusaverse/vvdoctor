@@ -58,41 +58,6 @@ app_server <- function(input, output, session) {
   })
 
 
-  # Observe the 'mean' input field for changes; overwrite independent
-  # observeEvent(input$input_mean, {
-  #   if (!is.null(input$input_mean) && input$input_mean != "") {
-  #     browser()
-  #     # If 'mean' input field is filled, update the independent variable value
-  #     updateSelectInput(session, "independent_var", selected = "input_mean")
-  #   }
-  # })
-  #
-  #
-  # # Observe the 'mean' input field for changes; overwrite independent
-  # observeEvent(input$input_mean, {
-  #   if (!is.null(input$input_mean) && input$input_mean != "") {
-  #     browser()
-  #     # If 'mean' input field is filled, update the independent variable value
-  #     updateSelectInput(session, "independent_var", selected = "input_mean")
-  #   }
-  # })
-
-  ## FAILED TEST: Hide when independent variable is chosen
-  # observe({
-  #   shiny::req(input$independent_var)
-  #   print(input$independent_var)
-  #   if (is.na(input$independent_var)) {
-  #     output$input_mean <- renderUI({
-  #       shiny::textInput("input_mean", "Input mean:", value = "")
-  #     })
-  #   } else {
-  #     output$input_mean <- renderUI({
-  #       shiny::tags$div()
-  #     })
-  #   }
-  # })
-
-
   # New dropdown for selecting statistical test
   output$statistical_test_dropdown <- shiny::renderUI({
 
@@ -225,6 +190,16 @@ app_server <- function(input, output, session) {
       output$test_report <- shiny::renderPrint({
         result
       })
+    } else if (input$statistical_test == "Kruskal Wallis toets I") {
+      ## erronuous: Error in kruskal.test.default: all observations are in the same group
+      # print("here")
+      # result <- stats::kruskal.test(input$dependent_var ~ input$independent_var, data())
+      #
+      # output$test_report <- shiny::renderPrint({
+      #   result
+      # })
+
+
     } else if (input$statistical_test == "One sample t-test") {
       # Perform the One sample t-test
       result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
@@ -338,11 +313,14 @@ app_server <- function(input, output, session) {
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
       # ...
     } else if (input$statistical_test == "Cochran's Q toets") {
+      print("here")
       # Perform the Cochran's Q toets
       # ## hardcoded
-      # result <- car::CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
-      #              data = data())
-      # # ...
+      ## erronunous
+      # result <- rstatix::cochran_qtest(data(), input$dependent_var ~ input$independent_var | Studentnummer)
+      # # result <- car::CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
+      # #              data = data())
+      # # # ...
       # output$test_report <- shiny::renderPrint({
       #   result
       # })
