@@ -33,9 +33,6 @@ handle_file_upload <- function(input, output, session) {
     # Get the full path of the uploaded file
     full_path <- normalizePath(input$file$datapath)
 
-    # Print the file path (optional, for debugging)
-    print(full_path)
-
     # Read the uploaded file
     data(utils::read.csv(full_path))
 
