@@ -200,8 +200,31 @@ app_server <- function(input, output, session) {
         result
       })
     } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets") {
+      ## Retrieve the data from input
+      data <- data()
+
+      ## Retrieve the input values for dependent_var and independent_var
+      dependent_var <- input$dependent_var
+      independent_var <- input$independent_var
+
+      ## Get the unique values of independent_var
+      unique_values <- unique(data[[independent_var]])
+
+      ## Create objects for the first and second groups
+      group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+      group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+
+      ## Perform Wilcoxon test
+      result <- stats::wilcox.test(group1,
+                                   group2,
+                                   paired = FALSE,
+                                   alternative = "two.sided",
+                                   conf.int = TRUE)
       # Perform the Mann-Whitney U toets I / Mood's mediaan toets
-      # ...
+      # Display the test report
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     } else if (input$statistical_test == "One sample t-test") {
       # Perform the One sample t-test
       result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
