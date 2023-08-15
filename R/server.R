@@ -41,6 +41,12 @@ app_server <- function(input, output, session) {
     }
   })
 
+  # Dropdown for choosing the dependent variable
+  output$identifier_dropdown <- shiny::renderUI({
+    shiny::req(data())
+    shinyWidgets::pickerInput("identifier_var", "Choose identifier variable", choices = colnames(data()))
+  })
+
   # Text below the dropdowns
   output$dependent_var_text <- shiny::renderText({
     shiny::req(input$dependent_var)
@@ -233,7 +239,7 @@ app_server <- function(input, output, session) {
     } else if (input$statistical_test == "Repeated measures ANOVA") {
       # Perform the Repeated measures ANOVA
       ## hardcoded wid
-      result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = Studentnummer,
+      result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = input$identifier_var,
               within = input$independent_var)
       # ...
       output$test_report <- shiny::renderPrint({
@@ -317,7 +323,7 @@ app_server <- function(input, output, session) {
       # Perform the Cochran's Q toets
       # ## hardcoded
       ## erronunous
-      # result <- rstatix::cochran_qtest(data(), input$dependent_var ~ input$independent_var | Studentnummer)
+      # result <- rstatix::cochran_qtest(data(), input$dependent_var ~ input$independent_var | input$identier_var)
       # # result <- car::CochranQTest(input$dependent_var ~ input$independent_var | Studentnummer,
       # #              data = data())
       # # # ...

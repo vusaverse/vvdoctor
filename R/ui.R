@@ -32,6 +32,9 @@ app_ui <- function() {
         # Input field for mean (hidden initially)
         shiny::uiOutput("input_mean"),
 
+        # Dropdown for choosing the independent variable
+        shiny::uiOutput("identifier_dropdown"),
+
         # New dropdown for selecting statistical test
         shiny::uiOutput("statistical_test_dropdown"),
 
