@@ -321,6 +321,20 @@ app_server <- function(input, output, session) {
         result
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets") {
+      ## Retrieve the data from input
+      data <- data()
+
+      ## Retrieve the input values for dependent_var and independent_var
+      dependent_var <- input$dependent_var
+      independent_var <- input$independent_var
+
+      ## Perform the chi-squared test
+      result <- stats::chisq.test(data[[dependent_var]], data[[independent_var]])
+
+      output$test_report <- shiny::renderPrint({
+        result
+      })
+
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
       # ...
     } else if (input$statistical_test == "Cochran's Q toets") {
