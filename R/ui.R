@@ -35,6 +35,9 @@ app_ui <- function() {
         # Dropdown for choosing the independent variable
         shiny::uiOutput("identifier_dropdown"),
 
+        shinyjqui::orderInput(inputId = 'foo', label = 'A simple example', items = c('A', 'B', 'C')),
+        shiny::verbatimTextOutput('order'),
+
         # New dropdown for selecting statistical test
         shiny::uiOutput("statistical_test_dropdown"),
 

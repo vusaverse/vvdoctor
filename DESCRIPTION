@@ -35,5 +35,6 @@ Imports:
     irr,
     magrittr,
     shiny,
+    shinyjqui,
     shinyjs,
     shinyWidgets
