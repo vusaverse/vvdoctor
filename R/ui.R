@@ -21,9 +21,6 @@ app_ui <- function() {
         # Text below the dropdowns
         shiny::textOutput("dependent_var_text"),
 
-        # Radio button for choosing paired or unpaired
-        shiny::radioButtons("paired_unpaired", "Choose paired or unpaired:", choices = c("Paired", "Unpaired")),
-
         # Dropdown for choosing the independent variable
         shiny::uiOutput("independent_var_dropdown"),
 
@@ -34,9 +31,6 @@ app_ui <- function() {
 
         # Dropdown for choosing the independent variable
         shiny::uiOutput("identifier_dropdown"),
-
-        shinyjqui::orderInput(inputId = 'foo', label = 'A simple example', items = c('A', 'B', 'C')),
-        shiny::verbatimTextOutput('order'),
 
         # New dropdown for selecting statistical test
         shiny::uiOutput("statistical_test_dropdown"),

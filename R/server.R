@@ -75,7 +75,7 @@ app_server <- function(input, output, session) {
     } else {
       independent_var <- data()[, input$independent_var]
     }
-    test <- choose_statistical_test(data()[, input$dependent_var], independent_var, paired = input$paired_unpaired == "Paired")
+    test <- choose_statistical_test(data()[, input$dependent_var], independent_var)
     test_options <- c(test)
     shinyWidgets::pickerInput("statistical_test", "Choose statistical test", choices = test_options)
   })
