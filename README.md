@@ -30,6 +30,29 @@ vvdoctor::run_vvdoctor()
 
 -   Statistical Test Options: Once the variables are selected, the app will provide a list of statistical test options, such as t-tests, ANOVA, or correlation analysis. Choose the desired test and click on the "Run Test" button. The output of the test will be displayed, including the test statistic, p-value, and any additional relevant information.
 
+
+## Supported File Extensions
+
+Currently, the following file types are supported:
+
+| Full File Type Name | Full Extension Name | Package | Parsable Arguments |
+|----------------------|---------------------|---------|--------------------|
+| R Data File        | .RData            | base  | None            |
+| ASCII Text File    | .asc              | utils | None            |
+| Comma Separated Values File | .csv | utils | sep, header     |
+| Apache Feather File | .feather          | feather | None            |
+| Fixed-Size File    | .fst              | fst   | None            |
+| Apache Parquet File | .parquet          | arrow | None            |
+| R Data File        | .rda              | base  | None            |
+| R Data File        | .rds              | base  | None            |
+| SPSS Data File     | .sav              | haven | None            |
+| Tab Separated Values File | .tsv | utils | sep, header     |
+| Text File          | .txt              | utils | sep, header     |
+| Microsoft Excel File | .xlsx            | readxl | None            |
+
+
+
+
 ## Example
 
 Below is a screenshot of an example in `vvdoctor`.
