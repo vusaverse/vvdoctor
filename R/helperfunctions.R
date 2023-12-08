@@ -26,6 +26,22 @@ handle_file_upload <- function(input, output, session) {
   # Reactive value to store the uploaded data
   data <- shiny::reactiveVal(NULL)
 
+  # Map file extensions to reading functions
+  read_funcs <- list(
+    RData = readRDS,
+    asc = function(path) utils::read.table(path, header = TRUE),
+    csv = utils::read.csv,
+    feather = feather::read_feather,
+    fst = fst::read_fst,
+    parquet = arrow::read_parquet,
+    rda = readRDS,
+    rds = readRDS,
+    sav = haven::read_sav,
+    tsv = function(path) utils::read.delim(path, sep = "\t"),
+    txt = function(path) utils::read.delim(path, sep = "\t"),
+    xlsx = readxl::read_excel
+  )
+
   # Observer for handling file upload
   shiny::observeEvent(input$file, {
     shiny::req(input$file)
@@ -37,21 +53,15 @@ handle_file_upload <- function(input, output, session) {
     ext <- tools::file_ext(full_path)
 
     # Read the uploaded file based on its extension
-    switch(ext,
-           RData = data(readRDS(full_path)),
-           asc = data(utils::read.table(full_path, header = TRUE)),
-           csv = data(utils::read.csv(full_path)),
-           feather = data(feather::read_feather(full_path)),
-           fst = data(fst::read_fst(full_path)),
-           parquet = data(arrow::read_parquet(full_path)),
-           rda = data(readRDS(full_path)),
-           rds = data(readRDS(full_path)),
-           sav = data(haven::read_sav(full_path)),
-           tsv = data(utils::read.delim(full_path, sep = "\t")),
-           txt = data(utils::read.delim(full_path, sep = "\t")),
-           xlsx = data(readxl::read_excel(full_path)),
-           stop("Invalid file type. Please upload a .RData, .asc, .csv, .feather, .fst, .parquet, .rda, .rds, .sav, .tsv, .txt or .xlsx file.")
-    )
+    tryCatch({
+      data(read_funcs[[ext]](full_path))
+    }, error = function(e) {
+      # Log the error
+      message("An error occurred: ", e$message)
+
+      # Reset the data reactive value
+      data(NULL)
+    })
 
     # Populate the first dropdown with column names
     shiny::updateSelectInput(session, "independent_var", choices = c("", colnames(data())))
