@@ -26,20 +26,27 @@ handle_file_upload <- function(input, output, session) {
   # Reactive value to store the uploaded data
   data <- shiny::reactiveVal(NULL)
 
+  # Define a wrapper function that ignores sep and header arguments
+  ignore_args <- function(func) {
+    function(path, sep = NULL, header = NULL) {
+      func(path)
+    }
+  }
+
   # Map file extensions to reading functions
   read_funcs <- list(
     RData = readRDS,
-    asc = function(path) utils::read.table(path, header = TRUE),
-    csv = utils::read.csv,
-    feather = feather::read_feather,
-    fst = fst::read_fst,
-    parquet = arrow::read_parquet,
+    asc = ignore_args(utils::read.table),
+    csv = function(path, sep, header) utils::read.csv(path, sep = sep, header = header),
+    feather = ignore_args(feather::read_feather),
+    fst = ignore_args(fst::read_fst),
+    parquet = ignore_args(arrow::read_parquet),
     rda = readRDS,
     rds = readRDS,
-    sav = haven::read_sav,
-    tsv = function(path) utils::read.delim(path, sep = "\t"),
-    txt = function(path) utils::read.delim(path, sep = "\t"),
-    xlsx = readxl::read_excel
+    sav = ignore_args(haven::read_sav),
+    tsv = function(path, sep, header) utils::read.delim(path, sep = sep, header = header),
+    txt = function(path, sep, header) utils::read.delim(path, sep = sep, header = header),
+    xlsx = ignore_args(readxl::read_excel)
   )
 
   # Observer for handling file upload
@@ -52,9 +59,13 @@ handle_file_upload <- function(input, output, session) {
     # Get the file extension
     ext <- tools::file_ext(full_path)
 
+    # Get the separator, delimiter, and header from the user input
+    sep <- input$sep
+    header <- input$header
+
     # Read the uploaded file based on its extension
     tryCatch({
-      data(read_funcs[[ext]](full_path))
+      data(read_funcs[[ext]](full_path, sep, header))
     }, error = function(e) {
       # Log the error
       message("An error occurred: ", e$message)

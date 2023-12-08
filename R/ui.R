@@ -15,6 +15,15 @@ app_ui <- function() {
       shiny::sidebarPanel(
         shiny::fileInput("file", "Upload a file"),
 
+        # UI elements for separator and header
+        shiny::radioButtons("sep", "Separator",
+                     choices = c(Comma = ",",
+                                 Semicolon = ";",
+                                 Tab = "\t"),
+                     selected = ","),
+        shiny::checkboxInput("header", "Header", TRUE),
+
+
         # Dropdown for choosing the dependent variable
         shiny::uiOutput("dependent_var_dropdown"),
 
