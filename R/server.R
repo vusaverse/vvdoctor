@@ -151,107 +151,104 @@ app_server <- function(input, output, session) {
     }
 
     if (input$statistical_test == "Tekentoets I") {
-      # Perform the Tekentoets I test
-
-      result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Tekentoets I: ", e))
       })
     } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
-      # Perform the Wilcoxon signed rank toets I / Tekentoets II test
-      result <- stats::wilcox.test(input$dependent_var ~ input$independent_var, data(),
-                  paired = TRUE,
-                  alternative = "two.sided")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::wilcox.test(input$dependent_var ~ input$independent_var, data(),
+                                     paired = TRUE,
+                                     alternative = "two.sided")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Wilcoxon signed rank toets I / Tekentoets II: ", e))
       })
     } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets") {
-      ## Retrieve the data from input
-      data <- data()
-
-      ## Retrieve the input values for dependent_var and independent_var
-      dependent_var <- input$dependent_var
-      independent_var <- input$independent_var
-
-      ## Get the unique values of independent_var
-      unique_values <- unique(data[[independent_var]])
-
-      ## Create objects for the first and second groups
-      group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
-      group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
-
-      ## Perform Wilcoxon test
-      result <- stats::wilcox.test(group1,
-                                   group2,
-                                   paired = FALSE,
-                                   alternative = "two.sided",
-                                   conf.int = TRUE)
-      # Perform the Mann-Whitney U toets I / Mood's mediaan toets
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        data <- data()
+        dependent_var <- input$dependent_var
+        independent_var <- input$independent_var
+        unique_values <- unique(data[[independent_var]])
+        group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+        group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+        result <- stats::wilcox.test(group1,
+                                     group2,
+                                     paired = FALSE,
+                                     alternative = "two.sided",
+                                     conf.int = TRUE)
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Mann-Whitney U toets I / Mood's mediaan toets: ", e))
       })
     } else if (input$statistical_test == "Kruskal Wallis toets I") {
-      ## erronuous: Error in kruskal.test.default: all observations are in the same group
-      # print("here")
-      # result <- stats::kruskal.test(input$dependent_var ~ input$independent_var, data())
-      #
-      # output$test_report <- shiny::renderPrint({
-      #   result
-      # })
-
-
+      tryCatch({
+        result <- stats::kruskal.test(input$dependent_var ~ input$independent_var, data())
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Kruskal Wallis toets I: ", e))
+      })
     } else if (input$statistical_test == "One sample t-test") {
-      # Perform the One sample t-test
-      result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing One sample t-test: ", e))
       })
     } else if (input$statistical_test == "Paired t-test") {
-      # Perform the Paired t-test
-      result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
-                       paired = TRUE,
-                       alternative = "two.sided")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
+                                paired = TRUE,
+                                alternative = "two.sided")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Paired t-test: ", e))
       })
     } else if (input$statistical_test == "Independent samples t-test") {
-      # Perform the Independent samples t-test
-      # Perform the Paired t-test
-      result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
-                       paired = FALSE,
-                       alternative = "two.sided",
-                       var.equal = FALSE)
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
+                                paired = FALSE,
+                                alternative = "two.sided",
+                                var.equal = FALSE)
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Independent samples t-test: ", e))
       })
     } else if (input$statistical_test == "Repeated measures ANOVA") {
-      # Perform the Repeated measures ANOVA
-      ## hardcoded wid
-      result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = input$identifier_var,
-              within = input$independent_var)
-      # ...
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = input$identifier_var,
+                              within = input$independent_var)
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
       })
     } else if (input$statistical_test == "One-way ANOVA") {
-      res.aov <- stats::aov(input$dependent_var ~ input$independent_var, data = input$data)
-      result <- summary(res.aov)
-      # Perform the One-way ANOVA
-      # ...
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        res.aov <- stats::aov(input$dependent_var ~ input$independent_var, data = input$data)
+        result <- summary(res.aov)
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing One-way ANOVA: ", e))
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
       ## Retrieve the data from input
