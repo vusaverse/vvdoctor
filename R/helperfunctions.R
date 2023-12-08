@@ -35,14 +35,14 @@ handle_file_upload <- function(input, output, session) {
 
   # Map file extensions to reading functions
   read_funcs <- list(
-    RData = readRDS,
+    RData = ignore_args(readRDS),
     asc = ignore_args(utils::read.table),
     csv = function(path, sep, header) utils::read.csv(path, sep = sep, header = header),
     feather = ignore_args(feather::read_feather),
     fst = ignore_args(fst::read_fst),
     parquet = ignore_args(arrow::read_parquet),
-    rda = readRDS,
-    rds = readRDS,
+    rda = ignore_args(readRDS),
+    rds = ignore_args(readRDS),
     sav = ignore_args(haven::read_sav),
     tsv = function(path, sep, header) utils::read.delim(path, sep = sep, header = header),
     txt = function(path, sep, header) utils::read.delim(path, sep = sep, header = header),
