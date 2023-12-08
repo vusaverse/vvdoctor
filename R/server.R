@@ -63,8 +63,6 @@ app_server <- function(input, output, session) {
     }
   })
 
-  output$order <- shiny::renderPrint({input$foo})
-
   # New dropdown for selecting statistical test
   output$statistical_test_dropdown <- shiny::renderUI({
 
