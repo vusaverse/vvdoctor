@@ -8,6 +8,27 @@
 app_server <- function(input, output, session) {
   data <- handle_file_upload(input, output, session)
 
+  steps <- shiny::reactive({
+    data.frame(
+      element = c(NA, "#file", "#sep", "#header", "#dependent_var_dropdown", "#independent_var_dropdown", "#input_mean", "#identifier_dropdown", "#statistical_test_dropdown"),
+      intro = c(
+        "Welcome to the Statistical Test App. Let's start by uploading a file.",
+        "This is where you upload your file.",
+        "Select the separator used in your file.",
+        "Check this if your file has a header.",
+        "Choose the dependent variable from this dropdown.",
+        "Choose the independent variable from this dropdown.",
+        "Enter the mean here.",
+        "Choose the identifier from this dropdown.",
+        "Choose the statistical test from this dropdown."
+      )
+    )
+  })
+
+  shiny::observeEvent(input$file, {
+    rintrojs::introjs(session, options = list(steps = steps()))
+  })
+
   # Display the uploaded data as a datatable
   output$dataTable <- DT::renderDataTable({
     shiny::req(data())

@@ -39,6 +39,7 @@ Imports:
     irr,
     magrittr,
     readxl,
+    rintrojs,
     shiny,
     shinyjs,
     shinyWidgets
