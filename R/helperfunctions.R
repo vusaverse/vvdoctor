@@ -33,8 +33,25 @@ handle_file_upload <- function(input, output, session) {
     # Get the full path of the uploaded file
     full_path <- normalizePath(input$file$datapath)
 
-    # Read the uploaded file
-    data(utils::read.csv(full_path))
+    # Get the file extension
+    ext <- tools::file_ext(full_path)
+
+    # Read the uploaded file based on its extension
+    switch(ext,
+           RData = data(readRDS(full_path)),
+           asc = data(utils::read.table(full_path, header = TRUE)),
+           csv = data(utils::read.csv(full_path)),
+           feather = data(feather::read_feather(full_path)),
+           fst = data(fst::read_fst(full_path)),
+           parquet = data(arrow::read_parquet(full_path)),
+           rda = data(readRDS(full_path)),
+           rds = data(readRDS(full_path)),
+           sav = data(haven::read_sav(full_path)),
+           tsv = data(utils::read.delim(full_path, sep = "\t")),
+           txt = data(utils::read.delim(full_path, sep = "\t")),
+           xlsx = data(readxl::read_excel(full_path)),
+           stop("Invalid file type. Please upload a .RData, .asc, .csv, .feather, .fst, .parquet, .rda, .rds, .sav, .tsv, .txt or .xlsx file.")
+    )
 
     # Populate the first dropdown with column names
     shiny::updateSelectInput(session, "independent_var", choices = c("", colnames(data())))
@@ -46,6 +63,3 @@ handle_file_upload <- function(input, output, session) {
   # Return reactive data for further usage in the app
   return(data)
 }
-
-
-
