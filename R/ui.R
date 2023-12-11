@@ -14,11 +14,7 @@ app_ui <- function() {
     # Sidebar with a browse button for file upload
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        rintrojs::introBox(
           shiny::fileInput("file", "Upload a file"),
-          data.step = 1,
-          data.intro = "This is where you upload your file."
-        ),
 
         # UI elements for separator and header
         rintrojs::introBox(
@@ -27,68 +23,68 @@ app_ui <- function() {
                                           Semicolon = ";",
                                           Tab = "\t"),
                               selected = ","),
-          data.step = 2,
+          data.step = 1,
           data.intro = "Select the separator used in your file."
         ),
 
         rintrojs::introBox(
           shiny::checkboxInput("header", "Header", TRUE),
-          data.step = 3,
+          data.step = 2,
           data.intro = "Check this if your file has a header."
         ),
 
         # Dropdown for choosing the dependent variable
         rintrojs::introBox(
           shiny::uiOutput("dependent_var_dropdown"),
-          data.step = 4,
+          data.step = 3,
           data.intro = "Choose the dependent variable from this dropdown."
         ),
 
         # Text below the dropdowns
         rintrojs::introBox(
           shiny::textOutput("dependent_var_text"),
-          data.step = 5,
+          data.step = 4,
           data.intro = "This is the dependent variable text."
         ),
 
         # Dropdown for choosing the independent variable
         rintrojs::introBox(
           shiny::uiOutput("independent_var_dropdown"),
-          data.step = 6,
+          data.step = 5,
           data.intro = "Choose the independent variable from this dropdown."
         ),
 
         rintrojs::introBox(
           shiny::textOutput("independent_var_text"), # New output element for the independent variable text
-          data.step = 7,
+          data.step = 6,
           data.intro = "This is the independent variable text."
         ),
 
         # Input field for mean (hidden initially)
         rintrojs::introBox(
           shiny::uiOutput("input_mean"),
-          data.step = 8,
+          data.step = 7,
           data.intro = "Enter the mean here."
         ),
 
         # Dropdown for choosing the independent variable
         rintrojs::introBox(
           shiny::uiOutput("identifier_dropdown"),
-          data.step = 9,
+          data.step = 8,
           data.intro = "Choose the identifier from this dropdown."
         ),
 
         # New dropdown for selecting statistical test
         rintrojs::introBox(
           shiny::uiOutput("statistical_test_dropdown"),
-          data.step = 10,
+          data.step = 9,
           data.intro = "Choose the statistical test from this dropdown."
         ),
 
         # Area to display the test report
         rintrojs::introBox(
           shiny::verbatimTextOutput("test_report"),
-          data.step = 11,
+          data.step = 10,
           data.intro = "This is the area to display the test report."
         )
       ),
