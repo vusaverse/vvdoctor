@@ -98,15 +98,17 @@
 <p>Currently, the following file types are supported:</p>
 <table class="table">
 <colgroup>
-<col width="30%">
-<col width="29%">
-<col width="12%">
-<col width="27%">
+<col width="25%">
+<col width="24%">
+<col width="10%">
+<col width="17%">
+<col width="22%">
 </colgroup>
 <thead><tr class="header">
 <th>Full File Type Name</th>
 <th>Full Extension Name</th>
 <th>Package</th>
+<th>Read Function</th>
 <th>Parsable Arguments</th>
 </tr></thead>
 <tbody>
@@ -114,72 +116,84 @@
 <td>R Data File</td>
 <td>.RData</td>
 <td>base</td>
+<td>readRDS</td>
 <td>None</td>
 </tr>
 <tr class="even">
 <td>ASCII Text File</td>
 <td>.asc</td>
 <td>utils</td>
+<td>read.table</td>
 <td>None</td>
 </tr>
 <tr class="odd">
 <td>Comma Separated Values File</td>
 <td>.csv</td>
 <td>utils</td>
+<td>read.csv</td>
 <td>sep, header</td>
 </tr>
 <tr class="even">
 <td>Apache Feather File</td>
 <td>.feather</td>
 <td>feather</td>
+<td>read_feather</td>
 <td>None</td>
 </tr>
 <tr class="odd">
 <td>Fixed-Size File</td>
 <td>.fst</td>
 <td>fst</td>
+<td>read_fst</td>
 <td>None</td>
 </tr>
 <tr class="even">
 <td>Apache Parquet File</td>
 <td>.parquet</td>
 <td>arrow</td>
+<td>read_parquet</td>
 <td>None</td>
 </tr>
 <tr class="odd">
 <td>R Data File</td>
 <td>.rda</td>
 <td>base</td>
+<td>readRDS</td>
 <td>None</td>
 </tr>
 <tr class="even">
 <td>R Data File</td>
 <td>.rds</td>
 <td>base</td>
+<td>readRDS</td>
 <td>None</td>
 </tr>
 <tr class="odd">
 <td>SPSS Data File</td>
 <td>.sav</td>
 <td>haven</td>
+<td>read_sav</td>
 <td>None</td>
 </tr>
 <tr class="even">
 <td>Tab Separated Values File</td>
 <td>.tsv</td>
 <td>utils</td>
+<td>read.delim</td>
 <td>sep, header</td>
 </tr>
 <tr class="odd">
 <td>Text File</td>
 <td>.txt</td>
 <td>utils</td>
+<td>read.delim</td>
 <td>sep, header</td>
 </tr>
 <tr class="even">
 <td>Microsoft Excel File</td>
 <td>.xlsx</td>
 <td>readxl</td>
+<td>read_excel</td>
 <td>None</td>
 </tr>
 </tbody>
