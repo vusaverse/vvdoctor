@@ -35,22 +35,20 @@ vvdoctor::run_vvdoctor()
 
 Currently, the following file types are supported:
 
-| Full File Type Name | Full Extension Name | Package | Parsable Arguments |
-|----------------------|---------------------|---------|--------------------|
-| R Data File        | .RData            | base  | None            |
-| ASCII Text File    | .asc              | utils | None            |
-| Comma Separated Values File | .csv | utils | sep, header     |
-| Apache Feather File | .feather          | feather | None            |
-| Fixed-Size File    | .fst              | fst   | None            |
-| Apache Parquet File | .parquet          | arrow | None            |
-| R Data File        | .rda              | base  | None            |
-| R Data File        | .rds              | base  | None            |
-| SPSS Data File     | .sav              | haven | None            |
-| Tab Separated Values File | .tsv | utils | sep, header     |
-| Text File          | .txt              | utils | sep, header     |
-| Microsoft Excel File | .xlsx            | readxl | None            |
-
-
+| Full File Type Name | Full Extension Name | Package | Read Function | Parsable Arguments |
+|----------------------|---------------------|---------|---------------|--------------------|
+| R Data File       | .RData           | base  | readRDS     | None             |
+| ASCII Text File    | .asc             | utils | read.table  | None             |
+| Comma Separated Values File | .csv | utils | read.csv       | sep, header      |
+| Apache Feather File | .feather         | feather | read_feather | None             |
+| Fixed-Size File    | .fst             | fst   | read_fst    | None             |
+| Apache Parquet File | .parquet         | arrow | read_parquet | None             |
+| R Data File       | .rda             | base  | readRDS     | None             |
+| R Data File       | .rds             | base  | readRDS     | None             |
+| SPSS Data File     | .sav             | haven | read_sav    | None             |
+| Tab Separated Values File | .tsv | utils | read.delim      | sep, header      |
+| Text File          | .txt             | utils | read.delim  | sep, header      |
+| Microsoft Excel File | .xlsx            | readxl | read_excel  | None             |
 
 
 ## Example
