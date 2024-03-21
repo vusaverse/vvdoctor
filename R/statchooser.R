@@ -34,6 +34,21 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
   # Determine the characteristics of the independent variable
   if (is.numeric(independent_var)) {
     independent_var_characteristics <- "continuous"
+
+    if (independent_var_characteristics == "continuous") {
+      return("Pearson Correlation")
+      # } else if (independent_var_characteristics == "1 group") {
+      #   return("One sample t-test")
+      # } else if (independent_var_characteristics == "2 groups & paired") {
+      #   return("Paired t-test")
+    } else if (independent_var_characteristics == "2 groups & unpaired") {
+      return("Independent samples t-test")
+      # } else if (independent_var_characteristics == "2+ groups & paired") {
+      #   return("Repeated measures ANOVA")
+    } else if (independent_var_characteristics == "2+ groups & unpaired") {
+      return("One-way ANOVA")
+    }
+
   } else if (is.character(independent_var)) {
     unique_independent <- length(unique(independent_var))
     if (unique_independent == 2) {
