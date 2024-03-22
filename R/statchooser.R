@@ -40,13 +40,13 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
       # } else if (independent_var_characteristics == "1 group") {
       #   return("One sample t-test")
       # } else if (independent_var_characteristics == "2 groups & paired") {
-      #   return("Paired t-test")
+      #   return("Paired t-test (paired)")
     } else if (independent_var_characteristics == "2 groups & unpaired") {
-      return("Independent samples t-test")
+      return("Independent samples t-test (unpaired)")
       # } else if (independent_var_characteristics == "2+ groups & paired") {
-      #   return("Repeated measures ANOVA")
+      #   return("Repeated measures ANOVA (paired)")
     } else if (independent_var_characteristics == "2+ groups & unpaired") {
-      return("One-way ANOVA")
+      return("One-way ANOVA (unpaired)")
     }
 
   } else if (is.character(independent_var)) {
