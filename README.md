@@ -51,6 +51,15 @@ Currently, the following file types are supported:
 | Microsoft Excel File | .xlsx            | readxl | read_excel  | None             |
 
 
+## Decision Tree for Statistical Test Selection
+
+Based on the characteristics of the input data, the `vvdoctor` app uses the following decision tree to select the appropriate statistical test:
+
+![Decision Tree Flowchart](man/figures/decision_tree_flowchart.png)
+
+This flowchart illustrates the process of selecting a statistical test based on the class of independent/dependent variables, whether the test is paired or unpaired, and whether the data is normally distributed. 
+
+
 ## Example
 
 Below is a screenshot of an example in `vvdoctor`.
