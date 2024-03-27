@@ -115,9 +115,9 @@ app_server <- function(input, output, session) {
 
       # Check if the p-value is less than 0.05
       if (shapiro_test$p.value < 0.05) {
-        "The selected dependent variable is not normally distributed."
+        "Assumption of Normality violated by the dependent variable."
       } else {
-        "The selected dependent variable is normally distributed."
+        "Assumption of Normality met by the dependent variable."
       }
     } else if (is.character(dependent_var)) {
       # Check if the selected dependent variable has 2 unique values (binary) or more than 2 (nominal/ordinal)
