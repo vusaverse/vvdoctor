@@ -34,31 +34,18 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
   # Determine the characteristics of the independent variable
   if (is.numeric(independent_var)) {
     independent_var_characteristics <- "continuous"
-
-    if (independent_var_characteristics == "continuous") {
-      return("Pearson Correlation")
-      # } else if (independent_var_characteristics == "1 group") {
-      #   return("One sample t-test")
-      # } else if (independent_var_characteristics == "2 groups & paired") {
-      #   return("Paired t-test (paired)")
-    } else if (independent_var_characteristics == "2 groups & unpaired") {
-      return("Independent samples t-test (unpaired)")
-      # } else if (independent_var_characteristics == "2+ groups & paired") {
-      #   return("Repeated measures ANOVA (paired)")
-    } else if (independent_var_characteristics == "2+ groups & unpaired") {
-      return("One-way ANOVA (unpaired)")
-    }
-
   } else if (is.character(independent_var)) {
     unique_independent <- length(unique(independent_var))
     if (unique_independent == 2) {
       independent_var_characteristics <- "2 groups & unpaired"
-    } else if (unique_independent >= 2) {
+    } else if (unique_independent > 2) {
       independent_var_characteristics <- "2+ groups & unpaired"
     } else {
       ## Voor het geval de categorische onafhankelijke alleen 1 level heeft
       return("The independent variable type is not supported.")
     }
+  }
+
 
 
     # Use the characteristics to choose the statistical test
@@ -79,8 +66,8 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
 
       if (independent_var_characteristics == "continuous") {
         return("Pearson Correlation")
-      # } else if (independent_var_characteristics == "1 group") {
-      #   return("One sample t-test")
+      } else if (independent_var_characteristics == "1 group") {
+        return("One sample t-test")
       # } else if (independent_var_characteristics == "2 groups & paired") {
       #   return("Paired t-test (paired)")
       } else if (independent_var_characteristics == "2 groups & unpaired") {
@@ -91,10 +78,10 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
         return("One-way ANOVA (unpaired)")
       }
     } else if (dependent_var_characteristics == "binary") {
-      # if (independent_var_characteristics == "1 group") {
-      #   return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
-      # } else if (independent_var_characteristics == "2 groups & paired") {
-      #   return("McNemar toets (paired)")
+      if (independent_var_characteristics == "1 group") {
+        return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
+      } else if (independent_var_characteristics == "2 groups & paired") {
+        return("McNemar toets (paired)")
       } else if (independent_var_characteristics == "2 groups & unpaired") {
         return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)")
       # } else if (independent_var_characteristics == "2+ groups & paired") {
