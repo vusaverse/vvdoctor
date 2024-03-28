@@ -36,7 +36,9 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
     independent_var_characteristics <- "continuous"
   } else if (is.character(independent_var)) {
     unique_independent <- length(unique(independent_var))
-    if (unique_independent == 2) {
+    if (unique_independent == 1) {
+      independent_var_characteristics <- "1 group"
+    } else if (unique_independent == 2) {
       independent_var_characteristics <- "2 groups & unpaired"
     } else if (unique_independent > 2) {
       independent_var_characteristics <- "2+ groups & unpaired"
