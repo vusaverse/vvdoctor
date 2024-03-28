@@ -13,6 +13,11 @@ Authors@R:
            email = "c.f.den.hartogh@vu.nl",
            comment = c(ORCID = "0000-0001-8347-7944")
            ),
+    person(given = "Jesús",
+           family = "Blanco",
+           role = "ctb",
+           email = "j.e.blanco@vu.nl"
+           ),
     person(given = "VU Analytics",
            role = "cph"
            ))
