@@ -59,6 +59,28 @@ Based on the characteristics of the input data, the `vvdoctor` app uses the foll
 
 This flowchart illustrates the process of selecting a statistical test based on the class of independent/dependent variables, whether the test is paired or unpaired, and whether the data is normally distributed. 
 
+## Overview of Implemented Statistical Test
+
+The table below serves as a reference for understanding the logic behind the app's functionality, 
+showcasing how different statistical tests are executed through various R packages and functions.
+
+| Statistical Test Name                                      | R Package | R Function (from the package) |
+|------------------------------------------------------------|------------|---------------------------------|
+| Sign Test                                                 | DescTools | SignTest()                      |
+| Wilcoxon Signed Rank Test                                 | stats      | wilcox.test()                   |
+| Mann-Whitney U Test                                        | stats      | wilcox.test()                   |
+| Kruskal-Wallis Test                                        | stats      | kruskal.test()                 |
+| One Sample t-test                                          | stats      | t.test()                        |
+| Paired t-test                                              | stats      | t.test()                        |
+| Independent Samples t-test                                 | stats      | t.test()                        |
+| Repeated Measures ANOVA                                    | ez         | ezANOVA()                       |
+| One-way ANOVA                                              | stats      | aov()                           |
+| Chi-Square Goodness-of-Fit and Binomial Test               | stats      | chisq.test()                    |
+| McNemar's Test                                             | exact2x2   | exact2x2()                      |
+| Chi-Square Test for Independence and Fisher's Exact Test | stats      | chisq.test()                    |
+| Bhapkar's Test                                             | irr        | bhapkar()                       |
+
+
 
 ## Example
 
