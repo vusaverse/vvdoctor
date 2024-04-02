@@ -209,6 +209,90 @@
 <p>This flowchart illustrates the process of selecting a statistical test based on the class of independent/dependent variables, whether the test is paired or unpaired, and whether the data is normally distributed.</p>
 </div>
 <div class="section level2">
+<h2 id="overview-of-implemented-statistical-test">Overview of Implemented Statistical Test<a class="anchor" aria-label="anchor" href="#overview-of-implemented-statistical-test"></a>
+</h2>
+<p>The table below serves as a reference for understanding the logic behind the app’s functionality, showcasing how different statistical tests are executed through various R packages and functions.</p>
+<table class="table">
+<colgroup>
+<col width="57%">
+<col width="11%">
+<col width="31%">
+</colgroup>
+<thead><tr class="header">
+<th>Statistical Test Name</th>
+<th>R Package</th>
+<th>R Function (from the package)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Sign Test</td>
+<td>DescTools</td>
+<td>SignTest()</td>
+</tr>
+<tr class="even">
+<td>Wilcoxon Signed Rank Test</td>
+<td>stats</td>
+<td>wilcox.test()</td>
+</tr>
+<tr class="odd">
+<td>Mann-Whitney U Test</td>
+<td>stats</td>
+<td>wilcox.test()</td>
+</tr>
+<tr class="even">
+<td>Kruskal-Wallis Test</td>
+<td>stats</td>
+<td>kruskal.test()</td>
+</tr>
+<tr class="odd">
+<td>One Sample t-test</td>
+<td>stats</td>
+<td>t.test()</td>
+</tr>
+<tr class="even">
+<td>Paired t-test</td>
+<td>stats</td>
+<td>t.test()</td>
+</tr>
+<tr class="odd">
+<td>Independent Samples t-test</td>
+<td>stats</td>
+<td>t.test()</td>
+</tr>
+<tr class="even">
+<td>Repeated Measures ANOVA</td>
+<td>ez</td>
+<td>ezANOVA()</td>
+</tr>
+<tr class="odd">
+<td>One-way ANOVA</td>
+<td>stats</td>
+<td>aov()</td>
+</tr>
+<tr class="even">
+<td>Chi-Square Goodness-of-Fit and Binomial Test</td>
+<td>stats</td>
+<td>chisq.test()</td>
+</tr>
+<tr class="odd">
+<td>McNemar’s Test</td>
+<td>exact2x2</td>
+<td>exact2x2()</td>
+</tr>
+<tr class="even">
+<td>Chi-Square Test for Independence and Fisher’s Exact Test</td>
+<td>stats</td>
+<td>chisq.test()</td>
+</tr>
+<tr class="odd">
+<td>Bhapkar’s Test</td>
+<td>irr</td>
+<td>bhapkar()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>Below is a screenshot of an example in <code>vvdoctor</code>.</p>
