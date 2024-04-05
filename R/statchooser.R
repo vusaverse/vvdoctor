@@ -39,9 +39,9 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
     if (unique_independent == 1) {
       independent_var_characteristics <- "1 group"
     } else if (unique_independent == 2) {
-      independent_var_characteristics <- "2 groups & unpaired"
+      independent_var_characteristics <- "2 groups"
     } else if (unique_independent > 2) {
-      independent_var_characteristics <- "2+ groups & unpaired"
+      independent_var_characteristics <- "2+ groups"
     } else {
       ## Voor het geval de categorische onafhankelijke alleen 1 level heeft
       return("The independent variable type is not supported.")
@@ -72,36 +72,48 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
         return("One sample t-test")
       # } else if (independent_var_characteristics == "2 groups & paired") {
       #   return("Paired t-test (paired)")
-      } else if (independent_var_characteristics == "2 groups & unpaired") {
-        return("Independent samples t-test (unpaired)")
+      } else if (independent_var_characteristics == "2 groups") {
+        return(c("Independent samples t-test (unpaired)", "Paired t-test (paired)"))
       # } else if (independent_var_characteristics == "2+ groups & paired") {
       #   return("Repeated measures ANOVA (paired)")
-      } else if (independent_var_characteristics == "2+ groups & unpaired") {
-        return("One-way ANOVA (unpaired)")
+      } else if (independent_var_characteristics == "2+ groups") {
+        return(c("One-way ANOVA (unpaired)", "Repeated measures ANOVA (paired)"))
       }
     } else if (dependent_var_characteristics == "binary") {
       if (independent_var_characteristics == "1 group") {
         return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
-      } else if (independent_var_characteristics == "2 groups & paired") {
-        return("McNemar toets (paired)")
+      } else if (independent_var_characteristics == "2 groups") {
+        return(c("McNemar toets (paired)", "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)"))
       } else if (independent_var_characteristics == "2 groups & unpaired") {
         return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)")
       # } else if (independent_var_characteristics == "2+ groups & paired") {
       #   return("Cochran's Q toets (paired)")
-      } else if (independent_var_characteristics == "2+ groups & unpaired") {
-        return("Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)")
+      } else if (independent_var_characteristics == "2+ groups") {
+        return(c(
+          "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
+          "Cochran's Q toets (paired)"))
       }
     } else if (dependent_var_characteristics == "nominal/ordinal") {
       if (independent_var_characteristics == "1 group") {
         return("Chi-square goodness-of-fit test en multinomiaaltoets")
       # } else if (independent_var_characteristics == "2 groups & paired") {
       #   return(c("Bhapkar toets", "Wilcoxon signed rank toets II (paired)"))
-      } else if (independent_var_characteristics == "2 groups & unpaired") {
-        return(c("Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)", "Mann-Whitney U toets II (unpaired)"))
-      } else if (independent_var_characteristics == "2+ groups & paired") {
-        return(c("Multilevel multinomiale logistische regressie (paired)", "Friedman's ANOVA II (paired)"))
+      } else if (independent_var_characteristics == "2 groups") {
+        return(c(
+          "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
+          "Mann-Whitney U toets II (unpaired)",
+          "Bhapkar toets",
+          "Wilcoxon signed rank toets II (paired)"))
+      } else if (independent_var_characteristics == "2+ groups") {
+        return(c(
+          "Multilevel multinomiale logistische regressie (paired)",
+          "Friedman's ANOVA II (paired)",
+          "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
+          "Kruskal Wallis toets II (unpaired)"))
       } else if (independent_var_characteristics == "2+ groups & unpaired") {
-        return(c("Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)", "Kruskal Wallis toets II (unpaired)"))
+        return(c(
+          "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
+          "Kruskal Wallis toets II (unpaired)"))
       }
     }
 

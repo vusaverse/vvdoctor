@@ -230,16 +230,30 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing One sample t-test: ", e))
       })
-    } else if (input$statistical_test == "Paired t-test") {
+    } else if (input$statistical_test == "Paired t-test (paired)") {
       tryCatch({
-        result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
+        # Ensure data is a reactive expression that returns a data frame
+        # Assuming data() is defined elsewhere in your Shiny app
+        data_frame <- data()
+
+        # Convert the independent variable to a factor
+        data_frame[[input$independent_var]] <- as.factor(data_frame[[input$independent_var]])
+
+        # Ensure the independent variable has exactly two levels
+        if (length(levels(data_frame[[input$independent_var]])) != 2) {
+          message("The independent variable must have exactly two levels for an independent t-test.")
+        }
+
+        # Perform the independent t-test
+        result <- stats::t.test(data_frame[[input$dependent_var]] ~ data_frame[[input$independent_var]],
                                 paired = TRUE,
-                                alternative = "two.sided")
+                                alternative = "two.sided",
+                                var.equal = FALSE)
         output$test_report <- shiny::renderPrint({
           result
         })
       }, error = function(e) {
-        print(paste0("Caught an error while performing Paired t-test: ", e))
+        print(paste0("Caught an error while performing Independent samples t-test: ", e))
       })
     } else if (input$statistical_test == "Independent samples t-test (unpaired)") {
       tryCatch({
@@ -267,7 +281,7 @@ app_server <- function(input, output, session) {
         print(paste0("Caught an error while performing Independent samples t-test: ", e))
       })
 
-    } else if (input$statistical_test == "Repeated measures ANOVA") {
+    } else if (input$statistical_test == "Repeated measures ANOVA (paired)") {
       tryCatch({
         result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = input$identifier_var,
                               within = input$independent_var)
@@ -314,34 +328,41 @@ app_server <- function(input, output, session) {
       output$test_report <- shiny::renderPrint({
         result
       })
-    } else if (input$statistical_test == "McNemar toets") {
-      # Perform the McNemar toets
-      ## Retrieve the data from input
-      data <- data()
+    } else if (input$statistical_test == "McNemar toets (paired)") {
+      tryCatch({
+        # Ensure data is a reactive expression that returns a data frame
+        # Assuming data() is defined elsewhere in your Shiny app
+        data_frame <- data()
 
-      ## Retrieve the input values for dependent_var and independent_var
-      dependent_var <- input$dependent_var
-      independent_var <- input$independent_var
+        # Retrieve the input values for dependent_var and independent_var
+        dependent_var <- input$dependent_var
+        independent_var <- input$independent_var
 
-      ## Get the unique values of independent_var
-      unique_values <- unique(data[[independent_var]])
+        # Ensure the data is correctly structured for McNemar's test
+        # This step might involve checking that each subject has exactly one observation in each group
+        # For demonstration, let's assume 'data_frame' is correctly structured
 
-      ## Create objects for the first and second groups
-      group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
-      group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+        # Get the unique values of independent_var
+        unique_values <- unique(data_frame[[independent_var]])
 
-      ## Create a frequency matrix
-      group_matrix <- table(group1, group2)
+        # Create objects for the first and second groups
+        group1 <- data_frame[data_frame[[independent_var]] == unique_values[1], dependent_var]
+        group2 <- data_frame[data_frame[[independent_var]] == unique_values[2], dependent_var]
 
-      # Perform McNemar's test
-      result <- exact2x2::exact2x2(group_matrix,
-                         paired = TRUE,
-                         midp = TRUE)
+        # Create a frequency matrix
+        group_matrix <- table(group1, group2)
 
-      # Voer McNemar toets uit
+        # Perform McNemar's test
+        result <- exact2x2::exact2x2(group_matrix,
+                                     paired = TRUE,
+                                     midp = TRUE)
 
-      output$test_report <- shiny::renderPrint({
-        result
+        # Display the test report
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing McNemar toets (paired): ", e))
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)") {
       ## Retrieve the data from input
@@ -360,7 +381,7 @@ app_server <- function(input, output, session) {
 
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
       # ...
-    } else if (input$statistical_test == "Cochran's Q toets") {
+    } else if (input$statistical_test == "Cochran's Q toets (paired)") {
       print("here")
       # Perform the Cochran's Q toets
       # ## hardcoded
@@ -407,9 +428,29 @@ app_server <- function(input, output, session) {
         result
       })
 
-    } else if (input$statistical_test == "Wilcoxon signed rank toets II") {
+    } else if (input$statistical_test == "Wilcoxon signed rank toets II (paired)") {
       # Perform the Wilcoxon signed rank toets II
-      # ...
+      tryCatch({
+        # Ensure data is a reactive expression that returns a data frame
+        # Assuming data() is defined elsewhere in your Shiny app
+        data_frame <- data()
+
+        # Convert the dependent variable to a factor and then to numeric
+        # This step is necessary because the Wilcoxon signed-rank test requires numeric data
+        data_frame[[input$dependent_var]] <- as.numeric(as.factor(data_frame[[input$dependent_var]]))
+
+        # Perform the Wilcoxon signed-rank test
+        # Assuming input$dependent_var is the variable representing the measurements before and after
+        # and input$identifier_var is the variable representing the subjects
+        result <- wilcox.test(data_frame[[input$dependent_var]], paired = TRUE)
+
+        # Display the test report
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Wilcoxon signed rank toets II (paired): ", e))
+      })
     } else if (input$statistical_test == "Mann-Whitney U toets II") {
       # Perform the Mann-Whitney U toets II
       # ...
@@ -417,12 +458,24 @@ app_server <- function(input, output, session) {
       # Perform the Multilevel multinomiale logistische regressie
       # ...
     } else if (input$statistical_test == "Friedman's ANOVA II (paired)") {
-      # Perform the Friedman's ANOVA II test
-      result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
+      tryCatch({
+        # Ensure data is a reactive expression that returns a data frame
+        # Assuming data() is defined elsewhere in your Shiny app
+        data_frame <- data()
 
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+        # Convert the independent variable to a factor
+        data_frame[[input$independent_var]] <- as.factor(data_frame[[input$independent_var]])
+
+        # Perform the Friedman's ANOVA II test
+        # Assuming perform_friedman_test is a custom function you've defined elsewhere
+        result <- perform_friedman_test(data_frame[[input$dependent_var]], data_frame[[input$independent_var]], data_frame)
+
+        # Display the test report
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Friedman's ANOVA II (paired): ", e))
       })
     } else if (input$statistical_test == "Kruskal Wallis toets II (unpaired)") {
       # Perform the Kruskal Wallis toets II
