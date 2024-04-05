@@ -399,6 +399,22 @@ app_server <- function(input, output, session) {
     } else if (input$statistical_test == "Kruskal Wallis toets II (unpaired)") {
       # Perform the Kruskal Wallis toets II
       # ...
+    } else if (input$statistical_test == "Pearson Correlation") {
+
+      result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "pearson")
+
+      # Display the test report
+      output$test_report <- shiny::renderPrint({
+        result
+      })
+    } else if (input$statistical_test == "Spearman Correlation") {
+
+      result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "spearman")
+
+      # Display the test report
+      output$test_report <- shiny::renderPrint({
+        result
+      })
     }
 
 
