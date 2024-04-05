@@ -11,10 +11,12 @@ app_ui <- function() {
     # Use the shinyjs library
     shinyjs::useShinyjs(),
 
-    # Sidebar with a browse button for file upload
+    # Sidebar with a browse button for file upload and the "About this app" action button
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-          shiny::fileInput("file", "Upload a file"),
+        shiny::fileInput("file", "Upload a file"),
+        # Action button for displaying the info panels
+        shiny::actionButton("about_app", "About this app"),
 
         # UI elements for separator and header
         rintrojs::introBox(

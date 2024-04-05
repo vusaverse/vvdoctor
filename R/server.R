@@ -24,7 +24,9 @@ app_server <- function(input, output, session) {
     )
   })
 
-  shiny::observeEvent(input$file, {
+  # Listen for the click event of the "About this app" action button
+  shiny::observeEvent(input$about_app, {
+    # Start the intro.js tour when the button is clicked
     rintrojs::introjs(session, options = list(steps = steps()))
   })
 
