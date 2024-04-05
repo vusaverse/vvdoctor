@@ -54,14 +54,12 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
     if (dependent_var_characteristics == "Assumption of Normality violated") {
        if (independent_var_characteristics == "continuous") {
          return("Spearman Correlation")
-      } else if (independent_var_characteristics == "2 groups & paired") {
-        return("Wilcoxon signed rank toets I / Tekentoets II (paired)")
-      # } else if (independent_var_characteristics == "2+ groups & paired") {
-      #   return("Friedman's ANOVA I (paired)")
+      } else if (independent_var_characteristics == "2 groups") {
+        return(c("Wilcoxon signed rank toets I / Tekentoets II (paired)",
+                 "Friedman's ANOVA I (paired)"))
       } else if (independent_var_characteristics == "2 groups & unpaired") {
-        return("Mann-Whitney U toets I / Mood's mediaan toets (unpaired)")
-      # } else if (independent_var_characteristics == "2+ groups & unpaired") {
-      #   return("Kruskal Wallis toets I (unpaired)")
+        return(c("Mann-Whitney U toets I / Mood's mediaan toets (unpaired)",
+                 "Kruskal Wallis toets I (unpaired)"))
       }
 
     } else if (dependent_var_characteristics == "Assumption of Normality met") {
@@ -70,12 +68,8 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
         return("Pearson Correlation")
       } else if (independent_var_characteristics == "1 group") {
         return("One sample t-test")
-      # } else if (independent_var_characteristics == "2 groups & paired") {
-      #   return("Paired t-test (paired)")
       } else if (independent_var_characteristics == "2 groups") {
         return(c("Independent samples t-test (unpaired)", "Paired t-test (paired)"))
-      # } else if (independent_var_characteristics == "2+ groups & paired") {
-      #   return("Repeated measures ANOVA (paired)")
       } else if (independent_var_characteristics == "2+ groups") {
         return(c("One-way ANOVA (unpaired)", "Repeated measures ANOVA (paired)"))
       }
@@ -86,8 +80,6 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
         return(c("McNemar toets (paired)", "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)"))
       } else if (independent_var_characteristics == "2 groups & unpaired") {
         return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)")
-      # } else if (independent_var_characteristics == "2+ groups & paired") {
-      #   return("Cochran's Q toets (paired)")
       } else if (independent_var_characteristics == "2+ groups") {
         return(c(
           "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
@@ -96,8 +88,6 @@ choose_statistical_test <- function(dependent_var, independent_var, paired = FAL
     } else if (dependent_var_characteristics == "nominal/ordinal") {
       if (independent_var_characteristics == "1 group") {
         return("Chi-square goodness-of-fit test en multinomiaaltoets")
-      # } else if (independent_var_characteristics == "2 groups & paired") {
-      #   return(c("Bhapkar toets", "Wilcoxon signed rank toets II (paired)"))
       } else if (independent_var_characteristics == "2 groups") {
         return(c(
           "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",

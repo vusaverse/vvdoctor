@@ -107,62 +107,6 @@ app_server <- function(input, output, session) {
   })
 
 
-  # Determine the type of dependent variable
-  determine_dependent_variable <- function(dependent_var) {
-
-    # Check if the selected dependent variable is numeric/float
-    if (is.numeric(dependent_var)) {
-      # Perform Shapiro-Wilk test on the dependent variable
-      shapiro_test <- stats::shapiro.test(dependent_var)
-
-      # Check if the p-value is less than 0.05
-      if (shapiro_test$p.value < 0.05) {
-        "Assumption of Normality violated by the dependent variable."
-      } else {
-        "Assumption of Normality met by the dependent variable."
-      }
-    } else if (is.character(dependent_var)) {
-      # Check if the selected dependent variable has 2 unique values (binary) or more than 2 (nominal/ordinal)
-      unique_values <- length(unique(dependent_var))
-      if (unique_values == 2) {
-        "The selected dependent variable is binary."
-      } else if (unique_values > 2) {
-        "The selected dependent variable is nominal/ordinal."
-      } else {
-        "The selected dependent variable has invalid data."
-      }
-    } else {
-      "The selected dependent variable is not numeric or character."
-    }
-  }
-
-  # Determine the type of independent variable
-  determine_independent_variable <- function(independent_var) {
-    # Check if the selected independent variable is numeric/float
-    if (is.numeric(independent_var)) {
-      "The selected independent variable is numeric."
-    } else if (is.character(independent_var)) {
-      # Check if the selected independent variable has 2 unique values or more than 2
-      unique_values <- length(unique(independent_var))
-      if (unique_values == 2) {
-        "The selected independent variable has 2 unique values."
-      } else if (unique_values > 2) {
-        "The selected independent variable has more than 2 unique values."
-      } else {
-        "The selected independent variable has invalid data."
-      }
-    } else {
-      "The selected independent variable is not numeric or character."
-    }
-  }
-
-  # Create the histogram plot for the dependent variable
-  create_dependent_variable_histogram <- function(dependent_var) {
-    if (is.numeric(dependent_var)) {
-      graphics::hist(dependent_var, main = "Histogram of Dependent Variable", xlab = "Values")
-    }
-  }
-
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   shiny::observeEvent(input$statistical_test, {
@@ -212,7 +156,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Mann-Whitney U toets I / Mood's mediaan toets: ", e))
       })
-    } else if (input$statistical_test == "Kruskal Wallis toets I") {
+    } else if (input$statistical_test == "Kruskal Wallis toets I (unpaired)") {
       tryCatch({
         result <- stats::kruskal.test(input$dependent_var ~ input$independent_var, data())
         output$test_report <- shiny::renderPrint({
@@ -451,10 +395,10 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Wilcoxon signed rank toets II (paired): ", e))
       })
-    } else if (input$statistical_test == "Mann-Whitney U toets II") {
+    } else if (input$statistical_test == "Mann-Whitney U toets II (unpaired)") {
       # Perform the Mann-Whitney U toets II
       # ...
-    } else if (input$statistical_test == "Multilevel multinomiale logistische regressie") {
+    } else if (input$statistical_test == "Multilevel multinomiale logistische regressie (paired)") {
       # Perform the Multilevel multinomiale logistische regressie
       # ...
     } else if (input$statistical_test == "Friedman's ANOVA II (paired)") {
@@ -504,12 +448,15 @@ app_server <- function(input, output, session) {
           "Error: An issue occurred while performing the Spearman Correlation."
         })
       })
+    } else if (input$statistical_test == "No appropriate statistical test found for the given combination of dependent and independent variables.") {
+      output$test_report <- shiny::renderPrint({
+        "No appropriate statistical test found for the given combination of dependent and independent variables."
+      })
     }
-
-
-
-
 
   })
 
 }
+
+
+
