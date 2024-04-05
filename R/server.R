@@ -15,11 +15,11 @@ app_server <- function(input, output, session) {
         "Welcome to the Statistical Test App. Let's start by uploading a file.",
         "Select the separator used in your file.",
         "Check this if your file has a header.",
-        "Choose the dependent variable from this dropdown.",
-        "Choose the independent variable from this dropdown.",
+        "Choose the dependent variable from this dropdown. The dependent variable is the outcome or response variable that is being studied and measured.",
+        "Choose the independent variable from this dropdown. The independent is like the 'cause' or the 'input' that is being tested to see its effect on something else.",
         "Enter the mean here.",
         "Choose the identifier from this dropdown.",
-        "Choose the statistical test from this dropdown."
+        "Choose the statistical test from this dropdown. When should you use a paired or unpaired test? A paired test is used when the participants in the data are in both groups. For instance, if you want to research the effect of two different programs, and all the participants took both programs, you should use a paired test. If only part of the participants took one program and the other part of the participants took the other program, you should use an unpaired test. Other examples of unpaired tests would be differences between gender or A/B testing."
       )
     )
   })
