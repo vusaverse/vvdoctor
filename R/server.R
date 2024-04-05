@@ -243,7 +243,20 @@ app_server <- function(input, output, session) {
       })
     } else if (input$statistical_test == "Independent samples t-test (unpaired)") {
       tryCatch({
-        result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
+        # Ensure data is a reactive expression that returns a data frame
+        # Assuming data() is defined elsewhere in your Shiny app
+        data_frame <- data()
+
+        # Convert the independent variable to a factor
+        data_frame[[input$independent_var]] <- as.factor(data_frame[[input$independent_var]])
+
+        # Ensure the independent variable has exactly two levels
+        if (length(levels(data_frame[[input$independent_var]])) != 2) {
+          stop("The independent variable must have exactly two levels for an independent t-test.")
+        }
+
+        # Perform the independent t-test
+        result <- stats::t.test(data_frame[[input$dependent_var]] ~ data_frame[[input$independent_var]],
                                 paired = FALSE,
                                 alternative = "two.sided",
                                 var.equal = FALSE)
@@ -253,6 +266,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Independent samples t-test: ", e))
       })
+
     } else if (input$statistical_test == "Repeated measures ANOVA") {
       tryCatch({
         result <- ez::ezANOVA(data(), dv = input$dependent_var, wid = input$identifier_var,
@@ -264,15 +278,24 @@ app_server <- function(input, output, session) {
         print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
       })
     } else if (input$statistical_test == "One-way ANOVA (unpaired)") {
-      tryCatch({
-        res.aov <- stats::aov(input$dependent_var ~ input$independent_var, data = input$data)
-        result <- summary(res.aov)
-        output$test_report <- shiny::renderPrint({
-          result
+        tryCatch({
+          # Ensure data is a reactive expression that returns a data frame
+          # Assuming data() is defined elsewhere in your Shiny app
+          data_frame <- data()
+
+          # Convert the independent variable to a factor
+          data_frame[[input$independent_var]] <- as.factor(data_frame[[input$independent_var]])
+
+          # Perform the ANOVA
+          res.aov <- stats::aov(data_frame[[input$dependent_var]] ~ data_frame[[input$independent_var]])
+          result <- summary(res.aov)
+          output$test_report <- shiny::renderPrint({
+            result
+          })
+        }, error = function(e) {
+          print(paste0("Caught an error while performing One-way ANOVA: ", e))
         })
-      }, error = function(e) {
-        print(paste0("Caught an error while performing One-way ANOVA: ", e))
-      })
+
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
       ## Retrieve the data from input
       data <- data()
@@ -320,7 +343,7 @@ app_server <- function(input, output, session) {
       output$test_report <- shiny::renderPrint({
         result
       })
-    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets") {
+    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)") {
       ## Retrieve the data from input
       data <- data()
 
@@ -350,8 +373,13 @@ app_server <- function(input, output, session) {
       #   result
       # })
 
-    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I") {
+    } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)") {
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I
+      result <- stats::chisq.test(data()[[input$dependent_var]], data()[[input$independent_var]])
+      # Display the test report
+      output$test_report <- shiny::renderPrint({
+        result
+      })
       # ...
     } else if (input$statistical_test == "Chi-square goodness-of-fit test en multinomiaaltoets") {
       # Perform the Chi-square goodness-of-fit test en multinomiaaltoets
@@ -400,22 +428,31 @@ app_server <- function(input, output, session) {
       # Perform the Kruskal Wallis toets II
       # ...
     } else if (input$statistical_test == "Pearson Correlation") {
-
-      result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "pearson")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "pearson")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Pearson Correlation: ", e))
+        output$test_report <- shiny::renderPrint({
+          "Error: An issue occurred while performing the Pearson Correlation."
+        })
       })
     } else if (input$statistical_test == "Spearman Correlation") {
-
-      result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "spearman")
-
-      # Display the test report
-      output$test_report <- shiny::renderPrint({
-        result
+      tryCatch({
+        result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "spearman")
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      }, error = function(e) {
+        print(paste0("Caught an error while performing Spearman Correlation: ", e))
+        output$test_report <- shiny::renderPrint({
+          "Error: An issue occurred while performing the Spearman Correlation."
+        })
       })
     }
+
 
 
 
