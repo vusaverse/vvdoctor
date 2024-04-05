@@ -15,11 +15,11 @@ app_server <- function(input, output, session) {
         "Welcome to the Statistical Test App. Let's start by uploading a file.",
         "Select the separator used in your file.",
         "Check this if your file has a header.",
-        "Choose the dependent variable from this dropdown.",
-        "Choose the independent variable from this dropdown.",
+        "Choose the dependent variable from this dropdown. The dependent variable is the outcome or response variable that is being studied and measured.",
+        "Choose the independent variable from this dropdown. The independent is like the 'cause' or the 'input' that is being tested to see its effect on something else.",
         "Enter the mean here.",
         "Choose the identifier from this dropdown.",
-        "Choose the statistical test from this dropdown."
+        "Choose the statistical test from this dropdown. When should you use a paired or unpaired test? A paired test is used when the participants in the data are in both groups. For instance, if you want to research the effect of two different programs, and all the participants took both programs, you should use a paired test. If only part of the participants took one program and the other part of the participants took the other program, you should use an unpaired test. Other examples of unpaired tests would be differences between gender or A/B testing."
       )
     )
   })
@@ -115,9 +115,9 @@ app_server <- function(input, output, session) {
 
       # Check if the p-value is less than 0.05
       if (shapiro_test$p.value < 0.05) {
-        "The selected dependent variable is not normally distributed."
+        "Assumption of Normality violated by the dependent variable."
       } else {
-        "The selected dependent variable is normally distributed."
+        "Assumption of Normality met by the dependent variable."
       }
     } else if (is.character(dependent_var)) {
       # Check if the selected dependent variable has 2 unique values (binary) or more than 2 (nominal/ordinal)
@@ -165,6 +165,7 @@ app_server <- function(input, output, session) {
   # Inside the app_server function
   shiny::observeEvent(input$statistical_test, {
     shiny::req(input$dependent_var, input$independent_var, data())
+    message(input$statistical_test)
 
     if (input$independent_var == "reference value") {
       mu <- input$input_mean
@@ -179,7 +180,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Tekentoets I: ", e))
       })
-    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II") {
+    } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II (paired)") {
       tryCatch({
         result <- stats::wilcox.test(input$dependent_var ~ input$independent_var, data(),
                                      paired = TRUE,
@@ -190,7 +191,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Wilcoxon signed rank toets I / Tekentoets II: ", e))
       })
-    } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets") {
+    } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)") {
       tryCatch({
         data <- data()
         dependent_var <- input$dependent_var
@@ -238,7 +239,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Paired t-test: ", e))
       })
-    } else if (input$statistical_test == "Independent samples t-test") {
+    } else if (input$statistical_test == "Independent samples t-test (unpaired)") {
       tryCatch({
         result <- stats::t.test(input$dependent_var ~ input$independent_var, data(),
                                 paired = FALSE,
@@ -260,7 +261,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
       })
-    } else if (input$statistical_test == "One-way ANOVA") {
+    } else if (input$statistical_test == "One-way ANOVA (unpaired)") {
       tryCatch({
         res.aov <- stats::aov(input$dependent_var ~ input$independent_var, data = input$data)
         result <- summary(res.aov)
@@ -385,7 +386,7 @@ app_server <- function(input, output, session) {
     } else if (input$statistical_test == "Multilevel multinomiale logistische regressie") {
       # Perform the Multilevel multinomiale logistische regressie
       # ...
-    } else if (input$statistical_test == "Friedman's ANOVA II") {
+    } else if (input$statistical_test == "Friedman's ANOVA II (paired)") {
       # Perform the Friedman's ANOVA II test
       result <- perform_friedman_test(input$dependent_var, input$independent_var, data())
 
@@ -393,7 +394,7 @@ app_server <- function(input, output, session) {
       output$test_report <- shiny::renderPrint({
         result
       })
-    } else if (input$statistical_test == "Kruskal Wallis toets II") {
+    } else if (input$statistical_test == "Kruskal Wallis toets II (unpaired)") {
       # Perform the Kruskal Wallis toets II
       # ...
     }
