@@ -64,15 +64,18 @@ handle_file_upload <- function(input, output, session) {
     header <- input$header
 
     # Read the uploaded file based on its extension
-    tryCatch({
-      data(read_funcs[[ext]](full_path, sep, header))
-    }, error = function(e) {
-      # Log the error
-      message("An error occurred: ", e$message)
+    tryCatch(
+      {
+        data(read_funcs[[ext]](full_path, sep, header))
+      },
+      error = function(e) {
+        # Log the error
+        message("An error occurred: ", e$message)
 
-      # Reset the data reactive value
-      data(NULL)
-    })
+        # Reset the data reactive value
+        data(NULL)
+      }
+    )
 
     # Populate the first dropdown with column names
     shiny::updateSelectInput(session, "independent_var", choices = c("", colnames(data())))
@@ -89,7 +92,6 @@ handle_file_upload <- function(input, output, session) {
 
 # Determine the type of dependent variable
 determine_dependent_variable <- function(dependent_var) {
-
   # Check if the selected dependent variable is numeric/float
   if (is.numeric(dependent_var)) {
     # Perform Shapiro-Wilk test on the dependent variable

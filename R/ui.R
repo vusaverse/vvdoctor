@@ -21,14 +21,16 @@ app_ui <- function() {
         # UI elements for separator and header
         rintrojs::introBox(
           shiny::radioButtons("sep", "Separator",
-                              choices = c(Comma = ",",
-                                          Semicolon = ";",
-                                          Tab = "\t"),
-                              selected = ","),
+            choices = c(
+              Comma = ",",
+              Semicolon = ";",
+              Tab = "\t"
+            ),
+            selected = ","
+          ),
           data.step = 1,
           data.intro = "Select the separator used in your file."
         ),
-
         rintrojs::introBox(
           shiny::checkboxInput("header", "Header", TRUE),
           data.step = 2,
@@ -55,7 +57,6 @@ app_ui <- function() {
           data.step = 5,
           data.intro = "Choose the independent variable from this dropdown."
         ),
-
         rintrojs::introBox(
           shiny::textOutput("independent_var_text"), # New output element for the independent variable text
           data.step = 6,
