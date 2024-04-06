@@ -110,8 +110,9 @@ app_server <- function(input, output, session) {
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   shiny::observeEvent(input$statistical_test, {
-    shiny::req(input$dependent_var, input$independent_var, data())
+    shiny::req(input$dependent_var, input$independent_var, input$identifier_var, data())
     message(input$statistical_test)
+    # message(input$identifier_var)
 
     if (input$independent_var == "reference value") {
       mu <- input$input_mean
@@ -125,6 +126,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Tekentoets I: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II (paired)") {
       tryCatch({
@@ -136,6 +140,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Wilcoxon signed rank toets I / Tekentoets II: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)") {
       tryCatch({
@@ -155,6 +162,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Mann-Whitney U toets I / Mood's mediaan toets: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Kruskal Wallis toets I (unpaired)") {
       tryCatch({
@@ -164,6 +174,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Kruskal Wallis toets I: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "One sample t-test") {
       tryCatch({
@@ -173,6 +186,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing One sample t-test: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Paired t-test (paired)") {
       tryCatch({
@@ -198,6 +214,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Independent samples t-test: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Independent samples t-test (unpaired)") {
       tryCatch({
@@ -223,6 +242,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Independent samples t-test: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
 
     } else if (input$statistical_test == "Repeated measures ANOVA (paired)") {
@@ -234,6 +256,9 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "One-way ANOVA (unpaired)") {
         tryCatch({
@@ -252,6 +277,9 @@ app_server <- function(input, output, session) {
           })
         }, error = function(e) {
           print(paste0("Caught an error while performing One-way ANOVA: ", e))
+          output$test_report <- shiny::renderPrint({
+            cat(paste0("Error: ", e))
+          })
         })
 
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
@@ -303,10 +331,12 @@ app_server <- function(input, output, session) {
 
         # Display the test report
         output$test_report <- shiny::renderPrint({
-          result
+          print(result)
         })
       }, error = function(e) {
-        print(paste0("Caught an error while performing McNemar toets (paired): ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error occurred while performing McNemar toets (paired): ", e))
+        })
       })
     } else if (input$statistical_test == "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)") {
       ## Retrieve the data from input
@@ -326,7 +356,9 @@ app_server <- function(input, output, session) {
       # Perform the Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets
       # ...
     } else if (input$statistical_test == "Cochran's Q toets (paired)") {
-      print("here")
+      output$test_report <- shiny::renderPrint({
+        "NOTE: The test chosen is yet to be implemented."
+      })
       # Perform the Cochran's Q toets
       # ## hardcoded
       ## erronunous
@@ -349,6 +381,9 @@ app_server <- function(input, output, session) {
     } else if (input$statistical_test == "Chi-square goodness-of-fit test en multinomiaaltoets") {
       # Perform the Chi-square goodness-of-fit test en multinomiaaltoets
       # ...
+      output$test_report <- shiny::renderPrint({
+        "NOTE: The test chosen is yet to be implemented."
+      })
     } else if (input$statistical_test == "Bhapkar toets") {
       ## Retrieve the data from input
       data <- data()
@@ -394,11 +429,20 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Wilcoxon signed rank toets II (paired): ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Mann-Whitney U toets II (unpaired)") {
       # Perform the Mann-Whitney U toets II
+      output$test_report <- shiny::renderPrint({
+        "NOTE: The test chosen is yet to be implemented."
+      })
       # ...
     } else if (input$statistical_test == "Multilevel multinomiale logistische regressie (paired)") {
+      output$test_report <- shiny::renderPrint({
+        "NOTE: The test chosen is yet to be implemented."
+      })
       # Perform the Multilevel multinomiale logistische regressie
       # ...
     } else if (input$statistical_test == "Friedman's ANOVA II (paired)") {
@@ -420,10 +464,16 @@ app_server <- function(input, output, session) {
         })
       }, error = function(e) {
         print(paste0("Caught an error while performing Friedman's ANOVA II (paired): ", e))
+        output$test_report <- shiny::renderPrint({
+          cat(paste0("Error: ", e))
+        })
       })
     } else if (input$statistical_test == "Kruskal Wallis toets II (unpaired)") {
       # Perform the Kruskal Wallis toets II
       # ...
+      output$test_report <- shiny::renderPrint({
+        "NOTE: The test chosen is yet to be implemented."
+      })
     } else if (input$statistical_test == "Pearson Correlation") {
       tryCatch({
         result <- stats::cor(data()[[input$dependent_var]], data()[[input$independent_var]], method = "pearson")
@@ -433,7 +483,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Pearson Correlation: ", e))
         output$test_report <- shiny::renderPrint({
-          "Error: An issue occurred while performing the Pearson Correlation."
+          cat(paste0("Error: ", e))
         })
       })
     } else if (input$statistical_test == "Spearman Correlation") {
@@ -445,7 +495,7 @@ app_server <- function(input, output, session) {
       }, error = function(e) {
         print(paste0("Caught an error while performing Spearman Correlation: ", e))
         output$test_report <- shiny::renderPrint({
-          "Error: An issue occurred while performing the Spearman Correlation."
+          cat(paste0("Error: ", e))
         })
       })
     } else if (input$statistical_test == "No appropriate statistical test found for the given combination of dependent and independent variables.") {
@@ -457,6 +507,5 @@ app_server <- function(input, output, session) {
   })
 
 }
-
 
 

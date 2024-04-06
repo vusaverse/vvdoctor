@@ -4,13 +4,12 @@
 #'
 #' @param dependent_var The dependent variable.
 #' @param independent_var The independent variable.
-#' @param paired Logical indicating whether the independent variable is paired or unpaired. Default is FALSE.
 #'
 #' @return The name of the chosen statistical test.
 #'
 #' @export
 #'
-choose_statistical_test <- function(dependent_var, independent_var, paired = FALSE) {
+choose_statistical_test <- function(dependent_var, independent_var) {
   # Determine the characteristics of the dependent variable
   if (is.numeric(dependent_var)) {
     shapiro_test <- stats::shapiro.test(dependent_var)
