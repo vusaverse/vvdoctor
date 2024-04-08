@@ -185,6 +185,26 @@ perform_statistical_test <- function(data, input) {
            },
            "Pearson Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "pearson"),
            "Spearman Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "spearman"),
+           "Cochran's Q Test (paired)" = {
+             data[[dependent_var]] <- as.factor(data[[dependent_var]])
+             data[[independent_var]] <- as.factor(data[[independent_var]])
+             cochranQTest::cochranQTest(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+           },
+           "Fisher's Exact Test (unpaired)" = {
+             data[[dependent_var]] <- as.factor(data[[dependent_var]])
+             data[[independent_var]] <- as.factor(data[[independent_var]])
+             stats::fisher.test(data[[dependent_var]], data[[independent_var]])
+           },
+           "Friedman's ANOVA II (paired)" = {
+             data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+             data[[independent_var]] <- as.factor(data[[independent_var]])
+             stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+           },
+           "Multilevel Logistic Regression (paired)" = {
+             data[[dependent_var]] <- as.factor(data[[dependent_var]])
+             data[[independent_var]] <- as.factor(data[[independent_var]])
+             lme4::glmer(data[[dependent_var]] ~ data[[independent_var]] + (1 | data[[identifier_var]]), data, family = binomial)
+           },
            stop(paste0("No appropriate statistical test found for the given combination of dependent and independent variables: ", dependent_var, " and ", independent_var))
     )
   }, error = function(e) {

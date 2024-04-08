@@ -84,7 +84,7 @@ choose_statistical_test <- function(dependent_var, independent_var) {
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
         "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
-        "Cochran's Q toets (paired)"
+        "Cochran's Q test (paired)"
       ))
     }
   } else if (dependent_var_characteristics == "nominal/ordinal") {
@@ -99,7 +99,7 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       ))
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
-        "Multilevel multinomiale logistische regressie (paired)",
+        "Multilevel Logistic Regression (paired)",
         "Friedman's ANOVA II (paired)",
         "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
         "Kruskal Wallis toets II (unpaired)"
