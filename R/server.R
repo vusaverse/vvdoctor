@@ -108,12 +108,14 @@ app_server <- function(input, output, session) {
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   shiny::observeEvent(input$statistical_test, {
-    shiny::req(input$dependent_var, input$independent_var, input$identifier_var, data())
+    shiny::req(input$dependent_var, input$independent_var, input$identifier_var, input$input_mean, data())
     message(input$statistical_test)
     # message(input$identifier_var)
 
     if (input$independent_var == "reference value") {
       mu <- input$input_mean
+    } else {
+      mu <- mean(data()[, input$dependent_var], na.rm = TRUE)
     }
 
     if (input$statistical_test == "Tekentoets I") {
@@ -191,20 +193,29 @@ app_server <- function(input, output, session) {
         }
       )
     } else if (input$statistical_test == "One sample t-test") {
-      tryCatch(
-        {
-          result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
-          output$test_report <- shiny::renderPrint({
-            result
-          })
-        },
-        error = function(e) {
-          print(paste0("Caught an error while performing One sample t-test: ", e))
-          output$test_report <- shiny::renderPrint({
-            cat(paste0("Error: ", e))
-          })
+      observeEvent(c(input$independent_var, input$input_mean), {
+        # Determine the value of mu based on the user's selection
+        if (input$independent_var == "reference value") {
+          mu <- input$input_mean
+        } else {
+          mu <- mean(data()[, input$dependent_var], na.rm = TRUE)
         }
-      )
+
+        tryCatch(
+          {
+            result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
+            output$test_report <- shiny::renderPrint({
+              result
+            })
+          },
+          error = function(e) {
+            print(paste0("Caught an error while performing One sample t-test: ", e))
+            output$test_report <- shiny::renderPrint({
+              cat(paste0("Error: ", e))
+            })
+          }
+        )
+      })
     } else if (input$statistical_test == "Paired t-test (paired)") {
       tryCatch(
         {
@@ -270,23 +281,21 @@ app_server <- function(input, output, session) {
         }
       )
     } else if (input$statistical_test == "Repeated measures ANOVA (paired)") {
-      tryCatch(
-        {
-          result <- ez::ezANOVA(data(),
-            dv = input$dependent_var, wid = input$identifier_var,
-            within = input$independent_var
-          )
-          output$test_report <- shiny::renderPrint({
-            result
-          })
-        },
-        error = function(e) {
-          print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
-          output$test_report <- shiny::renderPrint({
-            cat(paste0("Error: ", e))
-          })
-        }
-      )
+      result <- perform_repeated_measures_anova(data(),
+                                                input$dependent_var,
+                                                input$identifier_var,
+                                                input$independent_var)
+
+      if (!is.null(result)) {
+        output$test_report <- shiny::renderPrint({
+          result
+        })
+      } else {
+        output$test_report <- shiny::renderPrint({
+          "Error occurred while performing Repeated measures ANOVA."
+        })
+      }
+
     } else if (input$statistical_test == "One-way ANOVA (unpaired)") {
       tryCatch(
         {
@@ -554,3 +563,6 @@ app_server <- function(input, output, session) {
     }
   })
 }
+
+
+
