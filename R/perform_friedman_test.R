@@ -10,9 +10,9 @@
 #'
 #' @export
 #'
-perform_friedman_test <- function(dependent_var, independent_var, data) {
-  # Create the formula for the test
-  formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "| Studentnummer"))
+perform_friedman_test <- function(dependent_var, independent_var, identifier_var, data) {
+  # Create the formula for the test using paste to construct the formula string
+  formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
 
   # Perform the Friedman's ANOVA II test
   result <- stats::friedman.test(formula, data)
@@ -20,3 +20,4 @@ perform_friedman_test <- function(dependent_var, independent_var, data) {
   # Return the test result
   return(result)
 }
+

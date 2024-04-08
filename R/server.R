@@ -551,7 +551,8 @@ app_server <- function(input, output, session) {
 
           # Perform the Friedman's ANOVA II test
           # Assuming perform_friedman_test is a custom function you've defined elsewhere
-          result <- perform_friedman_test(data_frame[[input$dependent_var]], data_frame[[input$independent_var]], data_frame)
+          result <- perform_friedman_test(input$dependent_var, input$independent_var, input$identifier_var, data_frame)
+          # result <- perform_friedman_test(data_frame[[input$dependent_var]], data_frame[[input$independent_var]], data_frame)
 
           # Display the test report
           output$test_report <- shiny::renderPrint({

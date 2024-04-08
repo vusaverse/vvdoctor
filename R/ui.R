@@ -70,12 +70,15 @@ app_ui <- function() {
           data.intro = "Enter the mean here."
         ),
 
-        # Dropdown for choosing the independent variable
-        rintrojs::introBox(
-          shiny::uiOutput("identifier_dropdown"),
-          data.step = 8,
-          data.intro = "Choose the identifier from this dropdown."
+        conditionalPanel(
+          condition = "input.statistical_test == 'Repeated measures ANOVA (paired)'",
+          rintrojs::introBox(
+            shiny::uiOutput("identifier_dropdown"),
+            data.step = 8,
+            data.intro = "Choose the identifier from this dropdown."
+          )
         ),
+
 
         # New dropdown for selecting statistical test
         rintrojs::introBox(
