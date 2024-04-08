@@ -55,11 +55,21 @@ app_server <- function(input, output, session) {
 
   output$input_mean <- shiny::renderUI({
     shiny::req(data())
-    shiny::req(input$independent_var)
+    shiny::req(input$dependent_var)
+
+    ## Retrieve the data from input
+    data <- data()
+
+    ## Calculate the mean of the data, if it's a valid value
+    if (is.numeric(data[[input$dependent_var]])) {
+      reference_value <- mean(data[[input$dependent_var]], na.rm = TRUE)
+    } else {
+      reference_value <- NULL
+    }
 
     ## Only show input field if reference value is selected
     if (input$independent_var == "reference value") {
-      shiny::numericInput("input_mean", "Set reference value", value = mean(data()[, input$dependent_var], na.rm = TRUE))
+      shiny::numericInput("input_mean", "Set reference value", value = reference_value)
     }
   })
 
@@ -119,20 +129,28 @@ app_server <- function(input, output, session) {
     }
 
     if (input$statistical_test == "Tekentoets I") {
-      tryCatch(
-        {
-          result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
-          output$test_report <- shiny::renderPrint({
-            result
-          })
-        },
-        error = function(e) {
-          print(paste0("Caught an error while performing Tekentoets I: ", e))
-          output$test_report <- shiny::renderPrint({
-            cat(paste0("Error: ", e))
-          })
+      observeEvent(c(input$independent_var, input$input_mean, input$statistical_test), {
+        # Determine the value of mu based on the user's selection
+        if (input$independent_var == "reference value") {
+          mu <- input$input_mean
+        } else {
+          mu <- mean(data()[, input$dependent_var], na.rm = TRUE)
         }
-      )
+        tryCatch(
+          {
+            result <- DescTools::SignTest(x = data()[, input$dependent_var], mu = mu, alternative = "two.sided")
+            output$test_report <- shiny::renderPrint({
+              result
+            })
+          },
+          error = function(e) {
+            print(paste0("Caught an error while performing Tekentoets I: ", e))
+            output$test_report <- shiny::renderPrint({
+              cat(paste0("Error: ", e))
+            })
+          }
+        )
+      })
     } else if (input$statistical_test == "Wilcoxon signed rank toets I / Tekentoets II (paired)") {
       tryCatch(
         {
@@ -281,10 +299,12 @@ app_server <- function(input, output, session) {
         }
       )
     } else if (input$statistical_test == "Repeated measures ANOVA (paired)") {
-      result <- perform_repeated_measures_anova(data(),
-                                                input$dependent_var,
-                                                input$identifier_var,
-                                                input$independent_var)
+      result <- perform_repeated_measures_anova(
+        data(),
+        input$dependent_var,
+        input$identifier_var,
+        input$independent_var
+      )
 
       if (!is.null(result)) {
         output$test_report <- shiny::renderPrint({
@@ -295,7 +315,6 @@ app_server <- function(input, output, session) {
           "Error occurred while performing Repeated measures ANOVA."
         })
       }
-
     } else if (input$statistical_test == "One-way ANOVA (unpaired)") {
       tryCatch(
         {
@@ -321,22 +340,48 @@ app_server <- function(input, output, session) {
         }
       )
     } else if (input$statistical_test == "Chi-kwadraat toets voor goodness of fit en binomiaaltoets") {
-      ## Retrieve the data from input
-      data <- data()
+      observeEvent(c(input$independent_var, input$input_mean, input$statistical_test, input$dependent_var), {
+        ## Retrieve the data from input
+        data <- data()
 
-      ## Retrieve the input value for dependent_var
-      dependent_var <- input$dependent_var
+        ## Retrieve the input value for dependent_var
+        dependent_var <- input$dependent_var
 
-      ## Create a table with the counts of students with and without hbo vooropleiding
-      table_var <- table(data[[dependent_var]])
+        ## Create a table with the counts of the dependent variable
+        table_var <- table(data[[dependent_var]])
 
-      ## Calculate the expected frequencies
-      ## hardcoded mu is mean(data()), but not for this case
-      result <- stats::chisq.test(table_var, p = c(0.1113, 1 - 0.1113))
-      #
-      # Perform the Chi-kwadraat toets voor goodness of fit en binomiaaltoets
-      output$test_report <- shiny::renderPrint({
-        result
+        ## Determine the reference value based on the user's selection
+        if (input$independent_var == "reference value") {
+          reference_value <- input$input_mean
+        } else {
+          # Calculate the proportion of the most frequent value in the dependent variable
+          if (is.numeric(data[[dependent_var]])) {
+            reference_value <- mean(data[[dependent_var]], na.rm = TRUE)
+          } else {
+            reference_value <- max(table_var) / sum(table_var)
+          }
+        }
+
+        tryCatch(
+          {
+            # Check if there are any missing values in the data
+            if (any(is.na(data[[dependent_var]]))) {
+              # Handle missing values by excluding them from the analysis
+              table_var <- table(data[[dependent_var]][!is.na(data[[dependent_var]])])
+            }
+
+            result <- stats::chisq.test(table_var, p = c(1 - reference_value, reference_value))
+            output$test_report <- shiny::renderPrint({
+              result
+            })
+          },
+          error = function(e) {
+            print(paste0("Caught an error while performing Chi-kwadraat toets voor goodness of fit en binomiaaltoets: ", e))
+            output$test_report <- shiny::renderPrint({
+              cat(paste0("Error: ", e))
+            })
+          }
+        )
       })
     } else if (input$statistical_test == "McNemar toets (paired)") {
       tryCatch(
@@ -563,6 +608,3 @@ app_server <- function(input, output, session) {
     }
   })
 }
-
-
-
