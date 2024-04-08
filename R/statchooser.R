@@ -53,6 +53,8 @@ choose_statistical_test <- function(dependent_var, independent_var) {
   if (dependent_var_characteristics == "Assumption of Normality violated") {
     if (independent_var_characteristics == "continuous") {
       return("Spearman Correlation")
+    } else if (independent_var_characteristics == "1 group") {
+      return("SignTest I")
     } else if (independent_var_characteristics == "2 groups") {
       return(c(
         "Wilcoxon signed rank toets I / Tekentoets II (paired)",

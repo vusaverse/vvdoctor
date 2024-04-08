@@ -1,34 +1,15 @@
 perform_repeated_measures_anova <- function(data, dependent_var, identifier_var, independent_var) {
-  print(names(data))
-  print(dependent_var)
-  print(independent_var)
-  print(identifier_var)
+  data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+  data[[independent_var]] <- as.factor(data[[independent_var]])
 
+  # Convert dependent variable to integer or factor
+  data[[dependent_var]] <- as.integer(data[[dependent_var]])
 
-  tryCatch(
-    {
-      # Use eval() and substitute() to pass the variables to ezANOVA()
-      result <- eval(
-        substitute(
-          ez::ezANOVA(
-            data = data,
-            wid = identifier_var,
-            dv = dependent_var,
-            within = independent_var
-          ),
-          list(
-            dependent_var = noquote(dependent_var),
-            identifier_var = noquote(identifier_var),
-            independent_var = noquote(independent_var)
-          )
-        )
-      )
+  res.aov <- rstatix::anova_test(data = data,
+                                 dv = data[[dependent_var]],
+                                 wid = data[[identifier_var]],
+                                 within = data[[independent_var]])
 
-      return(result)
-    },
-    error = function(e) {
-      print(paste0("Caught an error while performing Repeated measures ANOVA: ", e))
-      return(NULL)
-    }
-  )
+  rstatix::get_anova_table(res.aov)
 }
+

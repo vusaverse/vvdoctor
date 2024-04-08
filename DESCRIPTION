@@ -42,9 +42,11 @@ Imports:
     fst,
     haven,
     irr,
+    lme4,
     magrittr,
     readxl,
     rintrojs,
+    rstatix,
     shiny,
     shinyjs,
     shinyWidgets

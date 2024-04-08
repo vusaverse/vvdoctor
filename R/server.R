@@ -121,7 +121,6 @@ app_server <- function(input, output, session) {
     result <- perform_statistical_test(data(), input)
     if (!is.null(result)) result
   })
-
 }
 
 
@@ -136,81 +135,91 @@ perform_statistical_test <- function(data, input) {
   mu <- if (independent_var == "reference value") input_mean else mean(data[[dependent_var]], na.rm = TRUE)
 
   # Perform the selected statistical test
-  result <- tryCatch({
-    switch(test_name,
-           "Tekentoets I" = DescTools::SignTest(x = data[[dependent_var]], mu = mu, alternative = "two.sided"),
-           "Wilcoxon signed rank toets I / Tekentoets II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
-           "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)" = {
-             unique_values <- unique(data[[independent_var]])
-             group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
-             group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
-             stats::wilcox.test(group1, group2, paired = FALSE, alternative = "two.sided", conf.int = TRUE)
-           },
-           "Kruskal Wallis toets I (unpaired)" = stats::kruskal.test(data[[dependent_var]] ~ data[[independent_var]], data),
-           "One sample t-test" = stats::t.test(data[[dependent_var]], mu = mu, alternative = "two.sided"),
-           "Paired t-test (paired)" = stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided", var.equal = FALSE),
-           "Independent samples t-test (unpaired)" = {
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             if (length(levels(data[[independent_var]])) != 2) stop("The independent variable must have exactly two levels for an independent t-test.")
-             stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
-           },
-           "Repeated measures ANOVA (paired)" = perform_repeated_measures_anova(data, dependent_var, identifier_var, independent_var),
-           "One-way ANOVA (unpaired)" = {
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             res.aov <- stats::aov(data[[dependent_var]] ~ data[[independent_var]])
-             summary(res.aov)
-           },
-           "Chi-kwadraat toets voor goodness of fit en binomiaaltoets" = {
-             table_var <- table(data[[dependent_var]], useNA = "no")
-             reference_value <- if (independent_var == "reference value") input_mean else max(table_var) / sum(table_var)
-             stats::chisq.test(table_var, p = c(1 - reference_value, reference_value))
-           },
-           "McNemar toets (paired)" = {
-             unique_values <- unique(data[[independent_var]])
-             group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
-             group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
-             group_matrix <- table(group1, group2)
-             exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE)
-           },
-           "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)" = stats::chisq.test(data[[dependent_var]], data[[independent_var]]),
-           "Bhapkar toets" = {
-             unique_values <- unique(data[[independent_var]])
-             group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
-             group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
-             irr::bhapkar(cbind(group1, group2))
-           },
-           "Wilcoxon signed rank toets II (paired)" = {
-             data[[dependent_var]] <- as.numeric(as.factor(data[[dependent_var]]))
-             stats::wilcox.test(data[[dependent_var]], paired = TRUE)
-           },
-           "Pearson Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "pearson"),
-           "Spearman Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "spearman"),
-           "Cochran's Q Test (paired)" = {
-             data[[dependent_var]] <- as.factor(data[[dependent_var]])
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             cochranQTest::cochranQTest(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
-           },
-           "Fisher's Exact Test (unpaired)" = {
-             data[[dependent_var]] <- as.factor(data[[dependent_var]])
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             stats::fisher.test(data[[dependent_var]], data[[independent_var]])
-           },
-           "Friedman's ANOVA II (paired)" = {
-             data[[dependent_var]] <- as.numeric(data[[dependent_var]])
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
-           },
-           "Multilevel Logistic Regression (paired)" = {
-             data[[dependent_var]] <- as.factor(data[[dependent_var]])
-             data[[independent_var]] <- as.factor(data[[independent_var]])
-             lme4::glmer(data[[dependent_var]] ~ data[[independent_var]] + (1 | data[[identifier_var]]), data, family = binomial)
-           },
-           stop(paste0("No appropriate statistical test found for the given combination of dependent and independent variables: ", dependent_var, " and ", independent_var))
-    )
-  }, error = function(e) {
-    cat(paste0("Error: ", e))
-    NULL
-  })
+  result <- tryCatch(
+    {
+      switch(test_name,
+        "SignTest I" = DescTools::SignTest(x = data[[dependent_var]], mu = mu, alternative = "two.sided"),
+        "Wilcoxon signed rank toets I / Tekentoets II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
+        "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)" = {
+          unique_values <- unique(data[[independent_var]])
+          group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+          group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+          stats::wilcox.test(group1, group2, paired = FALSE, alternative = "two.sided", conf.int = TRUE)
+        },
+        "Kruskal Wallis toets I (unpaired)" = stats::kruskal.test(data[[dependent_var]] ~ data[[independent_var]], data),
+        "One sample t-test" = stats::t.test(data[[dependent_var]], mu = mu, alternative = "two.sided"),
+        "Paired t-test (paired)" = stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided", var.equal = FALSE),
+        "Independent samples t-test (unpaired)" = {
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          if (length(levels(data[[independent_var]])) != 2) stop("The independent variable must have exactly two levels for an independent t-test.")
+          stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
+        },
+        "Repeated measures ANOVA (paired)" = perform_repeated_measures_anova(data, dependent_var, identifier_var, independent_var),
+        "One-way ANOVA (unpaired)" = {
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          res.aov <- stats::aov(data[[dependent_var]] ~ data[[independent_var]])
+          summary(res.aov)
+        },
+        "Chi-kwadraat toets voor goodness of fit en binomiaaltoets" = {
+          table_var <- table(data[[dependent_var]], useNA = "no")
+          reference_value <- if (independent_var == "reference value") input_mean else max(table_var) / sum(table_var)
+          stats::chisq.test(table_var, p = c(1 - reference_value, reference_value))
+        },
+        "McNemar toets (paired)" = { ## Error: Error in exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE): 'x' must have at least 2 rows and columns
+          unique_values <- unique(data[[independent_var]])
+          group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+          group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+          group_matrix <- table(group1, group2)
+          exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE)
+        },
+        "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)" = stats::chisq.test(data[[dependent_var]], data[[independent_var]]),
+        "Bhapkar toets" = {
+          unique_values <- unique(data[[independent_var]])
+          group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
+          group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
+          irr::bhapkar(cbind(group1, group2))
+        },
+        "Wilcoxon signed rank toets II (paired)" = {
+          data[[dependent_var]] <- as.numeric(as.factor(data[[dependent_var]]))
+          stats::wilcox.test(data[[dependent_var]], paired = TRUE)
+        },
+        "Pearson Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "pearson"),
+        "Spearman Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "spearman"),
+        "Cochran's Q Test (paired)" = {
+          data[[dependent_var]] <- as.factor(data[[dependent_var]])
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          rstatix::cochran_qtest(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+        },
+        "Fisher's Exact Test (unpaired)" = {
+          data[[dependent_var]] <- as.factor(data[[dependent_var]])
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          stats::fisher.test(data[[dependent_var]], data[[independent_var]])
+        },
+        "Friedman's ANOVA I (paired)" = {
+          data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          message(identifier_var)
+          stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+        },
+        "Friedman's ANOVA II (paired)" = {
+          data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+        },
+        "Multilevel Logistic Regression (paired)" = {
+          data[[dependent_var]] <- as.factor(data[[dependent_var]])
+          data[[independent_var]] <- as.factor(data[[independent_var]])
+          message(identifier_var)
+          lme4::glmer(data[[dependent_var]] ~ data[[independent_var]] + (1 | data[[identifier_var]]), data, family = binomial)
+        },
+        stop(paste0("No appropriate statistical test found for the given combination of dependent and independent variables: ", dependent_var, " and ", independent_var))
+      )
+    },
+    error = function(e) {
+      cat(paste0("Error: ", e))
+      NULL
+    }
+  )
 
   return(result)
 }
