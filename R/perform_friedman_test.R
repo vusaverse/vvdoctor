@@ -14,12 +14,23 @@
 perform_friedman_test <- function(dependent_var, independent_var, identifier_var, data) {
   # Create the formula for the test using paste to construct the formula string
   message(dependent_var)
-  formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
 
-  # Perform the Friedman's ANOVA II test
-  result <- stats::friedman.test(formula, data)
+  # Construct the formula directly without using as.formula
+  formula <- reformulate(independent_var, dependent_var, groups = identifier_var)
+  message(formula)
 
-  # Return the test result
-  return(result)
+  tryCatch(
+    {
+      # Perform the Friedman's ANOVA II test
+      result <- stats::friedman.test(formula, data = data)
+      return(result)
+    },
+    error = function(e) {
+      print(paste0("Caught an error while performing Friedman's ANOVA II (paired): ", e))
+      return(NULL)
+    }
+  )
 }
+
+
 

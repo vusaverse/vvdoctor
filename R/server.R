@@ -118,9 +118,13 @@ app_server <- function(input, output, session) {
   # Perform the statistical test using the selected variables
   # Inside the app_server function
   shiny::observeEvent(input$statistical_test, {
-    shiny::req(input$dependent_var, input$independent_var, input$identifier_var, input$input_mean, data())
+    shiny::req(input$dependent_var, input$independent_var, input$input_mean, data())
     message(input$statistical_test)
     # message(input$identifier_var)
+
+    output$test_report <- shiny::renderPrint({
+      cat(paste0("Welcome: "))
+    })
 
     if (input$independent_var == "reference value") {
       mu <- input$input_mean

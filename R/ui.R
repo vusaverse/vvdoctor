@@ -70,8 +70,9 @@ app_ui <- function() {
           data.intro = "Enter the mean here."
         ),
 
-        conditionalPanel(
+        shiny::conditionalPanel(
           condition = "input.statistical_test == 'Repeated measures ANOVA (paired)'",
+          # condition = "input.statistical_test == 'Friedman\\'s ANOVA II (paired)'",
           rintrojs::introBox(
             shiny::uiOutput("identifier_dropdown"),
             data.step = 8,
