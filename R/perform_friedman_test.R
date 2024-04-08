@@ -4,6 +4,7 @@
 #'
 #' @param dependent_var The name of the dependent variable.
 #' @param independent_var The name of the independent variable.
+#' @param identifier_var The name of the identifier variable.
 #' @param data The data frame containing the variables.
 #'
 #' @return The result of the Friedman's ANOVA II test.
@@ -12,6 +13,7 @@
 #'
 perform_friedman_test <- function(dependent_var, independent_var, identifier_var, data) {
   # Create the formula for the test using paste to construct the formula string
+  message(dependent_var)
   formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
 
   # Perform the Friedman's ANOVA II test

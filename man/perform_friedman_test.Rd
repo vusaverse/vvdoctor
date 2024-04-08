@@ -4,12 +4,14 @@
 \alias{perform_friedman_test}
 \title{Perform Friedman's ANOVA II Test}
 \usage{
-perform_friedman_test(dependent_var, independent_var, data)
+perform_friedman_test(dependent_var, independent_var, identifier_var, data)
 }
 \arguments{
 \item{dependent_var}{The name of the dependent variable.}
 
 \item{independent_var}{The name of the independent variable.}
+
+\item{identifier_var}{The name of the identifier variable.}
 
 \item{data}{The data frame containing the variables.}
 }
