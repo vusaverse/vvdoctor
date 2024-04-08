@@ -215,28 +215,29 @@ app_server <- function(input, output, session) {
         }
       )
     } else if (input$statistical_test == "One sample t-test") {
-      observeEvent(c(input$independent_var, input$input_mean), {
+      observeEvent(c(input$independent_var, input$input_mean, input$statistical_test), {
         # Determine the value of mu based on the user's selection
         if (input$independent_var == "reference value") {
           mu <- input$input_mean
         } else {
           mu <- mean(data()[, input$dependent_var], na.rm = TRUE)
         }
-
-        tryCatch(
-          {
-            result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
-            output$test_report <- shiny::renderPrint({
-              result
-            })
-          },
-          error = function(e) {
-            print(paste0("Caught an error while performing One sample t-test: ", e))
-            output$test_report <- shiny::renderPrint({
-              cat(paste0("Error: ", e))
-            })
-          }
-        )
+        if (input$statistical_test == "One sample t-test") {
+          tryCatch(
+            {
+              result <- stats::t.test(data(), mu = mu, alternative = "two.sided")
+              output$test_report <- shiny::renderPrint({
+                result
+              })
+            },
+            error = function(e) {
+              print(paste0("Caught an error while performing One sample t-test: ", e))
+              output$test_report <- shiny::renderPrint({
+                cat(paste0("Error: ", e))
+              })
+            }
+          )
+        }
       })
     } else if (input$statistical_test == "Paired t-test (paired)") {
       tryCatch(
