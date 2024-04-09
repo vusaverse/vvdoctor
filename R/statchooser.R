@@ -57,7 +57,7 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       return("SignTest I")
     } else if (independent_var_characteristics == "2 groups") {
       return(c(
-        "Wilcoxon signed rank toets I / Tekentoets II (paired)",
+        "Wilcoxon signed rank toets I / SignTest II (paired)",
         "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)"
       ))
     } else if (independent_var_characteristics == "2+ groups") {

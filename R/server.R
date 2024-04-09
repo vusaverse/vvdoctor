@@ -139,7 +139,7 @@ perform_statistical_test <- function(data, input) {
     {
       switch(test_name,
         "SignTest I" = DescTools::SignTest(x = data[[dependent_var]], mu = mu, alternative = "two.sided"),
-        "Wilcoxon signed rank toets I / Tekentoets II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
+        "Wilcoxon signed rank toets I / SignTest II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
         "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)" = {
           unique_values <- unique(data[[independent_var]])
           group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
@@ -202,9 +202,18 @@ perform_statistical_test <- function(data, input) {
           stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
         },
         "Friedman's ANOVA II (paired)" = {
-          data[[dependent_var]] <- as.numeric(data[[dependent_var]])
-          data[[independent_var]] <- as.factor(data[[independent_var]])
-          stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+
+
+          message(dependent_var)
+
+          message(deparse(dependent_var))
+          message(substitute(dependent_var))
+          message(deparse(substitute(dependent_var)))
+
+          perform_friedman_test_now(data, substitute(dependent_var), substitute(independent_var), substitute(identifier_var))
+          # data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+          # data[[independent_var]] <- as.factor(data[[independent_var]])
+          # stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
         },
         "Multilevel Logistic Regression (paired)" = {
           data[[dependent_var]] <- as.factor(data[[dependent_var]])
@@ -222,4 +231,22 @@ perform_statistical_test <- function(data, input) {
   )
 
   return(result)
+}
+
+
+
+perform_friedman_test_now <- function(data, dependent_var, independent_var, identifier_var) {
+  # Check if the required variables exist in the data frame
+  if (!all(c(dependent_var, independent_var, identifier_var) %in% names(data))) {
+    stop("One or more of the specified variables are not present in the data frame.")
+  }
+
+  # Construct the formula
+  formula <- as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
+  message(formula)
+
+  # Perform the Friedman test
+  friedman_result <- friedman.test(formula, data = data)
+
+  return(friedman_result)
 }
