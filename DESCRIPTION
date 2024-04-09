@@ -22,7 +22,7 @@ Authors@R:
            role = "cph"
            ))
 Description: Provides a user-friendly R Shiny app for performing various statistical tests on datasets. 
-  It allows users to upload data in CSV or Excel format and perform statistical analyses. 
+  It allows users to upload data in numerous formats and perform statistical analyses. 
   The app dynamically adapts its options based on the selected columns and supports both single and multiple column comparisons.
   The app's user interface (UI) is designed to streamline the process of selecting datasets, columns, and test options, 
   making it easy for users to explore and interpret their data. The underlying functions for statistical tests are well-organized and can be used independently within other R scripts.
@@ -41,7 +41,6 @@ Imports:
     fst,
     haven,
     irr,
-    lme4,
     magrittr,
     readxl,
     rintrojs,

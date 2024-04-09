@@ -117,7 +117,7 @@ app_server <- function(input, output, session) {
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   ## X. Statistical tests ####
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  output$test_report <- renderPrint({
+  output$test_report <- shiny::renderPrint({
     result <- perform_statistical_test(data(), input)
     if (!is.null(result)) result
   })
@@ -154,7 +154,7 @@ perform_statistical_test <- function(data, input) {
           if (length(levels(data[[independent_var]])) != 2) stop("The independent variable must have exactly two levels for an independent t-test.")
           part_one <- stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
 
-          formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var))) ## formula working example!
+          formula <- stats::as.formula(paste(substitute(dependent_var), "~", substitute(independent_var))) ## formula working example!
           part_two <- rstatix::cohens_d(data, formula,
                      var.equal = TRUE)
 
@@ -206,7 +206,7 @@ perform_statistical_test <- function(data, input) {
           # data[[dependent_var]] <- as.numeric(data[[dependent_var]])
           # data[[independent_var]] <- as.factor(data[[independent_var]])
           # message(identifier_var)
-          # formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var), "|", substitute(identifier_var)))
+          # formula <- stats::as.formula(paste(substitute(dependent_var), "~", substitute(independent_var), "|", substitute(identifier_var)))
           # stats::friedman.test(substitute(dependent_var) ~ substitute(independent_var) | substitute(identifier_var), data)
           # stats::friedman.test(formula, data)
         # },
@@ -251,11 +251,11 @@ perform_friedman_test_now <- function(data, dependent_var, independent_var, iden
   }
 
   # Construct the formula
-  formula <- as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
+  formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
   message(formula)
 
   # Perform the Friedman test
-  friedman_result <- friedman.test(formula, data = data)
+  friedman_result <- stats::friedman.test(formula, data = data)
 
   return(friedman_result)
 }

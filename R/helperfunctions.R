@@ -25,7 +25,7 @@ display_data_table <- function(data) {
 handle_file_upload <- function(input, output, session) {
   # Reactive value to store the uploaded data
   # data <- shiny::reactiveVal(NULL)
-  data <- shiny::reactiveVal(mtcars)
+  data <- shiny::reactiveVal(datasets::mtcars)
 
   # Function to dynamically generate dataset names
   # This is a placeholder. Replace with your actual logic.
@@ -43,7 +43,7 @@ handle_file_upload <- function(input, output, session) {
     # Use the function to get dataset names
     dataset_names <- get_dataset_names()
     # Create a named vector with dataset names as both names and values
-    dataset_choices <- setNames(dataset_names, dataset_names)
+    dataset_choices <- stats::setNames(dataset_names, dataset_names)
     # Add "None" as the first choice with an empty string value
     dataset_choices <- c("None" = "", dataset_choices)
     shiny::selectInput("dataset", "Load R Dataset", choices = dataset_choices)

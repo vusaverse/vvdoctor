@@ -17,19 +17,18 @@ perform_friedman_test <- function(dependent_var, independent_var, identifier_var
 
   # Construct the formula directly without using as.formula
   # formula <- reformulate(independent_var, dependent_var, groups = identifier_var)
-  message(formula)
 
-  tryCatch(
-    {
-      # Perform the Friedman's ANOVA II test
-      result <- stats::friedman.test(formula, data = data)
-      return(result)
-    },
-    error = function(e) {
-      print(paste0("Caught an error while performing Friedman's ANOVA II (paired): ", e))
-      return(NULL)
-    }
-  )
+  # tryCatch(
+  #   {
+  #     # Perform the Friedman's ANOVA II test
+  #     result <- stats::friedman.test(formula, data = data)
+  #     return(result)
+  #   },
+  #   error = function(e) {
+  #     print(paste0("Caught an error while performing Friedman's ANOVA II (paired): ", e))
+  #     return(NULL)
+  #   }
+  # )
 }
 
 
