@@ -24,8 +24,48 @@ display_data_table <- function(data) {
 #'
 handle_file_upload <- function(input, output, session) {
   # Reactive value to store the uploaded data
-  data <- shiny::reactiveVal(NULL)
+  # data <- shiny::reactiveVal(NULL)
+  data <- shiny::reactiveVal(mtcars)
 
+  # Function to dynamically generate dataset names
+  # This is a placeholder. Replace with your actual logic.
+  get_dataset_names <- function() {
+    # Example: Return a vector of dataset names
+    # In a real application, you might fetch this from a database or another source
+    dataset_names <- data()$results[,3]
+    # return(paste(dataset_names,collapse=" "))
+    # return(c(dataset_names))
+    return(c("mtcars", "iris", "airquality"))
+  }
+
+  # Add a dropdown for loading R datasets
+  output$dataset_dropdown <- shiny::renderUI({
+    # Use the function to get dataset names
+    dataset_names <- get_dataset_names()
+    # Create a named vector with dataset names as both names and values
+    dataset_choices <- setNames(dataset_names, dataset_names)
+    # Add "None" as the first choice with an empty string value
+    dataset_choices <- c("None" = "", dataset_choices)
+    shiny::selectInput("dataset", "Load R Dataset", choices = dataset_choices)
+  })
+
+
+  shiny::observeEvent(input$dataset, {
+    dataset_name <- input$dataset
+    if (nchar(dataset_name) > 0) {
+      # Load the selected dataset
+      data_set <- get(dataset_name, envir = as.environment("package:datasets"))
+      # Update the data reactive value with the loaded dataset
+      data(data_set)
+
+      # Populate the dropdowns with column names
+      shiny::updateSelectInput(session, "independent_var", choices = c("", colnames(data())))
+      shiny::updateSelectInput(session, "dependent_var", choices = c("", colnames(data())))
+
+      # Set fileUploaded to TRUE to show the dependent and independent variable dropdowns
+      shiny::updateNumericInput(session, "fileUploaded", value = 1)
+    }
+  })
   # Define a wrapper function that ignores sep and header arguments
   ignore_args <- function(func) {
     function(path, sep = NULL, header = NULL) {

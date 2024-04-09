@@ -15,6 +15,7 @@ app_ui <- function() {
     shiny::sidebarLayout(
       shiny::sidebarPanel(
         shiny::fileInput("file", "Upload a file"),
+        shiny::uiOutput("dataset_dropdown"),
         # Action button for displaying the info panels
         shiny::actionButton("about_app", "About this app"),
 
