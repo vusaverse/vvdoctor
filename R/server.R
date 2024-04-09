@@ -199,7 +199,9 @@ perform_statistical_test <- function(data, input) {
           data[[dependent_var]] <- as.numeric(data[[dependent_var]])
           data[[independent_var]] <- as.factor(data[[independent_var]])
           message(identifier_var)
-          stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+          formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var), "|", substitute(identifier_var)))
+          # stats::friedman.test(substitute(dependent_var) ~ substitute(independent_var) | substitute(identifier_var), data)
+          stats::friedman.test(formula, data)
         },
         "Friedman's ANOVA II (paired)" = {
 
