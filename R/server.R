@@ -152,7 +152,14 @@ perform_statistical_test <- function(data, input) {
         "Independent samples t-test (unpaired)" = {
           data[[independent_var]] <- as.factor(data[[independent_var]])
           if (length(levels(data[[independent_var]])) != 2) stop("The independent variable must have exactly two levels for an independent t-test.")
-          stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
+          part_one <- stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
+
+          formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var))) ## formula working example!
+          part_two <- rstatix::cohens_d(data, formula,
+                     var.equal = TRUE)
+
+          c(part_one, part_two)
+
         },
         # "Repeated measures ANOVA (paired)" = perform_repeated_measures_anova(data, dependent_var, identifier_var, independent_var),
         "One-way ANOVA (unpaired)" = {
