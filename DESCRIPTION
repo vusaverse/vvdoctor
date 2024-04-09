@@ -37,7 +37,6 @@ Imports:
     DescTools,
     DT,
     exact2x2,
-    ez,
     feather,
     fst,
     haven,

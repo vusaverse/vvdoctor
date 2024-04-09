@@ -16,7 +16,7 @@ perform_friedman_test <- function(dependent_var, independent_var, identifier_var
   message(dependent_var)
 
   # Construct the formula directly without using as.formula
-  formula <- reformulate(independent_var, dependent_var, groups = identifier_var)
+  # formula <- reformulate(independent_var, dependent_var, groups = identifier_var)
   message(formula)
 
   tryCatch(
