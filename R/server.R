@@ -154,7 +154,7 @@ perform_statistical_test <- function(data, input) {
           if (length(levels(data[[independent_var]])) != 2) stop("The independent variable must have exactly two levels for an independent t-test.")
           stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = FALSE, alternative = "two.sided", var.equal = FALSE)
         },
-        "Repeated measures ANOVA (paired)" = perform_repeated_measures_anova(data, dependent_var, identifier_var, independent_var),
+        # "Repeated measures ANOVA (paired)" = perform_repeated_measures_anova(data, dependent_var, identifier_var, independent_var),
         "One-way ANOVA (unpaired)" = {
           data[[independent_var]] <- as.factor(data[[independent_var]])
           res.aov <- stats::aov(data[[dependent_var]] ~ data[[independent_var]])
@@ -185,44 +185,44 @@ perform_statistical_test <- function(data, input) {
         },
         "Pearson Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "pearson"),
         "Spearman Correlation" = stats::cor(data[[dependent_var]], data[[independent_var]], method = "spearman"),
-        "Cochran's Q Test (paired)" = {
-          data[[dependent_var]] <- as.factor(data[[dependent_var]])
-          data[[independent_var]] <- as.factor(data[[independent_var]])
-          rstatix::cochran_qtest(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
-        },
+        # "Cochran's Q Test (paired)" = {
+          # data[[dependent_var]] <- as.factor(data[[dependent_var]])
+          # data[[independent_var]] <- as.factor(data[[independent_var]])
+          # rstatix::cochran_qtest(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+        # },
         "Fisher's Exact Test (unpaired)" = {
           data[[dependent_var]] <- as.factor(data[[dependent_var]])
           data[[independent_var]] <- as.factor(data[[independent_var]])
           stats::fisher.test(data[[dependent_var]], data[[independent_var]])
         },
-        "Friedman's ANOVA I (paired)" = {
-          data[[dependent_var]] <- as.numeric(data[[dependent_var]])
-          data[[independent_var]] <- as.factor(data[[independent_var]])
-          message(identifier_var)
-          formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var), "|", substitute(identifier_var)))
-          # stats::friedman.test(substitute(dependent_var) ~ substitute(independent_var) | substitute(identifier_var), data)
-          stats::friedman.test(formula, data)
-        },
-        "Friedman's ANOVA II (paired)" = {
-
-
-          message(dependent_var)
-
-          message(deparse(dependent_var))
-          message(substitute(dependent_var))
-          message(deparse(substitute(dependent_var)))
-
-          perform_friedman_test_now(data, substitute(dependent_var), substitute(independent_var), substitute(identifier_var))
+        # "Friedman's ANOVA I (paired)" = {
           # data[[dependent_var]] <- as.numeric(data[[dependent_var]])
           # data[[independent_var]] <- as.factor(data[[independent_var]])
-          # stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
-        },
-        "Multilevel Logistic Regression (paired)" = {
-          data[[dependent_var]] <- as.factor(data[[dependent_var]])
-          data[[independent_var]] <- as.factor(data[[independent_var]])
-          message(identifier_var)
-          lme4::glmer(data[[dependent_var]] ~ data[[independent_var]] + (1 | data[[identifier_var]]), data, family = binomial)
-        },
+          # message(identifier_var)
+          # formula <- as.formula(paste(substitute(dependent_var), "~", substitute(independent_var), "|", substitute(identifier_var)))
+          # stats::friedman.test(substitute(dependent_var) ~ substitute(independent_var) | substitute(identifier_var), data)
+          # stats::friedman.test(formula, data)
+        # },
+        # "Friedman's ANOVA II (paired)" = {
+        #
+        #
+        #   message(dependent_var)
+        #
+        #   message(deparse(dependent_var))
+        #   message(substitute(dependent_var))
+        #   message(deparse(substitute(dependent_var)))
+        #
+        #   perform_friedman_test_now(data, substitute(dependent_var), substitute(independent_var), substitute(identifier_var))
+        #   # data[[dependent_var]] <- as.numeric(data[[dependent_var]])
+        #   # data[[independent_var]] <- as.factor(data[[independent_var]])
+        #   # stats::friedman.test(data[[dependent_var]] ~ data[[independent_var]] | data[[identifier_var]], data)
+        # },
+        # "Multilevel Logistic Regression (paired)" = {
+        #   data[[dependent_var]] <- as.factor(data[[dependent_var]])
+        #   data[[independent_var]] <- as.factor(data[[independent_var]])
+        #   message(identifier_var)
+        #   lme4::glmer(data[[dependent_var]] ~ data[[independent_var]] + (1 | data[[identifier_var]]), data, family = binomial)
+        # },
         stop(paste0("No appropriate statistical test found for the given combination of dependent and independent variables: ", dependent_var, " and ", independent_var))
       )
     },

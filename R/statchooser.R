@@ -62,7 +62,7 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       ))
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
-        "Friedman's ANOVA I (paired)",
+        # "Friedman's ANOVA I (paired)",
         "Kruskal Wallis toets I (unpaired)"
       ))
     }
@@ -74,7 +74,9 @@ choose_statistical_test <- function(dependent_var, independent_var) {
     } else if (independent_var_characteristics == "2 groups") {
       return(c("Independent samples t-test (unpaired)", "Paired t-test (paired)"))
     } else if (independent_var_characteristics == "2+ groups") {
-      return(c("One-way ANOVA (unpaired)", "Repeated measures ANOVA (paired)"))
+      return(c("One-way ANOVA (unpaired)"
+               # "Repeated measures ANOVA (paired)"
+               ))
     }
   } else if (dependent_var_characteristics == "binary") {
     if (independent_var_characteristics == "1 group") {
@@ -85,8 +87,8 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)")
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
-        "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
-        "Cochran's Q test (paired)"
+        "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)"
+        # "Cochran's Q test (paired)"
       ))
     }
   } else if (dependent_var_characteristics == "nominal/ordinal") {
@@ -101,8 +103,8 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       ))
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
-        "Multilevel Logistic Regression (paired)",
-        "Friedman's ANOVA II (paired)",
+        # "Multilevel Logistic Regression (paired)",
+        # "Friedman's ANOVA II (paired)",
         "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
         "Kruskal Wallis toets II (unpaired)"
       ))
