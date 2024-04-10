@@ -9,6 +9,8 @@
 
 `vvdoctor` is an R package/Shiny app that provides a user-friendly interface for data analysis. It allows users to upload data files, visualize the data, perform statistical tests, and interpret the results.
 
+The app is currently live on shinyapps.io, see: https://edulytics.shinyapps.io/vvdoctor/
+
 ## Usage
 
 ``` r
