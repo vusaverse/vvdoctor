@@ -33,3 +33,19 @@ perform_friedman_test <- function(dependent_var, independent_var, identifier_var
 
 
 
+
+perform_friedman_test_now <- function(data, dependent_var, independent_var, identifier_var) {
+  # Check if the required variables exist in the data frame
+  if (!all(c(dependent_var, independent_var, identifier_var) %in% names(data))) {
+    stop("One or more of the specified variables are not present in the data frame.")
+  }
+
+  # Construct the formula
+  formula <- stats::as.formula(paste(dependent_var, "~", independent_var, "|", identifier_var))
+  message(formula)
+
+  # Perform the Friedman test
+  friedman_result <- stats::friedman.test(formula, data = data)
+
+  return(friedman_result)
+}
