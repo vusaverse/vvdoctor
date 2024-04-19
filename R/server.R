@@ -6,7 +6,37 @@
 #'
 #' @export
 app_server <- function(input, output, session) {
-  data <- handle_file_upload(input, output, session)
+
+
+  observeEvent(input$launch_modal, {
+    req(input$from)
+    datamods::import_modal(
+      id = "myid",
+      from = input$from,
+      title = "Import data to be used in application"
+    )
+  })
+
+  imported <- datamods::import_server("myid", return_class = "tbl_df")
+#
+#   output$name <- renderPrint({
+#     req(imported$name())
+#     imported$name()
+#   })
+#
+#   output$data <- renderPrint({
+#     req(imported$data())
+#     imported$data()
+#   })
+#
+#   output$str_data <- renderPrint({
+#     req(imported$data())
+#     str(imported$data())
+#   })
+#
+
+
+  sdata <- imported$data
 
   steps <- shiny::reactive({
     data.frame(
@@ -32,20 +62,20 @@ app_server <- function(input, output, session) {
 
   # Display the uploaded data as a datatable
   output$dataTable <- DT::renderDataTable({
-    shiny::req(data())
-    DT::datatable(data())
+    shiny::req(sdata())
+    DT::datatable(sdata())
   })
 
   # Dropdown for choosing the dependent variable
   output$dependent_var_dropdown <- shiny::renderUI({
-    shiny::req(data())
-    shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(data()))
+    shiny::req(sdata())
+    shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(sdata()))
   })
 
   # Dropdown for choosing the independent variable
   output$independent_var_dropdown <- shiny::renderUI({
-    shiny::req(data())
-    choices <- c("reference value", colnames(data()))
+    shiny::req(sdata())
+    choices <- c("reference value", colnames(sdata()))
     shinyWidgets::pickerInput(
       "independent_var",
       "Choose independent variable or reference value",
@@ -54,11 +84,11 @@ app_server <- function(input, output, session) {
   })
 
   output$input_mean <- shiny::renderUI({
-    shiny::req(data())
+    shiny::req(sdata())
     shiny::req(input$dependent_var)
 
     ## Retrieve the data from input
-    data <- data()
+    data <- sdata()
 
     ## Calculate the mean of the data, if it's a valid value
     if (is.numeric(data[[input$dependent_var]])) {
@@ -75,22 +105,22 @@ app_server <- function(input, output, session) {
 
   # Dropdown for choosing the dependent variable
   output$identifier_dropdown <- shiny::renderUI({
-    shiny::req(data())
-    shinyWidgets::pickerInput("identifier_var", "Choose identifier variable", choices = colnames(data()))
+    shiny::req(sdata())
+    shinyWidgets::pickerInput("identifier_var", "Choose identifier variable", choices = colnames(sdata()))
   })
 
   # Text below the dropdowns
   output$dependent_var_text <- shiny::renderText({
     shiny::req(input$dependent_var)
-    determine_dependent_variable(data()[, input$dependent_var])
+    determine_dependent_variable(sdata()[, input$dependent_var])
   })
 
   # Additional text for independent variable
   output$independent_var_text <- shiny::renderText({
     shiny::req(input$independent_var)
 
-    if (input$independent_var %in% colnames(data())) {
-      determine_independent_variable(data()[, input$independent_var])
+    if (input$independent_var %in% colnames(sdata())) {
+      determine_independent_variable(sdata()[, input$independent_var])
     }
   })
 
@@ -101,24 +131,24 @@ app_server <- function(input, output, session) {
     if (input$independent_var == "reference value") {
       independent_var <- "reference value"
     } else {
-      independent_var <- data()[, input$independent_var]
+      independent_var <- sdata()[, input$independent_var]
     }
-    test <- choose_statistical_test(data()[, input$dependent_var], independent_var)
+    test <- choose_statistical_test(sdata()[, input$dependent_var], independent_var)
     test_options <- c(test)
     shinyWidgets::pickerInput("statistical_test", "Choose statistical test", choices = test_options)
   })
 
   # Histogram of the dependent variable
   output$dependent_var_histogram <- shiny::renderPlot({
-    shiny::req(data(), input$dependent_var)
-    create_dependent_variable_histogram(data()[, input$dependent_var])
+    shiny::req(sdata(), input$dependent_var)
+    create_dependent_variable_histogram(sdata()[, input$dependent_var])
   })
 
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   ## X. Statistical tests ####
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   output$test_report <- shiny::renderPrint({
-    result <- perform_statistical_test(data(), input)
+    result <- perform_statistical_test(sdata(), input)
     if (!is.null(result)) result
   })
 }

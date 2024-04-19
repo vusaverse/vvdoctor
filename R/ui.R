@@ -4,18 +4,41 @@
 #'
 app_ui <- function() {
   shiny::fluidPage(
+
     rintrojs::introjsUI(),
     # Application title
-    shiny::titlePanel("Statistical Test App"),
+    shiny::titlePanel("vvdoctor statistics app"),
 
     # Use the shinyjs library
     shinyjs::useShinyjs(),
 
-    # Sidebar with a browse button for file upload and the "About this app" action button
+    # Sidebar with a browse button for file upload anid the "About this app" action button
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        shiny::fileInput("file", "Upload a file"),
-        shiny::uiOutput("dataset_dropdown"),
+        # shiny::fileInput("file", "Upload a file"),
+
+        fluidRow(
+          column(
+            width = 4,
+            checkboxGroupInput(
+              inputId = "from",
+              label = "From",
+              choices = c("env", "file", "copypaste", "googlesheets", "url"),
+              selected = c("env", "file", "copypaste", "googlesheets", "url")
+            ),
+            actionButton("launch_modal", "Launch modal window")
+          ),
+          # column(
+          #   width = 8,
+          #   tags$b("Imported data:"),
+          #   verbatimTextOutput(outputId = "name")
+          #   # verbatimTextOutput(outputId = "data"),
+          #   # verbatimTextOutput(outputId = "str_data")
+          # )
+        ),
+
+
+        # shiny::uiOutput("dataset_dropdown"),
         # Action button for displaying the info panels
         shiny::actionButton("about_app", "About this app"),
 
