@@ -8,32 +8,17 @@
 app_server <- function(input, output, session) {
 
 
-  observeEvent(input$launch_modal, {
-    req(input$from)
+
+  shiny::observeEvent(input$launch_modal, {
     datamods::import_modal(
       id = "myid",
-      from = input$from,
+      from = c("env", "file", "copypaste", "googlesheets", "url"),
       title = "Import data to be used in application"
     )
   })
 
   imported <- datamods::import_server("myid", return_class = "tbl_df")
-#
-#   output$name <- renderPrint({
-#     req(imported$name())
-#     imported$name()
-#   })
-#
-#   output$data <- renderPrint({
-#     req(imported$data())
-#     imported$data()
-#   })
-#
-#   output$str_data <- renderPrint({
-#     req(imported$data())
-#     str(imported$data())
-#   })
-#
+
 
 
   sdata <- imported$data

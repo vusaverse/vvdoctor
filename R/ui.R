@@ -17,49 +17,11 @@ app_ui <- function() {
       shiny::sidebarPanel(
         # shiny::fileInput("file", "Upload a file"),
 
-        fluidRow(
-          column(
-            width = 4,
-            checkboxGroupInput(
-              inputId = "from",
-              label = "From",
-              choices = c("env", "file", "copypaste", "googlesheets", "url"),
-              selected = c("env", "file", "copypaste", "googlesheets", "url")
-            ),
-            actionButton("launch_modal", "Launch modal window")
-          ),
-          # column(
-          #   width = 8,
-          #   tags$b("Imported data:"),
-          #   verbatimTextOutput(outputId = "name")
-          #   # verbatimTextOutput(outputId = "data"),
-          #   # verbatimTextOutput(outputId = "str_data")
-          # )
-        ),
 
+        shiny::actionButton("launch_modal", "Import data"),
 
-        # shiny::uiOutput("dataset_dropdown"),
         # Action button for displaying the info panels
         shiny::actionButton("about_app", "About this app"),
-
-        # UI elements for separator and header
-        rintrojs::introBox(
-          shiny::radioButtons("sep", "Separator",
-            choices = c(
-              Comma = ",",
-              Semicolon = ";",
-              Tab = "\t"
-            ),
-            selected = ","
-          ),
-          data.step = 1,
-          data.intro = "Select the separator used in your file."
-        ),
-        rintrojs::introBox(
-          shiny::checkboxInput("header", "Header", TRUE),
-          data.step = 2,
-          data.intro = "Check this if your file has a header."
-        ),
 
         # Dropdown for choosing the dependent variable
         rintrojs::introBox(
