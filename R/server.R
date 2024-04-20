@@ -17,7 +17,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  imported <- datamods::import_server("myid", return_class = "tbl_df")
+  imported <- datamods::import_server("myid", return_class = "data.frame")
 
 
 
