@@ -6,9 +6,6 @@
 #'
 #' @export
 app_server <- function(input, output, session) {
-
-
-
   shiny::observeEvent(input$launch_modal, {
     datamods::import_modal(
       id = "myid",
@@ -19,9 +16,18 @@ app_server <- function(input, output, session) {
 
   imported <- datamods::import_server("myid", return_class = "data.frame")
 
-
-
-  sdata <- imported$data
+  sdata <- shiny::reactive({
+    if (is.null(imported$data())) {
+      mtcars
+    } else {
+      req(imported$data())
+      if (nrow(imported$data()) == 0) {
+        mtcars
+      } else {
+        imported$data()
+      }
+    }
+  })
 
   steps <- shiny::reactive({
     data.frame(
@@ -137,8 +143,3 @@ app_server <- function(input, output, session) {
     if (!is.null(result)) result
   })
 }
-
-
-
-
-

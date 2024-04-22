@@ -4,7 +4,6 @@
 #'
 app_ui <- function() {
   shiny::fluidPage(
-
     rintrojs::introjsUI(),
     # Application title
     shiny::titlePanel("vvdoctor statistics app"),
