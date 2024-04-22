@@ -4,39 +4,24 @@
 #'
 app_ui <- function() {
   shiny::fluidPage(
+
     rintrojs::introjsUI(),
     # Application title
-    shiny::titlePanel("Statistical Test App"),
+    shiny::titlePanel("vvdoctor statistics app"),
 
     # Use the shinyjs library
     shinyjs::useShinyjs(),
 
-    # Sidebar with a browse button for file upload and the "About this app" action button
+    # Sidebar with a browse button for file upload anid the "About this app" action button
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        shiny::fileInput("file", "Upload a file"),
-        shiny::uiOutput("dataset_dropdown"),
+        # shiny::fileInput("file", "Upload a file"),
+
+
+        shiny::actionButton("launch_modal", "Import data"),
+
         # Action button for displaying the info panels
         shiny::actionButton("about_app", "About this app"),
-
-        # UI elements for separator and header
-        rintrojs::introBox(
-          shiny::radioButtons("sep", "Separator",
-            choices = c(
-              Comma = ",",
-              Semicolon = ";",
-              Tab = "\t"
-            ),
-            selected = ","
-          ),
-          data.step = 1,
-          data.intro = "Select the separator used in your file."
-        ),
-        rintrojs::introBox(
-          shiny::checkboxInput("header", "Header", TRUE),
-          data.step = 2,
-          data.intro = "Check this if your file has a header."
-        ),
 
         # Dropdown for choosing the dependent variable
         rintrojs::introBox(
