@@ -18,11 +18,11 @@ app_server <- function(input, output, session) {
 
   sdata <- shiny::reactive({
     if (is.null(imported$data())) {
-      mtcars
+      datasets::mtcars
     } else {
-      req(imported$data())
+      shiny::req(imported$data())
       if (nrow(imported$data()) == 0) {
-        mtcars
+        datasets::mtcars
       } else {
         imported$data()
       }

@@ -6,9 +6,9 @@ app_ui <- function() {
   shiny::fluidPage(
     rintrojs::introjsUI(),
     # Application title
-    titlePanel(tags$h3("vvdoctor: The App for Statistical Testing", windowTitle = "vvdoctor: The App for Statistical Testing")),
-    titlePanel(tags$h5(
-      tags$a("Our blog",href="https://vusaverse.github.io/posts/vvdoctor_alpha_release.html")
+    shiny::titlePanel(shiny::tags$h3("vvdoctor: The App for Statistical Testing", windowTitle = "vvdoctor: The App for Statistical Testing")),
+    shiny::titlePanel(shiny::tags$h5(
+      shiny::tags$a("Our blog",href="https://vusaverse.github.io/posts/vvdoctor_alpha_release.html")
     )
     ),
     # Use the shinyjs library

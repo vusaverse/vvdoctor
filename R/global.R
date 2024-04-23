@@ -11,7 +11,15 @@ display_data_table <- function(data) {
 }
 
 
-# Determine the type of dependent variable
+#' Determine the Type of Dependent Variable
+#'
+#' This function determines the type of the dependent variable based on its data type and distribution.
+#'
+#' @param dependent_var A vector representing the dependent variable.
+#'
+#' @return A character string indicating the type of the dependent variable.
+#'
+#' @export
 determine_dependent_variable <- function(dependent_var) {
   # Check if the selected dependent variable is numeric/float
   if (is.numeric(dependent_var)) {
@@ -39,7 +47,15 @@ determine_dependent_variable <- function(dependent_var) {
   }
 }
 
-# Determine the type of independent variable
+#' Determine the Type of Independent Variable
+#'
+#' This function determines the type of the independent variable based on its data type and the number of unique values.
+#'
+#' @param independent_var A vector representing the independent variable.
+#'
+#' @return A character string indicating the type of the independent variable.
+#'
+#' @export
 determine_independent_variable <- function(independent_var) {
   # Check if the selected independent variable is numeric/float
   if (is.numeric(independent_var)) {
@@ -59,7 +75,15 @@ determine_independent_variable <- function(independent_var) {
   }
 }
 
-# Create the histogram plot for the dependent variable
+#' Create a Histogram Plot for the Dependent Variable
+#'
+#' This function creates a histogram plot for a numeric dependent variable.
+#'
+#' @param dependent_var A numeric vector representing the dependent variable.
+#'
+#' @return No return value, the function creates a histogram plot.
+#'
+#' @export
 create_dependent_variable_histogram <- function(dependent_var) {
   if (is.numeric(dependent_var)) {
     graphics::hist(dependent_var, main = "Histogram of Dependent Variable", xlab = "Values")
@@ -224,6 +248,18 @@ get_variable_class_info <- function(variable) {
   }
 }
 
+
+
+#' Perform Statistical Test
+#'
+#' This function performs the appropriate statistical test based on the user's input.
+#'
+#' @param data A data frame containing the variables.
+#' @param input A list containing the user's input, including the selected statistical test, dependent variable, independent variable, identifier variable, and input mean.
+#'
+#' @return The result of the statistical test.
+#'
+#' @export
 perform_statistical_test <- function(data, input) {
   test_name <- input$statistical_test
   dependent_var <- input$dependent_var

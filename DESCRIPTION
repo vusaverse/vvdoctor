@@ -33,17 +33,12 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
-    arrow,
     datamods,
     DescTools,
     DT,
     exact2x2,
-    feather,
-    fst,
-    haven,
     irr,
     magrittr,
-    readxl,
     rintrojs,
     rstatix,
     shiny,

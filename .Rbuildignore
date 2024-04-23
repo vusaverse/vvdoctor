@@ -5,6 +5,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^build\.R
-^R/app\.R$
-^R/global\.R$
-
+^app\.R$
+^ui\.R$
