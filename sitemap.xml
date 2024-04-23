@@ -16,6 +16,9 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/app_server.html</loc>
   </url>
   <url>
@@ -23,6 +26,15 @@
   </url>
   <url>
     <loc>/reference/choose_statistical_test.html</loc>
+  </url>
+  <url>
+    <loc>/reference/create_dependent_variable_histogram.html</loc>
+  </url>
+  <url>
+    <loc>/reference/determine_dependent_variable.html</loc>
+  </url>
+  <url>
+    <loc>/reference/determine_independent_variable.html</loc>
   </url>
   <url>
     <loc>/reference/diagnose.html</loc>
@@ -34,13 +46,10 @@
     <loc>/reference/get_variable_class_info.html</loc>
   </url>
   <url>
-    <loc>/reference/handle_file_upload.html</loc>
-  </url>
-  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/perform_friedman_test.html</loc>
+    <loc>/reference/perform_statistical_test.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
