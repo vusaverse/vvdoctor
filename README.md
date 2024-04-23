@@ -5,6 +5,8 @@
 [![R-CMD-check](https://github.com/vusaverse/vvdoctor/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/vusaverse/vvdoctor/actions/workflows/check-standard.yaml)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vusaverse/vvdoctor/badge)](https://www.codefactor.io/repository/github/vusaverse/vvdoctor)
+
+[![](https://img.shields.io/badge/Shiny-shinyapps.io-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://edulytics.shinyapps.io/vvdoctor/)
 <!-- badges: end -->
 
 `vvdoctor` is an R package/Shiny app that provides a user-friendly interface for data analysis. It allows users to upload data files, visualize the data, perform statistical tests, and interpret the results.
