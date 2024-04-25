@@ -6,6 +6,9 @@
 \usage{
 app_ui()
 }
+\value{
+A Shiny UI object
+}
 \description{
 App UI
 }

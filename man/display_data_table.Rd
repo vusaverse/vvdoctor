@@ -9,6 +9,9 @@ display_data_table(data)
 \arguments{
 \item{data}{The data frame to display.}
 }
+\value{
+A Shiny output object representing the data table
+}
 \description{
 Helper function to display a data table in a Shiny app.
 }

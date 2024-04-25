@@ -16,8 +16,8 @@ dependent and independent variables, choose the appropriate statistical test,
 and view the results.
 }
 \examples{
-\dontrun{
-library(vvdoctor)
-diagnose()
+if (interactive()) {
+  diagnose()
 }
+
 }

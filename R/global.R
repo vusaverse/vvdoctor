@@ -3,6 +3,7 @@
 #' Helper function to display a data table in a Shiny app.
 #'
 #' @param data The data frame to display.
+#' @return A Shiny output object representing the data table
 #'
 #' @export
 #'
@@ -370,7 +371,7 @@ perform_statistical_test <- function(data, input) {
       )
     },
     error = function(e) {
-      cat(paste0("Error: ", e))
+      stop(paste0("Error: ", e))
       NULL
     }
   )

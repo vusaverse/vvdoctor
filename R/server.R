@@ -4,6 +4,8 @@
 #' @param output The output object from the Shiny app.
 #' @param session The session object from the Shiny app.
 #'
+#' @return No return value, called for side effects
+#'
 #' @export
 app_server <- function(input, output, session) {
   shiny::observeEvent(input$launch_modal, {

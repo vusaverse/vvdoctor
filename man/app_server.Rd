@@ -13,6 +13,9 @@ app_server(input, output, session)
 
 \item{session}{The session object from the Shiny app.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 App Server
 }

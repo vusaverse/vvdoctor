@@ -6,13 +6,16 @@
 \usage{
 run_vvdoctor()
 }
+\value{
+No return value, the function runs the Shiny app
+}
 \description{
 This function starts the Shiny app, which allows users to upload data and perform
 statistical tests on the dataset.
 }
 \examples{
-\dontrun{
-library(vvdoctor)
-run_statistical_test_app()
+if (interactive()) {
+  run_vvdoctor()
 }
+
 }

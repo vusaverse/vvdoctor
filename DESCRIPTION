@@ -21,7 +21,7 @@ Authors@R:
     person(given = "VU Analytics",
            role = "cph"
            ))
-Description: Provides a user-friendly R Shiny app for performing various statistical tests on datasets. 
+Description: Provides a user-friendly R 'shiny' app for performing various statistical tests on datasets. 
   It allows users to upload data in numerous formats and perform statistical analyses. 
   The app dynamically adapts its options based on the selected columns and supports both single and multiple column comparisons.
   The app's user interface is designed to streamline the process of selecting datasets, columns, and test options, 

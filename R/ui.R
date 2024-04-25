@@ -1,5 +1,6 @@
 #' App UI
 #'
+#' @return A Shiny UI object
 #' @export
 #'
 app_ui <- function() {
