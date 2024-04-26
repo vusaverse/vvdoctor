@@ -1,5 +1,5 @@
 Package: vvdoctor
-Title: Statistical Test App with R Shiny
+Title: Statistical Test App with R 'shiny'
 Version: 0.0.1
 Authors@R: 
   c(person(given = "Tomer", 
@@ -26,7 +26,6 @@ Description: Provides a user-friendly R 'shiny' app for performing various stati
   The app dynamically adapts its options based on the selected columns and supports both single and multiple column comparisons.
   The app's user interface is designed to streamline the process of selecting datasets, columns, and test options, 
   making it easy for users to explore and interpret their data. The underlying functions for statistical tests are well-organized and can be used independently within other R scripts.
-Description, method: The statistical logic in this app is based on Field, A. (2009, ISBN: 9781847879073) "Discovering statistics using SPSS (3rd ed.)" and James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013, ISBN: 9781461471370) "An introduction to statistical learning (1st ed.)".
 URL: https://github.com/vusaverse/vvdoctor,
     https://vusaverse.github.io/vvdoctor/
 License: MIT + file LICENSE
