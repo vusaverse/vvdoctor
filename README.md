@@ -7,6 +7,15 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/vusaverse/vvdoctor/badge)](https://www.codefactor.io/repository/github/vusaverse/vvdoctor)
 
 [![](https://img.shields.io/badge/Shiny-shinyapps.io-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://edulytics.shinyapps.io/vvdoctor/)
+
+[![CRAN status](https://www.r-pkg.org/badges/version/vvdoctor)](https://CRAN.R-project.org/package=vvdoctor/)
+
+<a href="https://diffify.com/R/vvdoctor" target="_blank"><img src="https://diffify.com/diffify-badge.svg" alt="The diffify page for the R package vvdoctor" style="width: 100px; max-width: 100%;"></a>
+
+[![CRAN last month downloads](https://cranlogs.r-pkg.org/badges/last-month/vvdoctor?color=green/)](https://cran.r-project.org/package=vvdoctor/)
+
+[![CRAN last month downloads](https://cranlogs.r-pkg.org/badges/grand-total/vvdoctor?color=green/)](https://cran.r-project.org/package=vvdoctor/)
+
 <!-- badges: end -->
 
 `vvdoctor` is an R package/Shiny app that provides a user-friendly interface for data analysis. It allows users to upload data files, visualize the data, perform statistical tests, and interpret the results.
