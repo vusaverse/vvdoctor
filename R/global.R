@@ -150,13 +150,13 @@ choose_statistical_test <- function(dependent_var, independent_var) {
       return("SignTest I")
     } else if (independent_var_characteristics == "2 groups") {
       return(c(
-        "Wilcoxon signed rank toets I / SignTest II (paired)",
-        "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)"
+        "Wilcoxon Signed-Rank Test I / SignTest II (paired)",
+        "Mann-Whitney U Test I / Mood's Median Test (unpaired)"
       ))
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
         # "Friedman's ANOVA I (paired)",
-        "Kruskal Wallis toets I (unpaired)"
+        "Kruskal-Wallis Test I (unpaired)"
       ))
     }
   } else if (dependent_var_characteristics == "Assumption of Normality met") {
@@ -173,33 +173,33 @@ choose_statistical_test <- function(dependent_var, independent_var) {
     }
   } else if (dependent_var_characteristics == "binary") {
     if (independent_var_characteristics == "1 group") {
-      return("Chi-kwadraat toets voor goodness of fit en binomiaaltoets")
+      return("Chi-Square Goodness-of-Fit Test and Binomial Test")
     } else if (independent_var_characteristics == "2 groups") {
-      return(c("McNemar toets (paired)", "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)"))
+      return(c("McNemar's Test (paired)", "Chi-Square Test of Independence en Fisher's Exact Test (unpaired)"))
     } else if (independent_var_characteristics == "2 groups & unpaired") {
-      return("Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)")
+      return("Chi-Square Test of Independence and Fisher's Exact Test (unpaired)")
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
-        "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)"
+        "Chi-Square Test of Independence and Fisher-Freeman-Halton Exact Test I (unpaired)"
         # "Cochran's Q test (paired)"
       ))
     }
   } else if (dependent_var_characteristics == "nominal/ordinal") {
     if (independent_var_characteristics == "1 group") {
-      return("Chi-square goodness-of-fit test en multinomiaaltoets")
+      return("Chi-square goodness-of-fit test and Multinomial Test")
     } else if (independent_var_characteristics == "2 groups") {
       return(c(
-        "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
-        "Mann-Whitney U toets II (unpaired)",
-        "Bhapkar toets",
-        "Wilcoxon signed rank toets II (paired)"
+        "Chi-Square Test of Independence and Fisher-Freeman-Halton Exact Test I (unpaired)",
+        "Mann-Whitney U Test II (unpaired)",
+        "Bhapkar's Test",
+        "Wilcoxon Signed-Rank Test II (paired)"
       ))
     } else if (independent_var_characteristics == "2+ groups") {
       return(c(
         # "Multilevel Logistic Regression (paired)",
         # "Friedman's ANOVA II (paired)",
-        "Chi-kwadraat toets voor onafhankelijkheid en Fisher-Freeman-Halton exacte toets I (unpaired)",
-        "Kruskal Wallis toets II (unpaired)"
+        "Chi-Square Test of Independence en Fisher-Freeman-Halton Exact Test I (unpaired)",
+        "Kruskal-Wallis Test II (unpaired)"
       ))
     }
   }
@@ -276,14 +276,14 @@ perform_statistical_test <- function(data, input) {
     {
       switch(test_name,
              "SignTest I" = DescTools::SignTest(x = data[[dependent_var]], mu = mu, alternative = "two.sided"),
-             "Wilcoxon signed rank toets I / SignTest II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
-             "Mann-Whitney U toets I / Mood's mediaan toets (unpaired)" = {
+             "Wilcoxon Signed-Rank Test I / SignTest II (paired)" = stats::wilcox.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided"),
+             "Mann-Whitney U Test I / Mood's Median Test (unpaired)" = {
                unique_values <- unique(data[[independent_var]])
                group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
                group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
                stats::wilcox.test(group1, group2, paired = FALSE, alternative = "two.sided", conf.int = TRUE)
              },
-             "Kruskal Wallis toets I (unpaired)" = stats::kruskal.test(data[[dependent_var]] ~ data[[independent_var]], data),
+             "Kruskal-Wallis Test I (unpaired)" = stats::kruskal.test(data[[dependent_var]] ~ data[[independent_var]], data),
              "One sample t-test" = stats::t.test(data[[dependent_var]], mu = mu, alternative = "two.sided"),
              "Paired t-test (paired)" = stats::t.test(data[[dependent_var]] ~ data[[independent_var]], data, paired = TRUE, alternative = "two.sided", var.equal = FALSE),
              "Independent samples t-test (unpaired)" = {
@@ -304,26 +304,26 @@ perform_statistical_test <- function(data, input) {
                res.aov <- stats::aov(data[[dependent_var]] ~ data[[independent_var]])
                summary(res.aov)
              },
-             "Chi-kwadraat toets voor goodness of fit en binomiaaltoets" = {
+             "Chi-Square Goodness-of-Fit Test and Binomial Test" = {
                table_var <- table(data[[dependent_var]], useNA = "no")
                reference_value <- if (independent_var == "reference value") input_mean else max(table_var) / sum(table_var)
                stats::chisq.test(table_var, p = c(1 - reference_value, reference_value))
              },
-             "McNemar toets (paired)" = { ## Error: Error in exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE): 'x' must have at least 2 rows and columns
+             "McNemar's Test (paired)" = { ## Error: Error in exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE): 'x' must have at least 2 rows and columns
                unique_values <- unique(data[[independent_var]])
                group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
                group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
                group_matrix <- table(group1, group2)
                exact2x2::exact2x2(group_matrix, paired = TRUE, midp = TRUE)
              },
-             "Chi-kwadraat toets voor onafhankelijkheid en Fisher's exacte toets (unpaired)" = stats::chisq.test(data[[dependent_var]], data[[independent_var]]),
-             "Bhapkar toets" = {
+             "Chi-Square Test of Independence and Fisher's Exact Test (unpaired)" = stats::chisq.test(data[[dependent_var]], data[[independent_var]]),
+             "Bhapkar's Test" = {
                unique_values <- unique(data[[independent_var]])
                group1 <- data[data[[independent_var]] == unique_values[1], dependent_var]
                group2 <- data[data[[independent_var]] == unique_values[2], dependent_var]
                irr::bhapkar(cbind(group1, group2))
              },
-             "Wilcoxon signed rank toets II (paired)" = {
+             "Wilcoxon Signed-Rank Test II (paired)" = {
                data[[dependent_var]] <- as.numeric(as.factor(data[[dependent_var]]))
                stats::wilcox.test(data[[dependent_var]], paired = TRUE)
              },
