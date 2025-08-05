@@ -19,12 +19,12 @@ app_ui <- function() {
     shiny::sidebarLayout(
       shiny::sidebarPanel(
         shiny::tags$h4("Step 1: Upload Data"),
-        shiny::actionButton("launch_modal", "Import data"),
-        shiny::actionButton("about_app", "About this app"),
+        shiny::actionButton("launch_modal", "Import data", `aria-label` = "Import data"),
+        shiny::actionButton("about_app", "About this app", `aria-label` = "About this app"),
         shiny::tags$hr(),
         shiny::tags$h4("Step 2: Select Variables"),
         rintrojs::introBox(
-          shiny::uiOutput("dependent_var_dropdown"),
+          shiny::uiOutput("dependent_var_dropdown", `aria-label` = "Choose dependent variable"),
           data.step = 3,
           data.intro = "Choose the dependent variable from this dropdown."
         ),
@@ -34,7 +34,7 @@ app_ui <- function() {
           data.intro = "This is the dependent variable text."
         ),
         rintrojs::introBox(
-          shiny::uiOutput("independent_var_dropdown"),
+          shiny::uiOutput("independent_var_dropdown", `aria-label` = "Choose independent variable"),
           data.step = 5,
           data.intro = "Choose the independent variable from this dropdown."
         ),
@@ -59,7 +59,7 @@ app_ui <- function() {
         shiny::tags$hr(),
         shiny::tags$h4("Step 3: Choose Test"),
         rintrojs::introBox(
-          shiny::uiOutput("statistical_test_dropdown"),
+          shiny::uiOutput("statistical_test_dropdown", `aria-label` = "Choose statistical test"),
           data.step = 9,
           data.intro = "Choose the statistical test from this dropdown."
         ),

@@ -56,4 +56,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 5. Accessibility (UI)
+**Feedback:** Screen readers cannot properly interpret the interface. Add `aria-label`, `aria-describedby`, and other ARIA attributes to form controls and interactive elements.
+
+**Implementation:** Added `aria-label` attributes to key sidebar controls (data import, variable selection, test selection, results) for improved accessibility. More ARIA attributes can be added in future iterations.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use a screen reader to navigate the sidebar controls.
+- Confirm that each control is announced with a descriptive label (e.g., "Import data", "Choose dependent variable").
+- Ensure navigation and interaction are accessible for users with assistive technologies.
+
+---
+
 *Add more items as completed.*
