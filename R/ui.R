@@ -36,12 +36,12 @@ app_ui <- function() {
     shiny::sidebarLayout(
       shiny::sidebarPanel(
         shiny::tags$h4(list(shiny::icon("upload"), " Step 1: Upload Data")),
-        shiny::actionButton("launch_modal", list(shiny::icon("upload"), " Import data"), `aria-label` = "Import data"),
-        shiny::actionButton("about_app", list(shiny::icon("info-circle"), " About this app"), `aria-label` = "About this app"),
+        shiny::actionButton("launch_modal", list(shiny::icon("upload"), " Import data"), `aria-label` = "Import data", tabindex = 1),
+        shiny::actionButton("about_app", list(shiny::icon("info-circle"), " About this app"), `aria-label` = "About this app", tabindex = 2),
         shiny::tags$hr(),
         shiny::tags$h4(list(shiny::icon("chart-bar"), " Step 2: Select Variables")),
         rintrojs::introBox(
-          shiny::uiOutput("dependent_var_dropdown", `aria-label` = "Choose dependent variable"),
+          shiny::uiOutput("dependent_var_dropdown", `aria-label` = "Choose dependent variable", tabindex = 3),
           data.step = 3,
           data.intro = "Choose the dependent variable from this dropdown."
         ),
@@ -51,7 +51,7 @@ app_ui <- function() {
           data.intro = "This is the dependent variable text."
         ),
         rintrojs::introBox(
-          shiny::uiOutput("independent_var_dropdown", `aria-label` = "Choose independent variable"),
+          shiny::uiOutput("independent_var_dropdown", `aria-label` = "Choose independent variable", tabindex = 4),
           data.step = 5,
           data.intro = "Choose the independent variable from this dropdown."
         ),
@@ -76,7 +76,7 @@ app_ui <- function() {
         shiny::tags$hr(),
         shiny::tags$h4(list(shiny::icon("flask"), " Step 3: Choose Test")),
         rintrojs::introBox(
-          shiny::uiOutput("statistical_test_dropdown", `aria-label` = "Choose statistical test"),
+          shiny::uiOutput("statistical_test_dropdown", `aria-label` = "Choose statistical test", tabindex = 5),
           data.step = 9,
           data.intro = "Choose the statistical test from this dropdown."
         ),

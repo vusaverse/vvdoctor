@@ -134,4 +134,30 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 11. ARIA labels missing (Accessibility)
+**Feedback:** Screen readers cannot properly interpret the interface. Add `aria-label`, `aria-describedby`, and other ARIA attributes to form controls and interactive elements.
+
+**Implementation:** Added `aria-label` and `aria-describedby` attributes to sidebar controls and main panel outputs for improved accessibility. Ensured all interactive elements are accessible to screen readers.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use a screen reader to navigate the app.
+- Confirm that all controls and outputs are announced with descriptive labels and descriptions.
+- Ensure navigation and interaction are accessible for users with assistive technologies.
+
+---
+
+### 12. Keyboard navigation (Accessibility)
+**Feedback:** Test and ensure all functionality is accessible via keyboard navigation, particularly for dropdown menus and modal dialogs.
+
+**Implementation:** Verified and updated UI controls to ensure all sidebar and main panel elements (dropdowns, buttons, modal dialogs) are accessible via keyboard navigation. Added tabindex attributes where needed.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use Tab, Shift+Tab, and arrow keys to navigate between all interactive elements.
+- Confirm that dropdowns, buttons, and modal dialogs are accessible and usable without a mouse.
+- Ensure keyboard focus indicators are visible and navigation order is logical.
+
+---
+
 *Add more items as completed.*
