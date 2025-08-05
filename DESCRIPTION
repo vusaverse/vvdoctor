@@ -42,5 +42,6 @@ Imports:
     rintrojs,
     rstatix,
     shiny,
+    shinycssloaders,
     shinyjs,
     shinyWidgets

@@ -94,11 +94,11 @@ app_ui <- function() {
       shiny::mainPanel(
         shiny::tabsetPanel(
           shiny::tabPanel("Data Preview",
-            DT::dataTableOutput("dataTable")
+            shinycssloaders::withSpinner(DT::dataTableOutput("dataTable"))
           ),
           shiny::tabPanel("Variable Analysis",
             shiny::tags$div(
-              shiny::plotOutput("dependent_var_histogram"),
+              shinycssloaders::withSpinner(shiny::plotOutput("dependent_var_histogram")),
               role = "img",
               `aria-label` = "Histogram of dependent variable"
             )

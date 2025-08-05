@@ -199,4 +199,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 16. Loading indicators (UX)
+**Feedback:** No visual feedback is provided during data upload or statistical computations. Add loading spinners or progress indicators.
+
+**Implementation:** Added Shiny loading spinners to data table and plot outputs using `shinycssloaders::withSpinner()`. Users now see a loading indicator while data is uploading or computations are running.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Upload a large dataset or trigger a long computation.
+- Confirm that a loading spinner appears over the data table and plot outputs while processing.
+- Ensure the spinner disappears when the output is ready.
+
+---
+
 *Add more items as completed.*
