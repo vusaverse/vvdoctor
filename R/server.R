@@ -55,8 +55,17 @@ app_server <- function(input, output, session) {
 
   # Display the uploaded data as a datatable
   output$dataTable <- DT::renderDataTable({
-    shiny::req(sdata())
-    DT::datatable(sdata())
+    tryCatch({
+      shiny::req(sdata())
+      DT::datatable(sdata())
+    }, error = function(e) {
+      shiny::showNotification(
+        paste("Error displaying data table:", e$message),
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   # Dropdown for choosing the dependent variable
@@ -145,7 +154,16 @@ app_server <- function(input, output, session) {
   ## X. Statistical tests ####
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   output$test_report <- shiny::renderPrint({
-    result <- perform_statistical_test(sdata(), input)
-    if (!is.null(result)) result
+    tryCatch({
+      result <- perform_statistical_test(sdata(), input)
+      if (!is.null(result)) result
+    }, error = function(e) {
+      shiny::showNotification(
+        paste("Analysis error:", e$message),
+        type = "error",
+        duration = 7
+      )
+      "An error occurred during analysis. Please check your inputs."
+    })
   })
 }

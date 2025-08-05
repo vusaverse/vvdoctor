@@ -43,4 +43,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 4. Error messaging (UX)
+**Feedback:** Error messages are technical and displayed in the console output area. Implement user-friendly error notifications with clear, actionable messages displayed prominently.
+
+**Implementation:** Updated error handling in server logic to display user-friendly error notifications using Shiny's `showNotification()` for common input and analysis errors.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Trigger an error (e.g., upload an invalid file, select incompatible variables, run a test with missing data).
+- Confirm that a clear, user-friendly error notification appears at the top of the app, describing the issue and suggesting an action.
+- Ensure technical error details are not shown to the user.
+
+---
+
 *Add more items as completed.*
