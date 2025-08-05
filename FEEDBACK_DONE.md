@@ -95,4 +95,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 8. Color scheme (UI)
+**Feedback:** The app uses default Shiny styling. Consider implementing a cohesive color scheme that aligns with the VU Analytics branding and improves visual appeal.
+
+**Implementation:** Updated the UI to use a custom color palette for sidebar, main panel, and buttons. Added CSS styles to match VU Analytics branding colors (blue, gold, white, and dark gray).
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Confirm that the sidebar, main panel, and buttons use the new color scheme.
+- Check that the colors are consistent with VU Analytics branding and improve visual appeal.
+- Ensure text and controls remain readable and accessible with the new colors.
+
+---
+
 *Add more items as completed.*
