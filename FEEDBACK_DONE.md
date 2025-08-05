@@ -69,4 +69,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 6. Responsive design (UI)
+**Feedback:** The current layout may not work well on smaller screens. Test and improve responsiveness, especially for mobile devices and tablets.
+
+**Implementation:** Updated the UI to use `shiny::fluidRow()` and `shiny::column()` with flexible widths, and added `shiny::tags$style()` for basic mobile responsiveness. Sidebar and main panel elements now adapt better to different screen sizes.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app on desktop, tablet, and mobile devices.
+- Resize the browser window and confirm that sidebar and main panel elements adjust layout and remain usable.
+- Check that controls and outputs do not overflow or become inaccessible on small screens.
+- Confirm that the app remains visually appealing and functional across device types.
+
+---
+
 *Add more items as completed.*

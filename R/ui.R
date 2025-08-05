@@ -5,6 +5,22 @@
 #'
 app_ui <- function() {
   shiny::fluidPage(
+    shiny::tags$head(
+      shiny::tags$style(HTML('
+        @media (max-width: 768px) {
+          .sidebarPanel, .mainPanel {
+            width: 100% !important;
+            float: none !important;
+          }
+          .shiny-input-container {
+            width: 100% !important;
+          }
+        }
+        .mainPanel {
+          overflow-x: auto;
+        }
+      '))
+    ),
     rintrojs::introjsUI(),
     # Application title
     shiny::titlePanel(shiny::tags$h3("vvdoctor: The App for Statistical Testing", windowTitle = "vvdoctor: The App for Statistical Testing")),
