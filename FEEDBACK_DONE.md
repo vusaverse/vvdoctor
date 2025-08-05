@@ -11,9 +11,22 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 **How to Test:**
 - Launch the vvdoctor Shiny app.
-- Verify sidebar controls are grouped into tabs or accordions.
-- Confirm each workflow stage is accessible and controls are logically organized.
-- Check that the sidebar is less cluttered and easier to navigate.
+- Trigger an error (e.g., upload an invalid file, select incompatible variables, run a test with missing data).
+- Confirm that a clear, user-friendly error notification appears at the top of the app, describing the issue and suggesting an action.
+- Ensure technical error details are not shown to the user.
+
+---
+
+### 18. Help and documentation (UX)
+**Feedback:** While intro.js is implemented, consider adding contextual help tooltips and a comprehensive help section for statistical interpretation.
+
+**Implementation:** Added contextual help tooltips to sidebar controls using `shinyWidgets::tooltip()`. Created a new "Help" tab in the main panel with guidance on statistical interpretation and app usage.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Hover over sidebar controls and confirm that help tooltips appear with relevant explanations.
+- Open the "Help" tab in the main panel and verify that it contains comprehensive documentation and interpretation guidance.
+- Ensure help content is clear, accessible, and improves user understanding.
 
 ---
 
