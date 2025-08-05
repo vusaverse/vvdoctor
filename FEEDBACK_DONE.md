@@ -160,4 +160,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 13. Color contrast (Accessibility)
+**Feedback:** Verify that text-background color combinations meet WCAG 2.1 AA standards (minimum 4.5:1 ratio for normal text).
+
+**Implementation:** Updated CSS styles to ensure sufficient color contrast for all text and UI elements. Used accessible color combinations for sidebar, main panel, buttons, and outputs.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use a color contrast checker (e.g., WebAIM Contrast Checker) on sidebar, main panel, buttons, and outputs.
+- Confirm that all text-background combinations meet or exceed the 4.5:1 contrast ratio.
+- Ensure the app remains visually appealing and readable for all users.
+
+---
+
 *Add more items as completed.*

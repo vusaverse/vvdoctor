@@ -7,16 +7,18 @@ app_ui <- function() {
   shiny::fluidPage(
     shiny::tags$head(
       shiny::tags$style(HTML('
-        /* VU Analytics branding colors */
+        /* VU Analytics branding colors and accessible contrast */
         body { background-color: #f5f5f5; }
-        .sidebarPanel { background-color: #002d72; color: #fff; }
-        .mainPanel { background-color: #fff; color: #222; overflow-x: auto; }
+        .sidebarPanel { background-color: #002d72; color: #ffffff; }
+        .mainPanel { background-color: #ffffff; color: #222222; overflow-x: auto; }
         .btn, .shiny-input-container .action-button { background-color: #ffc72c; color: #002d72; border: none; }
         .btn:hover, .shiny-input-container .action-button:hover { background-color: #002d72; color: #ffc72c; }
         .tabset-panel > .nav-tabs > li.active > a { background-color: #ffc72c !important; color: #002d72 !important; }
         .tabset-panel > .nav-tabs > li > a { color: #002d72 !important; }
         .shiny-output-error { color: #d32f2f; background: #fff3e0; padding: 8px; border-radius: 4px; }
         .shiny-input-container { width: 100% !important; }
+        h4, h3, h5, label, .form-label { color: #002d72 !important; background: #fff !important; }
+        .form-control, .picker { background: #fff !important; color: #222 !important; }
         @media (max-width: 768px) {
           .sidebarPanel, .mainPanel { width: 100% !important; float: none !important; }
         }
