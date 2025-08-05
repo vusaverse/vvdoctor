@@ -173,4 +173,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 14. Focus indicators (Accessibility)
+**Feedback:** Ensure visible focus indicators are present for all interactive elements when navigating with keyboard.
+
+**Implementation:** Updated CSS to add clear, high-contrast focus outlines to all buttons, dropdowns, and input fields. Ensured that keyboard navigation highlights the currently focused element.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use Tab and Shift+Tab to navigate between interactive elements.
+- Confirm that each element receives a visible focus indicator (e.g., colored outline or shadow).
+- Ensure the focus indicator is easy to see and meets accessibility standards.
+
+---
+
 *Add more items as completed.*

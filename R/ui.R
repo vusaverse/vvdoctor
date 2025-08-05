@@ -22,6 +22,12 @@ app_ui <- function() {
         @media (max-width: 768px) {
           .sidebarPanel, .mainPanel { width: 100% !important; float: none !important; }
         }
+        /* Focus indicators for accessibility */
+        button:focus, .action-button:focus, .btn:focus, select:focus, input:focus, .shiny-input-container:focus {
+          outline: 3px solid #ffc72c !important;
+          outline-offset: 2px;
+          box-shadow: 0 0 0 2px #002d72;
+        }
       '))
     ),
     rintrojs::introjsUI(),
