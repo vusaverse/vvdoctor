@@ -82,4 +82,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 7. Visual hierarchy (UI)
+**Feedback:** Important elements like the statistical test results get lost in the sidebar. Move key results to the main panel with better typography and visual emphasis.
+
+**Implementation:** Updated the main panel to display statistical test results with larger font and highlighted background for emphasis. Sidebar no longer displays test results.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Run a statistical test and check that the results are shown in the main panel, not the sidebar.
+- Confirm the results are visually prominent (larger font, highlighted background).
+- Ensure users can easily find and interpret the test results.
+
+---
+
 *Add more items as completed.*

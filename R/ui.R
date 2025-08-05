@@ -80,25 +80,20 @@ app_ui <- function() {
           data.intro = "Choose the statistical test from this dropdown."
         ),
         shiny::tags$hr(),
-        shiny::tags$h4("Step 4: View Results"),
-        rintrojs::introBox(
-          shiny::verbatimTextOutput("test_report"),
-          data.step = 10,
-          data.intro = "This is the area to display the test report."
-        )
+        shiny::tags$h4("Step 4: View Results")
       ),
       shiny::mainPanel(
         shiny::tabsetPanel(
-          tabPanel("Data Preview",
+          shiny::tabPanel("Data Preview",
             DT::dataTableOutput("dataTable")
           ),
-          tabPanel("Variable Analysis",
+          shiny::tabPanel("Variable Analysis",
             shiny::plotOutput("dependent_var_histogram")
           ),
-          tabPanel("Test Results",
+          shiny::tabPanel("Test Results",
             shiny::verbatimTextOutput("test_report")
           ),
-          tabPanel("Interpretation",
+          shiny::tabPanel("Interpretation",
             shiny::textOutput("interpretation_text") # Placeholder for interpretation guidance
           )
         )
