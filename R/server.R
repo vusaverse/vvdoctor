@@ -128,6 +128,10 @@ app_server <- function(input, output, session) {
     }
     test <- choose_statistical_test(sdata()[, input$dependent_var], independent_var)
     test_options <- c(test)
+  # Placeholder for interpretation guidance
+  output$interpretation_text <- shiny::renderText({
+    "Interpretation guidance will be shown here."
+  })
     shinyWidgets::pickerInput("statistical_test", "Choose statistical test", choices = test_options)
   })
 

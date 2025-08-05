@@ -72,9 +72,19 @@ app_ui <- function() {
         )
       ),
       shiny::mainPanel(
-        shiny::fluidRow(
-          shiny::column(width = 12, DT::dataTableOutput("dataTable")),
-          shiny::column(width = 12, shiny::plotOutput("dependent_var_histogram"))
+        shiny::tabsetPanel(
+          tabPanel("Data Preview",
+            DT::dataTableOutput("dataTable")
+          ),
+          tabPanel("Variable Analysis",
+            shiny::plotOutput("dependent_var_histogram")
+          ),
+          tabPanel("Test Results",
+            shiny::verbatimTextOutput("test_report")
+          ),
+          tabPanel("Interpretation",
+            shiny::textOutput("interpretation_text") # Placeholder for interpretation guidance
+          )
         )
       )
     )
