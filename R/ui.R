@@ -35,11 +35,11 @@ app_ui <- function() {
     # Sidebar with a browse button for file upload anid the "About this app" action button
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        shiny::tags$h4("Step 1: Upload Data"),
-        shiny::actionButton("launch_modal", "Import data", `aria-label` = "Import data"),
-        shiny::actionButton("about_app", "About this app", `aria-label` = "About this app"),
+        shiny::tags$h4(list(shiny::icon("upload"), " Step 1: Upload Data")),
+        shiny::actionButton("launch_modal", list(shiny::icon("upload"), " Import data"), `aria-label` = "Import data"),
+        shiny::actionButton("about_app", list(shiny::icon("info-circle"), " About this app"), `aria-label` = "About this app"),
         shiny::tags$hr(),
-        shiny::tags$h4("Step 2: Select Variables"),
+        shiny::tags$h4(list(shiny::icon("chart-bar"), " Step 2: Select Variables")),
         rintrojs::introBox(
           shiny::uiOutput("dependent_var_dropdown", `aria-label` = "Choose dependent variable"),
           data.step = 3,
@@ -74,14 +74,14 @@ app_ui <- function() {
           )
         ),
         shiny::tags$hr(),
-        shiny::tags$h4("Step 3: Choose Test"),
+        shiny::tags$h4(list(shiny::icon("flask"), " Step 3: Choose Test")),
         rintrojs::introBox(
           shiny::uiOutput("statistical_test_dropdown", `aria-label` = "Choose statistical test"),
           data.step = 9,
           data.intro = "Choose the statistical test from this dropdown."
         ),
         shiny::tags$hr(),
-        shiny::tags$h4("Step 4: View Results")
+        shiny::tags$h4(list(shiny::icon("table"), " Step 4: View Results"))
       ),
       shiny::mainPanel(
         shiny::tabsetPanel(

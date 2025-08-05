@@ -108,4 +108,30 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 9. Spacing and padding (UI)
+**Feedback:** Increase whitespace between UI elements to improve readability and reduce visual clutter.
+
+**Implementation:** Updated the UI CSS to add more padding and margin between sidebar and main panel elements, buttons, and input controls for improved readability.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Confirm that sidebar and main panel elements have increased spacing and padding.
+- Check that controls and outputs are easier to read and visually separated.
+- Ensure the app feels less cluttered and more comfortable to use.
+
+---
+
+### 10. Icons and visual cues (UI)
+**Feedback:** Add icons to buttons and sections to improve visual communication (e.g., upload icon for data import, chart icon for variables).
+
+**Implementation:** Updated sidebar buttons and section headers to include relevant icons using `shiny::icon()` (e.g., upload, info, chart, test, results).
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Confirm that sidebar buttons and section headers display appropriate icons.
+- Check that icons improve visual communication and make navigation easier.
+- Ensure icons are clear, accessible, and do not clutter the UI.
+
+---
+
 *Add more items as completed.*
