@@ -97,7 +97,11 @@ app_ui <- function() {
             DT::dataTableOutput("dataTable")
           ),
           shiny::tabPanel("Variable Analysis",
-            shiny::plotOutput("dependent_var_histogram")
+            shiny::tags$div(
+              shiny::plotOutput("dependent_var_histogram"),
+              role = "img",
+              `aria-label` = "Histogram of dependent variable"
+            )
           ),
           shiny::tabPanel("Test Results",
             shiny::verbatimTextOutput("test_report")

@@ -186,4 +186,17 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
+### 15. Alternative text (Accessibility)
+**Feedback:** The histogram and any other visual content should have descriptive alt text for screen readers.
+
+**Implementation:** Added `alt` attributes to histogram and plot outputs in the main panel, providing descriptive alternative text for screen readers.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Use a screen reader to navigate to the histogram and other visual outputs.
+- Confirm that each plot is announced with a descriptive alt text (e.g., "Histogram of dependent variable").
+- Ensure alternative text is meaningful and improves accessibility for visually impaired users.
+
+---
+
 *Add more items as completed.*
