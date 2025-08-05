@@ -70,19 +70,37 @@ app_server <- function(input, output, session) {
 
   # Dropdown for choosing the dependent variable
   output$dependent_var_dropdown <- shiny::renderUI({
-    shiny::req(sdata())
-    shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(sdata()))
+    tryCatch({
+      shiny::req(sdata())
+      shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(sdata()))
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to load dependent variable options. Please check your data upload.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   # Dropdown for choosing the independent variable
   output$independent_var_dropdown <- shiny::renderUI({
-    shiny::req(sdata())
-    choices <- c("reference value", colnames(sdata()))
-    shinyWidgets::pickerInput(
-      "independent_var",
-      "Choose independent variable or reference value",
-      choices = choices
-    )
+    tryCatch({
+      shiny::req(sdata())
+      choices <- c("reference value", colnames(sdata()))
+      shinyWidgets::pickerInput(
+        "independent_var",
+        "Choose independent variable or reference value",
+        choices = choices
+      )
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to load independent variable options. Please check your data upload.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   output$input_mean <- shiny::renderUI({
@@ -146,8 +164,17 @@ app_server <- function(input, output, session) {
 
   # Histogram of the dependent variable
   output$dependent_var_histogram <- shiny::renderPlot({
-    shiny::req(sdata(), input$dependent_var)
-    create_dependent_variable_histogram(sdata()[, input$dependent_var])
+    tryCatch({
+      shiny::req(sdata(), input$dependent_var)
+      create_dependent_variable_histogram(sdata()[, input$dependent_var])
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to display histogram. Please check your variable selection.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

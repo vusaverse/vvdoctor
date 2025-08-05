@@ -199,16 +199,61 @@ This markdown tracks completed feedback items from FEEDBACK.md, with testing ins
 
 ---
 
-### 16. Loading indicators (UX)
 **Feedback:** No visual feedback is provided during data upload or statistical computations. Add loading spinners or progress indicators.
 
 **Implementation:** Added Shiny loading spinners to data table and plot outputs using `shinycssloaders::withSpinner()`. Users now see a loading indicator while data is uploading or computations are running.
 
 **How to Test:**
+
+
+### 17. Error messaging (UX)
+### 17. Error messaging (UX)
+**Feedback:** Error messages are technical and displayed in the console output area. Implement user-friendly error notifications with clear, actionable messages displayed prominently.
+
+**Implementation:** Updated error handling in server logic to display user-friendly error notifications using Shiny's `showNotification()` for common input and analysis errors.
+
+**How to Test:**
 - Launch the vvdoctor Shiny app.
-- Upload a large dataset or trigger a long computation.
-- Confirm that a loading spinner appears over the data table and plot outputs while processing.
-- Ensure the spinner disappears when the output is ready.
+- Trigger an error (e.g., upload an invalid file, select incompatible variables, run a test with missing data).
+- Confirm that a clear, user-friendly error notification appears at the top of the app, describing the issue and suggesting an action.
+- Ensure technical error details are not shown to the user.
+
+---
+**Feedback:** Error messages are technical and displayed in the console output area. Implement user-friendly error notifications with clear, actionable messages displayed prominently.
+
+**Implementation:** Updated error handling in server logic to display user-friendly error notifications using Shiny's `showNotification()` for common input and analysis errors.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Trigger an error (e.g., upload an invalid file, select incompatible variables, run a test with missing data).
+- Confirm that a clear, user-friendly error notification appears at the top of the app, describing the issue and suggesting an action.
+- Ensure technical error details are not shown to the user.
+
+---
+
+### 18. Help and documentation (UX)
+**Feedback:** While intro.js is implemented, consider adding contextual help tooltips and a comprehensive help section for statistical interpretation.
+
+**Implementation:** Added contextual help tooltips to sidebar controls using `shinyWidgets::tooltip()`. Created a new "Help" tab in the main panel with guidance on statistical interpretation and app usage.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Hover over sidebar controls and confirm that help tooltips appear with relevant explanations.
+- Open the "Help" tab in the main panel and verify that it contains comprehensive documentation and interpretation guidance.
+- Ensure help content is clear, accessible, and improves user understanding.
+
+---
+
+### 19. Input validation feedback (UX)
+**Feedback:** Provide real-time validation feedback for user inputs (e.g., file format validation, variable selection requirements).
+
+**Implementation:** Added real-time validation for file uploads and variable selections. Users receive immediate feedback if the file format is invalid or required variables are not selected, using Shiny notifications and input highlighting.
+
+**How to Test:**
+- Launch the vvdoctor Shiny app.
+- Try uploading an unsupported file format and observe the validation message.
+- Attempt to run an analysis without selecting required variables and confirm that a warning appears.
+- Ensure validation feedback is clear, immediate, and helps users correct their input.
 
 ---
 
