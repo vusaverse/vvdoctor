@@ -6,7 +6,7 @@
 app_ui <- function() {
   shiny::fluidPage(
     shiny::tags$head(
-      shiny::tags$style(HTML('
+      shiny::tags$style(shiny::HTML('
         /* VU Analytics branding colors and accessible contrast */
         body { background-color: #f5f5f5; }
         .sidebarPanel { background-color: #002d72; color: #ffffff; }
