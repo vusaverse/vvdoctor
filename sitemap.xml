@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/app_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/app_ui.html</loc>
-  </url>
-  <url>
-    <loc>/reference/choose_statistical_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_dependent_variable_histogram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/determine_dependent_variable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/determine_independent_variable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/diagnose.html</loc>
-  </url>
-  <url>
-    <loc>/reference/display_data_table.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_variable_class_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/perform_statistical_test.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/run_vvdoctor.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/app_server.html</loc></url>
+<url><loc>/reference/app_ui.html</loc></url>
+<url><loc>/reference/choose_statistical_test.html</loc></url>
+<url><loc>/reference/create_dependent_variable_histogram.html</loc></url>
+<url><loc>/reference/determine_dependent_variable.html</loc></url>
+<url><loc>/reference/determine_independent_variable.html</loc></url>
+<url><loc>/reference/diagnose.html</loc></url>
+<url><loc>/reference/display_data_table.html</loc></url>
+<url><loc>/reference/get_variable_class_info.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/perform_statistical_test.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/run_vvdoctor.html</loc></url>
 </urlset>
+
