@@ -7,3 +7,4 @@
 ^build\.R
 ^app\.R$
 ^ui\.R$
+^CRAN-SUBMISSION$
