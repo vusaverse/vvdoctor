@@ -5,6 +5,31 @@
 #'
 app_ui <- function() {
   shiny::fluidPage(
+    shiny::tags$head(
+      shiny::tags$style(shiny::HTML('
+        /* VU Analytics branding colors and accessible contrast */
+        body { background-color: #f5f5f5; }
+        .sidebarPanel { background-color: #002d72; color: #ffffff; }
+        .mainPanel { background-color: #ffffff; color: #222222; overflow-x: auto; }
+        .btn, .shiny-input-container .action-button { background-color: #ffc72c; color: #002d72; border: none; }
+        .btn:hover, .shiny-input-container .action-button:hover { background-color: #002d72; color: #ffc72c; }
+        .tabset-panel > .nav-tabs > li.active > a { background-color: #ffc72c !important; color: #002d72 !important; }
+        .tabset-panel > .nav-tabs > li > a { color: #002d72 !important; }
+        .shiny-output-error { color: #d32f2f; background: #fff3e0; padding: 8px; border-radius: 4px; }
+        .shiny-input-container { width: 100% !important; }
+        h4, h3, h5, label, .form-label { color: #002d72 !important; background: #fff !important; }
+        .form-control, .picker { background: #fff !important; color: #222 !important; }
+        @media (max-width: 768px) {
+          .sidebarPanel, .mainPanel { width: 100% !important; float: none !important; }
+        }
+        /* Focus indicators for accessibility */
+        button:focus, .action-button:focus, .btn:focus, select:focus, input:focus, .shiny-input-container:focus {
+          outline: 3px solid #ffc72c !important;
+          outline-offset: 2px;
+          box-shadow: 0 0 0 2px #002d72;
+        }
+      '))
+    ),
     rintrojs::introjsUI(),
     # Application title
     shiny::titlePanel(shiny::tags$h3("vvdoctor: The App for Statistical Testing", windowTitle = "vvdoctor: The App for Statistical Testing")),
@@ -18,41 +43,31 @@ app_ui <- function() {
     # Sidebar with a browse button for file upload anid the "About this app" action button
     shiny::sidebarLayout(
       shiny::sidebarPanel(
-        # shiny::fileInput("file", "Upload a file"),
-
-
-        shiny::actionButton("launch_modal", "Import data"),
-
-        # Action button for displaying the info panels
-        shiny::actionButton("about_app", "About this app"),
-
-        # Dropdown for choosing the dependent variable
+        shiny::tags$h4(list(shiny::icon("upload"), " Step 1: Upload Data")),
+        shiny::actionButton("launch_modal", list(shiny::icon("upload"), " Import data"), `aria-label` = "Import data", tabindex = 1),
+        shiny::actionButton("about_app", list(shiny::icon("info-circle"), " About this app"), `aria-label` = "About this app", tabindex = 2),
+        shiny::tags$hr(),
+        shiny::tags$h4(list(shiny::icon("chart-bar"), " Step 2: Select Variables")),
         rintrojs::introBox(
-          shiny::uiOutput("dependent_var_dropdown"),
+          shiny::uiOutput("dependent_var_dropdown", `aria-label` = "Choose dependent variable", tabindex = 3),
           data.step = 3,
           data.intro = "Choose the dependent variable from this dropdown."
         ),
-
-        # Text below the dropdowns
         rintrojs::introBox(
           shiny::textOutput("dependent_var_text"),
           data.step = 4,
           data.intro = "This is the dependent variable text."
         ),
-
-        # Dropdown for choosing the independent variable
         rintrojs::introBox(
-          shiny::uiOutput("independent_var_dropdown"),
+          shiny::uiOutput("independent_var_dropdown", `aria-label` = "Choose independent variable", tabindex = 4),
           data.step = 5,
           data.intro = "Choose the independent variable from this dropdown."
         ),
         rintrojs::introBox(
-          shiny::textOutput("independent_var_text"), # New output element for the independent variable text
+          shiny::textOutput("independent_var_text"),
           data.step = 6,
           data.intro = "This is the independent variable text."
         ),
-
-        # Input field for mean (hidden initially)
         rintrojs::introBox(
           shiny::uiOutput("input_mean"),
           data.step = 7,
@@ -66,27 +81,34 @@ app_ui <- function() {
             data.intro = "Choose the identifier from this dropdown."
           )
         ),
-
-        # New dropdown for selecting statistical test
+        shiny::tags$hr(),
+        shiny::tags$h4(list(shiny::icon("flask"), " Step 3: Choose Test")),
         rintrojs::introBox(
-          shiny::uiOutput("statistical_test_dropdown"),
+          shiny::uiOutput("statistical_test_dropdown", `aria-label` = "Choose statistical test", tabindex = 5),
           data.step = 9,
           data.intro = "Choose the statistical test from this dropdown."
         ),
-
-        # Area to display the test report
-        rintrojs::introBox(
-          shiny::verbatimTextOutput("test_report"),
-          data.step = 10,
-          data.intro = "This is the area to display the test report."
-        )
+        shiny::tags$hr(),
+        shiny::tags$h4(list(shiny::icon("table"), " Step 4: View Results"))
       ),
-
-      # Show the datatable and histogram after submitting a file
       shiny::mainPanel(
-        shiny::fluidRow(
-          shiny::column(width = 12, DT::dataTableOutput("dataTable")),
-          shiny::column(width = 12, shiny::plotOutput("dependent_var_histogram"))
+        shiny::tabsetPanel(
+          shiny::tabPanel("Data Preview",
+            shinycssloaders::withSpinner(DT::dataTableOutput("dataTable"))
+          ),
+          shiny::tabPanel("Variable Analysis",
+            shiny::tags$div(
+              shinycssloaders::withSpinner(shiny::plotOutput("dependent_var_histogram")),
+              role = "img",
+              `aria-label` = "Histogram of dependent variable"
+            )
+          ),
+          shiny::tabPanel("Test Results",
+            shiny::verbatimTextOutput("test_report")
+          ),
+          shiny::tabPanel("Interpretation",
+            shiny::textOutput("interpretation_text") # Placeholder for interpretation guidance
+          )
         )
       )
     )

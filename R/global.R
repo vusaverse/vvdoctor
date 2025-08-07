@@ -268,6 +268,45 @@ perform_statistical_test <- function(data, input) {
   identifier_var <- input$identifier_var
   input_mean <- input$input_mean
 
+  # Input validation
+  # Check for missing data
+  if (any(is.na(data[[dependent_var]])) || any(is.na(data[[independent_var]]))) {
+    shiny::showNotification(
+      "Missing values detected in selected variables. Please remove or impute missing data before analysis.",
+      type = "error",
+      duration = 8000
+    )
+    return(NULL)
+  }
+
+  # Check for minimum sample size (e.g., at least 3 for most tests)
+  if (length(data[[dependent_var]]) < 3 || length(data[[independent_var]]) < 3) {
+    shiny::showNotification(
+      "Sample size too small. Please select variables with at least 3 observations.",
+      type = "error",
+      duration = 8000
+    )
+    return(NULL)
+  }
+
+  # Check for appropriate variable types
+  if (!is.numeric(data[[dependent_var]]) && !is.character(data[[dependent_var]])) {
+    shiny::showNotification(
+      "Dependent variable must be numeric or categorical.",
+      type = "error",
+      duration = 8000
+    )
+    return(NULL)
+  }
+  if (!is.numeric(data[[independent_var]]) && !is.character(data[[independent_var]])) {
+    shiny::showNotification(
+      "Independent variable must be numeric or categorical.",
+      type = "error",
+      duration = 8000
+    )
+    return(NULL)
+  }
+
   # Determine the value of mu based on the user's selection
   mu <- if (independent_var == "reference value") input_mean else mean(data[[dependent_var]], na.rm = TRUE)
 
@@ -371,7 +410,15 @@ perform_statistical_test <- function(data, input) {
       )
     },
     error = function(e) {
-      stop(paste0("Error: ", e))
+      shiny::showNotification(
+        paste0(
+          "An error occurred: ",
+          if (!is.null(e$message)) e$message else as.character(e),
+          "\nPlease check your input and try again."
+        ),
+        type = "error",
+        duration = 8000
+      )
       NULL
     }
   )

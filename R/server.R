@@ -55,25 +55,52 @@ app_server <- function(input, output, session) {
 
   # Display the uploaded data as a datatable
   output$dataTable <- DT::renderDataTable({
-    shiny::req(sdata())
-    DT::datatable(sdata())
+    tryCatch({
+      shiny::req(sdata())
+      DT::datatable(sdata())
+    }, error = function(e) {
+      shiny::showNotification(
+        paste("Error displaying data table:", e$message),
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   # Dropdown for choosing the dependent variable
   output$dependent_var_dropdown <- shiny::renderUI({
-    shiny::req(sdata())
-    shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(sdata()))
+    tryCatch({
+      shiny::req(sdata())
+      shinyWidgets::pickerInput("dependent_var", "Choose dependent variable", choices = colnames(sdata()))
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to load dependent variable options. Please check your data upload.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   # Dropdown for choosing the independent variable
   output$independent_var_dropdown <- shiny::renderUI({
-    shiny::req(sdata())
-    choices <- c("reference value", colnames(sdata()))
-    shinyWidgets::pickerInput(
-      "independent_var",
-      "Choose independent variable or reference value",
-      choices = choices
-    )
+    tryCatch({
+      shiny::req(sdata())
+      choices <- c("reference value", colnames(sdata()))
+      shinyWidgets::pickerInput(
+        "independent_var",
+        "Choose independent variable or reference value",
+        choices = choices
+      )
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to load independent variable options. Please check your data upload.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   output$input_mean <- shiny::renderUI({
@@ -128,20 +155,42 @@ app_server <- function(input, output, session) {
     }
     test <- choose_statistical_test(sdata()[, input$dependent_var], independent_var)
     test_options <- c(test)
+  # Placeholder for interpretation guidance
+  output$interpretation_text <- shiny::renderText({
+    "Interpretation guidance will be shown here."
+  })
     shinyWidgets::pickerInput("statistical_test", "Choose statistical test", choices = test_options)
   })
 
   # Histogram of the dependent variable
   output$dependent_var_histogram <- shiny::renderPlot({
-    shiny::req(sdata(), input$dependent_var)
-    create_dependent_variable_histogram(sdata()[, input$dependent_var])
+    tryCatch({
+      shiny::req(sdata(), input$dependent_var)
+      create_dependent_variable_histogram(sdata()[, input$dependent_var])
+    }, error = function(e) {
+      shiny::showNotification(
+        "Unable to display histogram. Please check your variable selection.",
+        type = "error",
+        duration = 5
+      )
+      NULL
+    })
   })
 
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   ## X. Statistical tests ####
   ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   output$test_report <- shiny::renderPrint({
-    result <- perform_statistical_test(sdata(), input)
-    if (!is.null(result)) result
+    tryCatch({
+      result <- perform_statistical_test(sdata(), input)
+      if (!is.null(result)) result
+    }, error = function(e) {
+      shiny::showNotification(
+        paste("Analysis error:", e$message),
+        type = "error",
+        duration = 7
+      )
+      "An error occurred during analysis. Please check your inputs."
+    })
   })
 }
