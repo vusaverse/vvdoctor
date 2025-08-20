@@ -1,3 +1,5 @@
+# Ignore rsconnect deployment directory
+rsconnect/
 ^renv$
 ^renv\.lock$
 ^LICENSE\.md$
